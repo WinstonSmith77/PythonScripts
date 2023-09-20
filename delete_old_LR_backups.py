@@ -5,7 +5,7 @@ pathToExe = "C:/Program Files/Adobe/Adobe Lightroom Classic/lightroom.exe"
 backupFolder = "C:/Users/matze/OneDrive/lightroom backup"
 
 def delete_old_backups():
-    backups = [item for item in os.scandir(backupFolder)]
+    backups = [(item.name) for item in os.scandir(backupFolder) if item.is_file]
     print(backups)
 
 def start_Exe():
