@@ -8,7 +8,7 @@ backupFolder = "C:/Users/matze/OneDrive/lightroom backup"
 keepNumberOfBackups = 10
 
 def delete_old_backups():
-    backups = [(item.path, os.path.getctime(item.path)) for item in os.scandir(backupFolder) if item.is_file]
+    backups = [(item.path, os.path.getctime(item.path)) for item in os.scandir(backupFolder) if item.is_dir()]
     backups.sort(key = lambda item : item[0])
 
     toDelete = backups[0:-keepNumberOfBackups]
