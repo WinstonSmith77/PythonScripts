@@ -1,6 +1,6 @@
 import subprocess
 import os
-import pathlib
+
 import send2trash
 
 pathToExe = "C:/Program Files/Adobe/Adobe Lightroom Classic/lightroom.exe"
