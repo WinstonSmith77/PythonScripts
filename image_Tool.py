@@ -16,11 +16,11 @@ def get_all_files(path, pattern):
 
 images = [get_all_files(path, f"*{ext}") for ext in [JPG, PANA]]
 
-def extract_from_exif(exifdata):
+def extract_from_exif(exifdata, *only):
      result = {}
      for k,v in exifdata.items():
         k = PIL.ExifTags.TAGS.get(k, None)
-        if k is not None:
+        if k is not None and k in only:
             result[k] = v
      return result
 
@@ -41,7 +41,7 @@ def merge(*args):
                 try:
                     image = PIL.Image.open(file)
                     exifdata = image.getexif()
-                    file_meta = (*file_meta, extract_from_exif(exifdata))
+                    file_meta = (*file_meta, extract_from_exif(exifdata, 'Make', 'Model'))
                 except PIL.UnidentifiedImageError:
                     pass
 
@@ -50,10 +50,10 @@ def merge(*args):
 
     return result
 
-a = merge(*images)
+all = merge(*images)
+doubles = {key: value for key, value in all.items() if len(value) > 1}
 
-b = {key: value for key, value in a.items() if len(value) > 1}
-pprint.pprint(b)
+pprint.pprint(doubles)
 
 
 
