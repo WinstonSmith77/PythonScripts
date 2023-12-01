@@ -24,10 +24,9 @@ def merge(*args):
 
     for image_list in args:
         for file in image_list:
-            key = file.parts[-1]
-            *_, ext = key.split('.')
-            ext = ext.lower()
-            list_for_name = result.setdefault(key, {})
+            name = file.stem.lower()
+            ext = file.suffix.lower()
+            list_for_name = result.setdefault(name, {})
             list_for_ext = list_for_name.setdefault(ext, [])
             list_for_ext.append(file)
             
