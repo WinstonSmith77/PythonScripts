@@ -4,10 +4,8 @@ import pprint
 import PIL.Image
 import PIL.ExifTags
 
-
-
-
 JPG = '.jpg'
+PANA = '.rw2'
 
 working_dir = "C:/Users/matze/OneDrive/bilder"
 
@@ -16,9 +14,15 @@ path = pathlib.Path(working_dir)
 def get_all_files(path, pattern):
     return  list(path.rglob(pattern, case_sensitive= False))
 
-all_jpgs = get_all_files(path, f"*{JPG}")
-all_raws = get_all_files(path, "*.rw2")
+images = [get_all_files(path, f"*{ext}") for ext in [JPG, PANA]]
 
+def extract_from_exif(exifdata):
+     result = {}
+     for k,v in exifdata.items():
+        k = PIL.ExifTags.TAGS.get(k, None)
+        if k is not None:
+            result[k] = v
+     return result
 
 def merge(*args):
     result = {}
@@ -37,7 +41,7 @@ def merge(*args):
                 try:
                     image = PIL.Image.open(file)
                     exifdata = image.getexif()
-                    file_meta = (*file_meta,  {PIL.ExifTags.TAGS.get(k, '##'):v for  k, v in exifdata.items()})
+                    file_meta = (*file_meta, extract_from_exif(exifdata))
                 except PIL.UnidentifiedImageError:
                     pass
 
@@ -46,7 +50,7 @@ def merge(*args):
 
     return result
 
-a = merge(all_jpgs, all_raws)
+a = merge(*images)
 
 b = {key: value for key, value in a.items() if len(value) > 1}
 pprint.pprint(b)
