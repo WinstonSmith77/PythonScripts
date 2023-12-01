@@ -1,4 +1,6 @@
-import pathlib, pprint
+import pathlib
+import os
+import pprint
 
 
 working_dir = "C:/Users/matze/OneDrive/bilder"
@@ -11,13 +13,6 @@ def get_all_files(path, pattern):
 all_jpgs = get_all_files(path, "*.jpg")
 all_raws = get_all_files(path, "*.rw2")
 
-print(all_jpgs[0].parts[-1])
-
-print(all_raws[0].parts[-1])
-
-print(len(all_jpgs), len(all_raws))
-
-
 
 def merge(*args):
     result = {}
@@ -28,7 +23,8 @@ def merge(*args):
             ext = file.suffix.lower()
             list_for_name = result.setdefault(name, {})
             list_for_ext = list_for_name.setdefault(ext, [])
-            list_for_ext.append(file)
+            stat = os.stat(file)
+            list_for_ext.append((file, stat.st_size))
             
 
     return result
