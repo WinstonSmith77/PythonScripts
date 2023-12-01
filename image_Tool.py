@@ -1,7 +1,10 @@
 import pathlib
 import os
 import pprint
-import PIL
+import PIL.Image
+import PIL.ExifTags
+
+
 
 
 JPG = '.jpg'
@@ -34,7 +37,7 @@ def merge(*args):
                 try:
                     image = PIL.Image.open(file)
                     exifdata = image.getexif()
-                    file_meta = (*file_meta,  exifdata)
+                    file_meta = (*file_meta,  {PIL.ExifTags.TAGS.get(k, '##'):v for  k, v in exifdata.items()})
                 except PIL.UnidentifiedImageError:
                     pass
 
