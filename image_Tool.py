@@ -1,6 +1,7 @@
 import pathlib
 import os
 import pprint
+
 import PIL.Image
 import PIL.ExifTags
 import PIL.TiffImagePlugin
@@ -36,7 +37,8 @@ class Cache:
 
         self._innerCache = {}
 
-    def Lookup(self, key, toCall):
+    def Lookup(self, *key_parts, toCall):
+        key = ",".join(key_parts)
 
         if key in self._innerCache:
             return self._innerCache[key]
@@ -70,31 +72,36 @@ def do_it(working_dir, cache: Cache):
 
         result = {}
         for k, v in exif_data.items():
-            
+
             if isinstance(v, PIL.TiffImagePlugin.IFDRational):
                 v = str(v)
 
             if isinstance(v, bytes):
-               v = base64.standard_b64encode(v).decode()   
+                v = base64.standard_b64encode(v).decode()
 
             k = PIL.ExifTags.TAGS.get(k, None)
             if k is not None:
                 result[k] = v
         return result
-    
+
     def filter_exif(exif, *only):
-        return {k:v for k, v in exif.items() if k in only or not only}
+        return {k: v for k, v in exif.items() if k in only or not only}
 
     def handle_jpg(file, file_meta):
-        filter = [ 'Make', 'Model', 'DateTime']    
-                    #filter = []
+        filter = ['Make', 'Model', 'DateTime']
+        # filter = []
         try:
-            exif =  cache.Lookup(file, lambda: extract_exif_from_file(file))
+            exif = cache.Lookup(extract_exif_from_file.__name__, file, toCall=lambda: extract_exif_from_file(file))
             exif = filter_exif(exif, *filter)
             file_meta = (*file_meta, exif)
-            return file_meta
         except PIL.UnidentifiedImageError:
             pass
+
+        return file_meta
+
+    def handle_xmp(file, file_meta):
+
+        return file_meta
 
     def merge(*args):
         result = {}
@@ -110,13 +117,17 @@ def do_it(working_dir, cache: Cache):
 
                 file_meta = (file, stat.st_size)
                 if ext == JPG:
-                  file_meta = handle_jpg(file, file_meta)
+                    file_meta = handle_jpg(file, file_meta)
+
+                elif ext == XMP:
+                    file_meta = handle_xmp(file, file_meta)
 
                 list_for_ext.append(file_meta)
 
         return result
 
-    images = [cache.Lookup((f'{ext}, {str(working_dir)}'), lambda: get_all_files(working_dir, f'*{ext}')) for ext in
+    images = [cache.Lookup(get_all_files.__name__, ext, str(working_dir), toCall=lambda: get_all_files(working_dir, f'*{ext}'))
+              for ext in
               [JPG, PANA, XMP]]
 
     all_images = merge(*images)
@@ -130,7 +141,6 @@ with  Cache('first') as cache:
     result = do_it(working_dir, cache)
 
 with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
-            json.dump(result, f, indent=2)
+    json.dump(result, f, indent=2)
 
-
-#pprint.pprint(result)
+# pprint.pprint(result)
