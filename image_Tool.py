@@ -8,6 +8,7 @@ import PIL.TiffImagePlugin
 import json
 import base64
 import xmltodict
+import dateparser
 
 
 class PassThroughCache:
@@ -90,6 +91,7 @@ PANA = '.rw2'
 XMP = '.xmp'
 ERROR = 'error'
 FS = '.fs'
+DATETIME = 'datetime'
 
 
 def do_it(working_dir, caches: list[Cache]):
@@ -130,7 +132,24 @@ def do_it(working_dir, caches: list[Cache]):
         except PIL.UnidentifiedImageError:
             exif = caches[JPG].add_result(*key, value={ERROR: ERROR})
 
-        return (*file_meta, exif)
+        def parse_wrapper(time_str : str):
+            date_time = dateparser.parse(time_str) if time_str.count(':') != 4 else None
+            if date_time is None:
+                return None
+            else: 
+                return date_time.isoformat()
+
+
+        key_time = 'DateTime'
+
+        if key_time in exif:
+            time_str = exif[key_time]
+            date_time = caches[DATETIME].lookup(dateparser.parse.__name__, time_str , toCall = lambda: parse_wrapper(time_str))    
+
+            if date_time is not None:
+                return (*file_meta, date_time.isoformat())    
+
+        return (*file_meta, exif)  
 
     def handle_xmp(file, file_meta):
         def parse_xmp(file):
@@ -138,7 +157,28 @@ def do_it(working_dir, caches: list[Cache]):
                 return xmltodict.parse(f.read())
 
         json = caches[XMP].lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
-        return (*file_meta, json)
+
+        path_to_date = ["x:xmpmeta", "rdf:RDF", "rdf:Description"]
+        date_time_key= '@exif:DateTimeOriginal'
+
+
+        item_pos = json
+        for path_item in path_to_date:
+            if path_item in item_pos:
+                item_pos = item_pos[path_item]
+            else:
+                item_pos = None
+                break
+
+        if  item_pos is not None and date_time_key in item_pos :
+            datetime_str = item_pos[date_time_key]
+            time = caches[DATETIME].lookup(dateparser.parse.__name__, datetime_str, toCall = lambda: dateparser.parse(datetime_str).isoformat())
+            file_meta =  (*file_meta, time)
+        else:
+            file_meta =  (*file_meta, json)
+
+
+        return file_meta
 
     def merge(*args):
         result = {}
@@ -175,7 +215,7 @@ def do_it(working_dir, caches: list[Cache]):
 
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-with  CacheGroup(JPG, XMP, FS) as caches:
+with  CacheGroup(JPG, XMP, FS, DATETIME) as caches:
     result = do_it(working_dir, caches)
 
 with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
