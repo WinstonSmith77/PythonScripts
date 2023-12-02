@@ -56,6 +56,7 @@ class Cache:
 def do_it(working_dir, cache: Cache):
     JPG = '.jpg'
     PANA = '.rw2'
+    XMP = '.xmp'
 
     def get_all_files(path, pattern):
         result = path.rglob(pattern, case_sensitive=False)
@@ -112,10 +113,10 @@ def do_it(working_dir, cache: Cache):
         return result
 
     images = [cache.Lookup((f'{ext}, {str(working_dir)}'), lambda: get_all_files(working_dir, f'*{ext}')) for ext in
-              [JPG, PANA]]
+              [JPG, PANA, XMP]]
 
     all_images = merge(*images)
-    doubles = {key: value for key, value in all_images.items() if len(value) > 1}
+    doubles = {key: value for key, value in all_images.items() if len(value) > 2}
 
     return doubles
 
@@ -123,4 +124,9 @@ def do_it(working_dir, cache: Cache):
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 with  Cache('first') as cache:
     result = do_it(working_dir, cache)
-pprint.pprint(result)
+
+with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
+            json.dump(result, f, indent=2)
+
+
+#pprint.pprint(result)
