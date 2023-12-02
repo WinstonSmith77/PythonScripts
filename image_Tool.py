@@ -10,16 +10,22 @@ class Cache:
     def __init__(self, name) -> None:
         self._path = pathlib.Path(pathlib.Path(__file__).parent, f'{name}.cache')
 
-        if not self._path.exists():
+        if self._path.exists():
+            text = self._path.read_text(encoding='utf-8')
+            self._innerCache = json.loads(text)
+        else: 
             #self.path.write_text("a", encoding='utf-8')
             self._innerCache = {}
-        else: 
-            text = self._path.read_text(encoding='utf-8')   
-            self._innerCache = json.loads(text)
-    
+
     def Lookup(self, params, toCall):
-        result = self._innerCache.setdefault(params, toCall())
-        return result    
+
+        if params in self._innerCache:
+           return  self._innerCache[params]
+        else:
+           new_entry = toCall()
+           self._innerCache[params] = new_entry
+           return new_entry
+           
 
     def __enter__(self):
         return self
@@ -42,10 +48,10 @@ def do_it(working_dir, cache: Cache):
 
     def extract_exif_from_file(file, *only):
         image = PIL.Image.open(file)
-        exifdata = image.getexif()
+        exif_data = image.getexif()
 
         result = {}
-        for k,v in exifdata.items():
+        for k,v in exif_data.items():
             k = PIL.ExifTags.TAGS.get(k, None)
             if k is not None and k in only:
                 result[k] = v
@@ -76,10 +82,10 @@ def do_it(working_dir, cache: Cache):
         return result
 
 
-    images = [cache.Lookup(ext, lambda : get_all_files(working_dir, f"*{ext}")) for ext in [JPG, PANA]]
+    images = [cache.Lookup(ext, lambda : get_all_files(working_dir, f'*{ext}')) for ext in [JPG, PANA]]
 
-    all = merge(*images)
-    doubles = {key: value for key, value in all.items() if len(value) > 1}
+    all_images = merge(*images)
+    doubles = {key: value for key, value in all_images.items() if len(value) > 1}
 
     return doubles
 
