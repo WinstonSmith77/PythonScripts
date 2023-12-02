@@ -7,17 +7,28 @@ import json
 
 
 class Cache:
-    def __init__(self, name) -> None:
+    def __init__(self, name,*, ignore = False) -> None:
+        self._ignore = ignore
         self._path = pathlib.Path(pathlib.Path(__file__).parent, f'{name}.cache.json')
 
+        if ignore:
+            return
+
         if self._path.exists():
-            text = self._path.read_text(encoding='utf-8')
-            self._innerCache = json.loads(text)
-        else:
-            self._innerCache = {}
+            try:
+                with self._path.open(mode='r', encoding='utf-8') as f:
+                 self._innerCache = json.load(f)
+                return 
+            except:
+                pass
+
+        self._innerCache = {}
+       
 
     def Lookup(self, params, toCall):
-
+        if self._ignore:
+            return toCall()
+        
         if params in self._innerCache:
             return self._innerCache[params]
         else:
@@ -29,9 +40,10 @@ class Cache:
         return self
 
     def __exit__(self, type, value, tb):
-        text = json.dumps(self._innerCache, indent=2)
-        self._path.write_text(text, encoding='utf-8')
-
+        if not self._ignore:
+            with self._path.open(mode='w', encoding='utf-8') as f:
+                json.dump(self._innerCache, f, indent=2)
+         
 def do_it(working_dir, cache: Cache):
     JPG = '.jpg'
     PANA = '.rw2'
@@ -87,7 +99,6 @@ def do_it(working_dir, cache: Cache):
 
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-with  Cache('first') as cache:
+with  Cache('first', ignore=False) as cache:
     result = do_it(working_dir, cache)
-
 pprint.pprint(result)
