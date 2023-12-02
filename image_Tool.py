@@ -38,9 +38,10 @@ class Cache:
 
         self._innerCache = {}
 
-    def Add(self, *key_parts, value):
+    def AddResult(self, *key_parts, value):
         key = self._make_key(*key_parts)
         self._innerCache[key] = value
+        return value
 
     def _make_key(self, *key_parts):
         return  ",".join(key_parts)   
@@ -67,6 +68,7 @@ def do_it(working_dir, cache: Cache):
     JPG = '.jpg'
     PANA = '.rw2'
     XMP = '.xmp'
+    ERROR = 'error'
 
     def get_all_files(path, pattern):
         result = path.rglob(pattern, case_sensitive=False)
@@ -102,17 +104,16 @@ def do_it(working_dir, cache: Cache):
             key = [extract_exif_from_file.__name__, file]
             exif = cache.Lookup(*key, toCall=lambda: extract_exif_from_file(file))
             exif = filter_exif(exif, *filter)
-            file_meta = (*file_meta, exif)
         except PIL.UnidentifiedImageError:
-            cache.Add(*key, value= {})
+            exif = cache.AddResult(*key, value= {ERROR: ERROR})
 
-        return file_meta
+        return (*file_meta, exif)
 
     def handle_xmp(file, file_meta):
         def parse_xmp(file):
             with pathlib.Path(file).open(mode='r', encoding='utf-8') as f:
-                json = xmltodict.parse(f.read())
-                return json
+                return xmltodict.parse(f.read())
+            
         json =  cache.Lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file)) 
         return (*file_meta, json)
 
