@@ -14,7 +14,7 @@ class PassThroughCache:
     def __init__(self, name) -> None:
         pass
 
-    def Lookup(self, key, toCall):
+    def lookup(self, key, toCall):
         return toCall()
 
     def __enter__(self):
@@ -38,7 +38,7 @@ class Cache:
 
         self._innerCache = {}
 
-    def AddResult(self, *key_parts, value):
+    def add_result(self, *key_parts, value):
         key = self._make_key(*key_parts)
         self._innerCache[key] = value
         self._isDirty = True
@@ -47,7 +47,7 @@ class Cache:
     def _make_key(self, *key_parts):
         return ",".join(key_parts)
 
-    def Lookup(self, *key_parts, toCall):
+    def lookup(self, *key_parts, toCall):
         key = self._make_key(*key_parts)
 
         if key in self._innerCache:
@@ -70,7 +70,7 @@ class Cache:
 
 class CacheGroup:
     def __init__(self, *names) -> None:
-        self._caches = {name: Cache(name) for name in names}
+        self._caches : dict[str, Cache] = {name: Cache(name) for name in names}
 
     def __enter__(self):
         for cache in self._caches.values():
@@ -81,7 +81,7 @@ class CacheGroup:
         for cache in self._caches.values():
             cache.__exit__(type, value, tb)
 
-    def __getitem__(self, name):
+    def __getitem__(self, name : str):
         return self._caches[name]
 
 
@@ -125,10 +125,10 @@ def do_it(working_dir, caches: list[Cache]):
         # filter = []
         try:
             key = [extract_exif_from_file.__name__, file]
-            exif = caches[JPG].Lookup(*key, toCall=lambda: extract_exif_from_file(file))
+            exif = caches[JPG].lookup(*key, toCall=lambda: extract_exif_from_file(file))
             exif = filter_exif(exif, *filter)
         except PIL.UnidentifiedImageError:
-            exif = caches[JPG].AddResult(*key, value={ERROR: ERROR})
+            exif = caches[JPG].add_result(*key, value={ERROR: ERROR})
 
         return (*file_meta, exif)
 
@@ -137,7 +137,7 @@ def do_it(working_dir, caches: list[Cache]):
             with pathlib.Path(file).open(mode='r', encoding='utf-8') as f:
                 return xmltodict.parse(f.read())
 
-        json = caches[XMP].Lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
+        json = caches[XMP].lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
         return (*file_meta, json)
 
     def merge(*args):
@@ -163,7 +163,7 @@ def do_it(working_dir, caches: list[Cache]):
 
         return result
 
-    images = [caches[FS].Lookup(get_all_files.__name__, ext, str(working_dir),
+    images = [caches[FS].lookup(get_all_files.__name__, ext, str(working_dir),
                                 toCall=lambda: get_all_files(working_dir, f'*{ext}'))
               for ext in
               [JPG, PANA, XMP]]
