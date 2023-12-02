@@ -7,6 +7,7 @@ import PIL.ExifTags
 import PIL.TiffImagePlugin
 import json
 import base64
+import xmltodict
 
 
 class PassThroughCache:
@@ -37,8 +38,15 @@ class Cache:
 
         self._innerCache = {}
 
+    def Add(self, *key_parts, value):
+        key = self._make_key(*key_parts)
+        self._innerCache[key] = value
+
+    def _make_key(self, *key_parts):
+        return  ",".join(key_parts)   
+
     def Lookup(self, *key_parts, toCall):
-        key = ",".join(key_parts)
+        key = self._make_key(*key_parts)
 
         if key in self._innerCache:
             return self._innerCache[key]
@@ -91,17 +99,22 @@ def do_it(working_dir, cache: Cache):
         filter = ['Make', 'Model', 'DateTime']
         # filter = []
         try:
-            exif = cache.Lookup(extract_exif_from_file.__name__, file, toCall=lambda: extract_exif_from_file(file))
+            key = [extract_exif_from_file.__name__, file]
+            exif = cache.Lookup(*key, toCall=lambda: extract_exif_from_file(file))
             exif = filter_exif(exif, *filter)
             file_meta = (*file_meta, exif)
         except PIL.UnidentifiedImageError:
-            pass
+            cache.Add(*key, value= {})
 
         return file_meta
 
     def handle_xmp(file, file_meta):
-
-        return file_meta
+        def parse_xmp(file):
+            with pathlib.Path(file).open(mode='r', encoding='utf-8') as f:
+                json = xmltodict.parse(f.read())
+                return json
+        json =  cache.Lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file)) 
+        return (*file_meta, json)
 
     def merge(*args):
         result = {}
