@@ -92,8 +92,6 @@ PANA = '.rw2'
 XMP = '.xmp'
 ERROR = 'error'
 FS = '.fs'
-DATETIME = 'datetime'
-
 
 def do_it(working_dir, caches: list[Cache]):
     def get_all_files(path, pattern):
@@ -144,11 +142,18 @@ def do_it(working_dir, caches: list[Cache]):
         key_time = 'DateTime'
 
         if key_time in exif:
-            time_str = exif[key_time]
-            date_time = caches[DATETIME].lookup(parse_wrapper.__name__, time_str , toCall = lambda: parse_wrapper(time_str))    
+            time_str :str = exif[key_time]
+            
+            splits = time_str.split(' ')
+            all_splits = splits[0].split(':') + splits[1].split(':')
+            time_str = f'{all_splits[0]}-{all_splits[1]}-{all_splits[2]}T{all_splits[3]}:{all_splits[4]}:{all_splits[5]}'
+            
+            try:
+                date_time = datetime.datetime.fromisoformat(time_str).isoformat()
+            except ValueError:
+                date_time = None    
 
-            if date_time is not None:
-                return (*file_meta, date_time.isoformat())    
+            return (*file_meta, date_time)    
 
         return (*file_meta, exif)  
 
@@ -216,7 +221,7 @@ def do_it(working_dir, caches: list[Cache]):
 
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-with  CacheGroup(JPG, XMP, FS, DATETIME) as caches:
+with  CacheGroup(JPG, XMP, FS) as caches:
     result = do_it(working_dir, caches)
 
 with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
