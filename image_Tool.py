@@ -13,35 +13,32 @@ class Cache:
         if self._path.exists():
             text = self._path.read_text(encoding='utf-8')
             self._innerCache = json.loads(text)
-        else: 
-            #self.path.write_text("a", encoding='utf-8')
+        else:
+            # self.path.write_text("a", encoding='utf-8')
             self._innerCache = {}
 
     def Lookup(self, params, toCall):
 
         if params in self._innerCache:
-           return  self._innerCache[params]
+            return self._innerCache[params]
         else:
-           new_entry = toCall()
-           self._innerCache[params] = new_entry
-           return new_entry
-           
+            new_entry = toCall()
+            self._innerCache[params] = new_entry
+            return new_entry
 
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, tb):
-      text = json.dumps(self._innerCache, indent=2)
-      self._path.write_text(text, encoding='utf-8')
-      pass
+        text = json.dumps(self._innerCache, indent=2)
+        self._path.write_text(text, encoding='utf-8')
 
 def do_it(working_dir, cache: Cache):
-
     JPG = '.jpg'
     PANA = '.rw2'
-    
+
     def get_all_files(path, pattern):
-        result =  path.rglob(pattern, case_sensitive= False)
+        result = path.rglob(pattern, case_sensitive=False)
         result = list(map(str, result))
 
         return result
@@ -51,7 +48,7 @@ def do_it(working_dir, cache: Cache):
         exif_data = image.getexif()
 
         result = {}
-        for k,v in exif_data.items():
+        for k, v in exif_data.items():
             k = PIL.ExifTags.TAGS.get(k, None)
             if k is not None and k in only:
                 result[k] = v
@@ -69,11 +66,12 @@ def do_it(working_dir, cache: Cache):
                 list_for_ext = list_for_name.setdefault(ext, [])
                 stat = os.stat(file)
 
-                file_meta =  (file, stat.st_size)
+                file_meta = (file, stat.st_size)
                 if ext == JPG:
-                    
+
                     try:
-                        file_meta = (*file_meta, cache.Lookup(file, lambda : extract_exif_from_file(file, 'Make', 'Model')))
+                        file_meta = (
+                        *file_meta, cache.Lookup(file, lambda: extract_exif_from_file(file, 'Make', 'Model')))
                     except PIL.UnidentifiedImageError:
                         pass
 
@@ -81,22 +79,16 @@ def do_it(working_dir, cache: Cache):
 
         return result
 
-
-    images = [cache.Lookup(ext, lambda : get_all_files(working_dir, f'*{ext}')) for ext in [JPG, PANA]]
+    images = [cache.Lookup(ext, lambda: get_all_files(working_dir, f'*{ext}')) for ext in [JPG, PANA]]
 
     all_images = merge(*images)
     doubles = {key: value for key, value in all_images.items() if len(value) > 1}
 
     return doubles
 
+
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 with  Cache('first') as cache:
     result = do_it(working_dir, cache)
 
 pprint.pprint(result)
-
-
-
-
-
-   
