@@ -90,7 +90,7 @@ def do_it(working_dir, cache: Cache):
 
         return result
 
-    images = [cache.Lookup(ext, lambda: get_all_files(working_dir, f'*{ext}')) for ext in [JPG, PANA]]
+    images = [cache.Lookup((f'{ext}, {str(working_dir)}'), lambda: get_all_files(working_dir, f'*{ext}')) for ext in [JPG, PANA]]
 
     all_images = merge(*images)
     doubles = {key: value for key, value in all_images.items() if len(value) > 1}
@@ -99,6 +99,6 @@ def do_it(working_dir, cache: Cache):
 
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-with  Cache('first', ignore=False) as cache:
+with  Cache('first') as cache:
     result = do_it(working_dir, cache)
 pprint.pprint(result)
