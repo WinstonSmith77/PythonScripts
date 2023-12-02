@@ -67,12 +67,14 @@ class Cache:
             with self._path.open(mode='w', encoding='utf-8') as f:
                 json.dump(self._innerCache, f, indent=2)
 
+JPG = '.jpg'
+PANA = '.rw2'
+XMP = '.xmp'
+ERROR = 'error'
+FS = '.fs'
 
-def do_it(working_dir, jpeg_cache: Cache, fs_cache : Cache, xmp_cache : Cache):
-    JPG = '.jpg'
-    PANA = '.rw2'
-    XMP = '.xmp'
-    ERROR = 'error'
+
+def do_it(working_dir, caches: list[Cache]):
 
     def get_all_files(path, pattern):
         result = path.rglob(pattern, case_sensitive=False)
@@ -106,10 +108,10 @@ def do_it(working_dir, jpeg_cache: Cache, fs_cache : Cache, xmp_cache : Cache):
         # filter = []
         try:
             key = [extract_exif_from_file.__name__, file]
-            exif = jpeg_cache.Lookup(*key, toCall=lambda: extract_exif_from_file(file))
+            exif = caches[JPG].Lookup(*key, toCall=lambda: extract_exif_from_file(file))
             exif = filter_exif(exif, *filter)
         except PIL.UnidentifiedImageError:
-            exif = jpeg_cache.AddResult(*key, value= {ERROR: ERROR})
+            exif = caches[JPG].AddResult(*key, value= {ERROR: ERROR})
 
         return (*file_meta, exif)
 
@@ -118,7 +120,7 @@ def do_it(working_dir, jpeg_cache: Cache, fs_cache : Cache, xmp_cache : Cache):
             with pathlib.Path(file).open(mode='r', encoding='utf-8') as f:
                 return xmltodict.parse(f.read())
             
-        json =  xmp_cache.Lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file)) 
+        json =  caches[XMP].Lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file)) 
         return (*file_meta, json)
 
     def merge(*args):
@@ -144,7 +146,7 @@ def do_it(working_dir, jpeg_cache: Cache, fs_cache : Cache, xmp_cache : Cache):
 
         return result
 
-    images = [fs_cache.Lookup(get_all_files.__name__, ext, str(working_dir), toCall=lambda: get_all_files(working_dir, f'*{ext}'))
+    images = [caches[FS].Lookup(get_all_files.__name__, ext, str(working_dir), toCall=lambda: get_all_files(working_dir, f'*{ext}'))
               for ext in
               [JPG, PANA, XMP]]
 
@@ -154,11 +156,18 @@ def do_it(working_dir, jpeg_cache: Cache, fs_cache : Cache, xmp_cache : Cache):
     return doubles
 
 
+
+
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-with  Cache('jpeg') as jpg_cache:
-    with  Cache('fs') as fs_cache:
-        with  Cache('xmp') as xmp_cache:
-            result = do_it(working_dir, jpg_cache, fs_cache, xmp_cache)
+with  Cache(JPG) as jpg_cache:
+    with  Cache(FS) as fs_cache:
+        with  Cache(XMP) as xmp_cache:
+            caches = {
+                JPG : jpg_cache,
+                FS : fs_cache,
+                XMP : xmp_cache 
+                }
+            result = do_it(working_dir,caches)
 
 with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
     json.dump(result, f, indent=2)
