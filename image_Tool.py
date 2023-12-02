@@ -3,7 +3,9 @@ import os
 import pprint
 import PIL.Image
 import PIL.ExifTags
+import PIL.TiffImagePlugin
 import json
+import base64
 
 
 class PassThroughCache:
@@ -61,16 +63,27 @@ def do_it(working_dir, cache: Cache):
 
         return result
 
-    def extract_exif_from_file(file, *only):
+    def extract_exif_from_file(file):
         image = PIL.Image.open(file)
         exif_data = image.getexif()
 
         result = {}
         for k, v in exif_data.items():
+            
+            if isinstance(v, PIL.TiffImagePlugin.IFDRational):
+                v = str(v)
+
+            if isinstance(v, bytes):
+               v = base64.standard_b64encode(v).decode()   
+
             k = PIL.ExifTags.TAGS.get(k, None)
-            if k is not None and k in only:
+            if k is not None:
                 result[k] = v
         return result
+    
+    def filter_exif(exif, *only):
+        return {k:v for k, v in exif.items() if k in only}
+        
 
     def merge(*args):
         result = {}
@@ -86,10 +99,11 @@ def do_it(working_dir, cache: Cache):
 
                 file_meta = (file, stat.st_size)
                 if ext == JPG:
-
+                    filter = [ 'Make', 'Model']    
                     try:
-                        file_meta = (
-                            *file_meta, cache.Lookup(file, lambda: extract_exif_from_file(file, 'Make', 'Model')))
+                        exif =  cache.Lookup(file, lambda: extract_exif_from_file(file))
+                        exif = filter_exif(exif, *filter)
+                        file_meta = (*file_meta, exif)
                     except PIL.UnidentifiedImageError:
                         pass
 
