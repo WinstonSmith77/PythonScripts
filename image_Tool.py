@@ -4,7 +4,21 @@ import pprint
 import PIL.Image
 import PIL.ExifTags
 
-def do_it(working_dir):
+
+class Cache:
+    def __init__(self) -> None:
+        pass
+    
+    def Lookup(self, params, toCall):
+        return toCall()    
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, tb):
+        self.stream.close()
+
+def do_it(working_dir, cache: Cache):
 
     JPG = '.jpg'
     PANA = '.rw2'
@@ -38,7 +52,7 @@ def do_it(working_dir):
                 if ext == JPG:
                     
                     try:
-                        file_meta = (*file_meta, extract_exif_from_file(file, 'Make', 'Model'))
+                        file_meta = (*file_meta, cache.Lookup(None, lambda : extract_exif_from_file(file, 'Make', 'Model')))
                     except PIL.UnidentifiedImageError:
                         pass
 
@@ -46,7 +60,8 @@ def do_it(working_dir):
 
         return result
 
-    images = [get_all_files(working_dir, f"*{ext}") for ext in [JPG, PANA]]
+
+    images = [cache.Lookup(None, lambda : get_all_files(working_dir, f"*{ext}")) for ext in [JPG, PANA]]
 
     all = merge(*images)
     doubles = {key: value for key, value in all.items() if len(value) > 1}
@@ -54,7 +69,8 @@ def do_it(working_dir):
     return doubles
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-result = do_it(working_dir)
+cache = Cache()
+result = do_it(working_dir, cache)
 
 pprint.pprint(result)
 
