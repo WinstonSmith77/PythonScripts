@@ -7,14 +7,15 @@ import PIL.ExifTags
 JPG = '.jpg'
 PANA = '.rw2'
 
-working_dir = "C:/Users/matze/OneDrive/bilder"
 
-path = pathlib.Path(working_dir)
+
+
+
 
 def get_all_files(path, pattern):
     return  list(path.rglob(pattern, case_sensitive= False))
 
-images = [get_all_files(path, f"*{ext}") for ext in [JPG, PANA]]
+
 
 def extract_from_exif(exifdata, *only):
      result = {}
@@ -50,10 +51,21 @@ def merge(*args):
 
     return result
 
-all = merge(*images)
-doubles = {key: value for key, value in all.items() if len(value) > 1}
+working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 
-pprint.pprint(doubles)
+def do_it(working_dir):
+
+    images = [get_all_files(working_dir, f"*{ext}") for ext in [JPG, PANA]]
+
+    all = merge(*images)
+    doubles = {key: value for key, value in all.items() if len(value) > 1}
+
+    return doubles
+
+
+result = do_it(working_dir)
+
+pprint.pprint(result)
 
 
 
