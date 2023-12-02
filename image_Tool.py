@@ -92,6 +92,7 @@ def do_it(working_dir, cache: Cache):
             exif =  cache.Lookup(file, lambda: extract_exif_from_file(file))
             exif = filter_exif(exif, *filter)
             file_meta = (*file_meta, exif)
+            return file_meta
         except PIL.UnidentifiedImageError:
             pass
 
