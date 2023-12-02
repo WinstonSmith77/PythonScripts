@@ -3,22 +3,31 @@ import os
 import pprint
 import PIL.Image
 import PIL.ExifTags
+import json
 
 
 class Cache:
-    def __init__(self) -> None:
-        self._innerCache = {}
-        pass
+    def __init__(self, name) -> None:
+        self._path = pathlib.Path(pathlib.Path(__file__).parent, f'{name}.cache')
+
+        if not self._path.exists():
+            #self.path.write_text("a", encoding='utf-8')
+            self._innerCache = {}
+        else: 
+            text = self._path.read_text(encoding='utf-8')   
+            self._innerCache = json.loads(text)
     
     def Lookup(self, params, toCall):
-        result = self._innerCache.get(params, toCall())
+        result = self._innerCache.setdefault(params, toCall())
         return result    
 
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, tb):
-        self.stream.close()
+      text = json.dumps(self._innerCache, indent=2)
+      self._path.write_text(text, encoding='utf-8')
+      pass
 
 def do_it(working_dir, cache: Cache):
 
@@ -26,7 +35,10 @@ def do_it(working_dir, cache: Cache):
     PANA = '.rw2'
     
     def get_all_files(path, pattern):
-        return  list(path.rglob(pattern, case_sensitive= False))
+        result =  path.rglob(pattern, case_sensitive= False)
+        result = list(map(str, result))
+
+        return result
 
     def extract_exif_from_file(file, *only):
         image = PIL.Image.open(file)
@@ -44,8 +56,9 @@ def do_it(working_dir, cache: Cache):
 
         for image_list in args:
             for file in image_list:
-                name = file.stem.lower()
-                ext = file.suffix.lower()
+                file_path = pathlib.Path(file)
+                name = file_path.stem.lower()
+                ext = file_path.suffix.lower()
                 list_for_name = result.setdefault(name, {})
                 list_for_ext = list_for_name.setdefault(ext, [])
                 stat = os.stat(file)
@@ -71,8 +84,8 @@ def do_it(working_dir, cache: Cache):
     return doubles
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-cache = Cache()
-result = do_it(working_dir, cache)
+with  Cache('first') as cache:
+    result = do_it(working_dir, cache)
 
 pprint.pprint(result)
 
