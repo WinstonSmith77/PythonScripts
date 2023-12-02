@@ -83,7 +83,7 @@ def do_it(working_dir, cache: Cache):
         return result
     
     def filter_exif(exif, *only):
-        return {k:v for k, v in exif.items() if k in only}
+        return {k:v for k, v in exif.items() if k in only or not only}
         
 
     def merge(*args):
@@ -100,7 +100,8 @@ def do_it(working_dir, cache: Cache):
 
                 file_meta = (file, stat.st_size)
                 if ext == JPG:
-                    filter = [ 'Make', 'Model']    
+                    filter = [ 'Make', 'Model', 'DateTime']    
+                    #filter = []
                     try:
                         exif =  cache.Lookup(file, lambda: extract_exif_from_file(file))
                         exif = filter_exif(exif, *filter)
