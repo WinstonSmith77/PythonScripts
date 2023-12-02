@@ -9,6 +9,7 @@ import json
 import base64
 import xmltodict
 import dateparser
+import datetime
 
 
 class PassThroughCache:
@@ -144,7 +145,7 @@ def do_it(working_dir, caches: list[Cache]):
 
         if key_time in exif:
             time_str = exif[key_time]
-            date_time = caches[DATETIME].lookup(dateparser.parse.__name__, time_str , toCall = lambda: parse_wrapper(time_str))    
+            date_time = caches[DATETIME].lookup(parse_wrapper.__name__, time_str , toCall = lambda: parse_wrapper(time_str))    
 
             if date_time is not None:
                 return (*file_meta, date_time.isoformat())    
@@ -172,7 +173,7 @@ def do_it(working_dir, caches: list[Cache]):
 
         if  item_pos is not None and date_time_key in item_pos :
             datetime_str = item_pos[date_time_key]
-            time = caches[DATETIME].lookup(dateparser.parse.__name__, datetime_str, toCall = lambda: dateparser.parse(datetime_str).isoformat())
+            time = datetime.datetime.fromisoformat(datetime_str).isoformat()
             file_meta =  (*file_meta, time)
         else:
             file_meta =  (*file_meta, json)
