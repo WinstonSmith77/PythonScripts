@@ -8,13 +8,12 @@ import json
 
 class Cache:
     def __init__(self, name) -> None:
-        self._path = pathlib.Path(pathlib.Path(__file__).parent, f'{name}.cache')
+        self._path = pathlib.Path(pathlib.Path(__file__).parent, f'{name}.cache.json')
 
         if self._path.exists():
             text = self._path.read_text(encoding='utf-8')
             self._innerCache = json.loads(text)
         else:
-            # self.path.write_text("a", encoding='utf-8')
             self._innerCache = {}
 
     def Lookup(self, params, toCall):

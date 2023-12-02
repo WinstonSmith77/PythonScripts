@@ -1,7 +1,10 @@
+*.cache.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*$py.class
+*$py.clas
+s
 
 # C extensions
 *.so
