@@ -84,7 +84,16 @@ def do_it(working_dir, cache: Cache):
     
     def filter_exif(exif, *only):
         return {k:v for k, v in exif.items() if k in only or not only}
-        
+
+    def handle_jpg(file, file_meta):
+        filter = [ 'Make', 'Model', 'DateTime']    
+                    #filter = []
+        try:
+            exif =  cache.Lookup(file, lambda: extract_exif_from_file(file))
+            exif = filter_exif(exif, *filter)
+            file_meta = (*file_meta, exif)
+        except PIL.UnidentifiedImageError:
+            pass
 
     def merge(*args):
         result = {}
@@ -100,14 +109,7 @@ def do_it(working_dir, cache: Cache):
 
                 file_meta = (file, stat.st_size)
                 if ext == JPG:
-                    filter = [ 'Make', 'Model', 'DateTime']    
-                    #filter = []
-                    try:
-                        exif =  cache.Lookup(file, lambda: extract_exif_from_file(file))
-                        exif = filter_exif(exif, *filter)
-                        file_meta = (*file_meta, exif)
-                    except PIL.UnidentifiedImageError:
-                        pass
+                  file_meta = handle_jpg(file, file_meta)
 
                 list_for_ext.append(file_meta)
 
