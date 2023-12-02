@@ -7,10 +7,12 @@ import PIL.ExifTags
 
 class Cache:
     def __init__(self) -> None:
+        self._innerCache = {}
         pass
     
     def Lookup(self, params, toCall):
-        return toCall()    
+        result = self._innerCache.get(params, toCall())
+        return result    
 
     def __enter__(self):
         return self
@@ -52,7 +54,7 @@ def do_it(working_dir, cache: Cache):
                 if ext == JPG:
                     
                     try:
-                        file_meta = (*file_meta, cache.Lookup(None, lambda : extract_exif_from_file(file, 'Make', 'Model')))
+                        file_meta = (*file_meta, cache.Lookup(file, lambda : extract_exif_from_file(file, 'Make', 'Model')))
                     except PIL.UnidentifiedImageError:
                         pass
 
@@ -61,7 +63,7 @@ def do_it(working_dir, cache: Cache):
         return result
 
 
-    images = [cache.Lookup(None, lambda : get_all_files(working_dir, f"*{ext}")) for ext in [JPG, PANA]]
+    images = [cache.Lookup(ext, lambda : get_all_files(working_dir, f"*{ext}")) for ext in [JPG, PANA]]
 
     all = merge(*images)
     doubles = {key: value for key, value in all.items() if len(value) > 1}
