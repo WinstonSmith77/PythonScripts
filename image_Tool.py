@@ -198,6 +198,17 @@ def find_doubles_by_time(all):
 
     return result
 
+def find_files_to_delete(all):
+    result = []
+
+    for name in all:
+        result.append(str(pathlib.Path(name, JPG)))
+
+    return result
+
+def dump_it(name, obj):
+    with pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json').open(mode='w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2)
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 with  CacheGroup(JPG, XMP, FS) as caches:
@@ -206,8 +217,14 @@ with  CacheGroup(JPG, XMP, FS) as caches:
 triples = find_triples(all_images)
 fixed_time_rw2 = copy_time_from_xmp_to_rw2(triples)
 doubles_by_time = find_doubles_by_time(fixed_time_rw2)
+files_to_delete = find_files_to_delete(doubles_by_time)
 
-with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
-    json.dump(doubles_by_time, f, indent=2)
+dump_it("doubles", doubles_by_time)
+dump_it("to delete", files_to_delete)
+dump_it("fixed_time_rw2e", fixed_time_rw2)
+
+ 
+
+
 
 # pprint.pprint(result)
