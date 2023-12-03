@@ -218,15 +218,30 @@ def do_it(working_dir, caches: list[Cache]):
 def find_triples(all_images):
       doubles = {key: value for key, value in all_images.items() if len(value) == 3}
       return doubles
-    
+
+def copy_time_from_xmp_to_rw2(all_images):
+
+    result = {}
+
+    for name, images in all_images.items():
+        rw2 = images[PANA]
+        xmp = images[XMP]
+
+        
+        
+        result[name] = images
+
+    return result
 
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 with  CacheGroup(JPG, XMP, FS) as caches:
     all_images = do_it(working_dir, caches)
-    triples = find_triples(all_images)
+
+triples = find_triples(all_images)
+fixed_time_rw2 = copy_time_from_xmp_to_rw2(triples)
 
 with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
-    json.dump(triples, f, indent=2)
+    json.dump(fixed_time_rw2, f, indent=2)
 
 # pprint.pprint(result)
