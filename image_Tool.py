@@ -202,12 +202,13 @@ def find_files_to_delete(all):
     result = []
 
     for name in all:
-        result.append(str(pathlib.Path(name, JPG)))
+        result.append(name + JPG)
 
     return result
 
 def dump_it(name, obj):
-    with pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json').open(mode='w', encoding='utf-8') as f:
+    path = pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json')
+    with path.open(mode='w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2)
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
