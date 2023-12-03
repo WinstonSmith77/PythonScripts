@@ -93,6 +93,12 @@ XMP = '.xmp'
 ERROR = 'error'
 FS = '.fs'
 
+FILE = 'file'
+LEN = 'length'
+DATETIME = 'datetime'
+EXIF = 'exif'
+XML = 'XML'
+
 def do_it(working_dir, caches: list[Cache]):
     def get_all_files(path, pattern):
         result = path.rglob(pattern, case_sensitive=False)
@@ -153,9 +159,11 @@ def do_it(working_dir, caches: list[Cache]):
             except ValueError:
                 date_time = None    
 
-            return (*file_meta, date_time)    
+            file_meta[DATETIME]  = date_time
+            return file_meta
 
-        return (*file_meta, exif)  
+        file_meta[DATETIME]  = exif
+        return file_meta
 
     def handle_xmp(file, file_meta):
         def parse_xmp(file):
@@ -177,9 +185,9 @@ def do_it(working_dir, caches: list[Cache]):
         if  item_pos is not None and path_to_date[-1] in item_pos :
             datetime_str = item_pos[ path_to_date[-1]]
             time = datetime.datetime.fromisoformat(datetime_str).isoformat()
-            file_meta =  (*file_meta, time)
+            file_meta[DATETIME]  = time
         else:
-            file_meta =  (*file_meta, json)
+           file_meta[XML]  = json
 
 
         return file_meta
@@ -190,20 +198,20 @@ def do_it(working_dir, caches: list[Cache]):
         for image_list in args:
             for file in image_list:
                 file_path = pathlib.Path(file)
-                name = file_path.stem.lower()
+                key = str(pathlib.Path(file_path.parent, file_path.stem.lower()))
                 ext = file_path.suffix.lower()
-                list_for_name = result.setdefault(name, {})
-                list_for_ext = list_for_name.setdefault(ext, [])
+                list_for_name = result.setdefault(key, {})
+               
                 stat = os.stat(file)
 
-                file_meta = (file, stat.st_size)
+                file_meta = {LEN : stat.st_size}
                 if ext == JPG:
                     file_meta = handle_jpg(file, file_meta)
 
                 elif ext == XMP:
                     file_meta = handle_xmp(file, file_meta)
 
-                list_for_ext.append(file_meta)
+                list_for_name[ext] =  file_meta
 
         return result
 
@@ -224,10 +232,13 @@ def copy_time_from_xmp_to_rw2(all_images):
     result = {}
 
     for name, images in all_images.items():
-        rw2 = images[PANA]
+        pana = images[PANA]
         xmp = images[XMP]
 
-        
+        if datetime in xmp:
+            pana = dict(pana)
+            pana[datetime] = xmp[datetime]
+            images[PANA] = pana
         
         result[name] = images
 
