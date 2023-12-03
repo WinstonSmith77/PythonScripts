@@ -167,7 +167,6 @@ def do_it(working_dir, caches: list[Cache]):
         path_to_date = ["x:xmpmeta", "rdf:RDF", "rdf:Description"]
         date_time_key= '@exif:DateTimeOriginal'
 
-
         item_pos = json
         for path_item in path_to_date:
             if path_item in item_pos:
@@ -186,7 +185,7 @@ def do_it(working_dir, caches: list[Cache]):
 
         return file_meta
 
-    def merge(*args):
+    def merge_image_lists(*args):
         result = {}
 
         for image_list in args:
@@ -214,17 +213,21 @@ def do_it(working_dir, caches: list[Cache]):
               for ext in
               [JPG, PANA, XMP]]
 
-    all_images = merge(*images)
-    doubles = {key: value for key, value in all_images.items() if len(value) > 2}
+    all_images = merge_image_lists(*images)
+    return all_images
 
-    return doubles
+def find_triples(all_images):
+      doubles = {key: value for key, value in all_images.items() if len(value) == 3}
+      return doubles
+    
 
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 with  CacheGroup(JPG, XMP, FS) as caches:
-    result = do_it(working_dir, caches)
+    all_images = do_it(working_dir, caches)
+    triples = find_triples(all_images)
 
 with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
-    json.dump(result, f, indent=2)
+    json.dump(triples, f, indent=2)
 
 # pprint.pprint(result)
