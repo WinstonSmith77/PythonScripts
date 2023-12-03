@@ -160,15 +160,14 @@ def do_it(working_dir, caches: CacheGroup):
     all_images = merge_image_lists(*images)
     return all_images
 
-def find_triples(all_images):
-      doubles = {key: value for key, value in all_images.items() if len(value) == 3}
+def find_triples(all):
+      doubles = {key: value for key, value in all.items() if len(value) == 3}
       return doubles
 
-def copy_time_from_xmp_to_rw2(all_images):
-
+def copy_time_from_xmp_to_rw2(all):
     result = {}
 
-    for name, images in all_images.items():
+    for name, images in all.items():
         pana = images[PANA]
         xmp = images[XMP]
         del images[XMP]
@@ -181,14 +180,34 @@ def copy_time_from_xmp_to_rw2(all_images):
     return result
 
 
+def find_doubles_by_time(all):
+    result = {}
+
+    for name, images in all.items():
+        pana = images[PANA]
+        jpg = images[JPG]
+
+        pana_time = datetime.datetime.fromisoformat(pana[DATETIME])
+        jpg_time = datetime.datetime.fromisoformat(jpg[DATETIME])
+
+        diff = pana_time - jpg_time
+        if diff.total_seconds() > 1:
+            continue
+
+        result[name] = images
+
+    return result
+
+
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 with  CacheGroup(JPG, XMP, FS) as caches:
     all_images = do_it(working_dir, caches)
 
 triples = find_triples(all_images)
 fixed_time_rw2 = copy_time_from_xmp_to_rw2(triples)
+doubles_by_time = find_doubles_by_time(fixed_time_rw2)
 
 with  pathlib.Path(pathlib.Path(__file__).parent, 'result.json').open(mode='w', encoding='utf-8') as f:
-    json.dump(fixed_time_rw2, f, indent=2)
+    json.dump(doubles_by_time, f, indent=2)
 
 # pprint.pprint(result)
