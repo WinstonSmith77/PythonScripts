@@ -164,19 +164,18 @@ def do_it(working_dir, caches: list[Cache]):
 
         json = caches[XMP].lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
 
-        path_to_date = ["x:xmpmeta", "rdf:RDF", "rdf:Description"]
-        date_time_key= '@exif:DateTimeOriginal'
+        path_to_date = ["x:xmpmeta", "rdf:RDF", "rdf:Description", '@exif:DateTimeOriginal']
 
         item_pos = json
-        for path_item in path_to_date:
+        for path_item in path_to_date[:-1]:
             if path_item in item_pos:
                 item_pos = item_pos[path_item]
             else:
                 item_pos = None
                 break
 
-        if  item_pos is not None and date_time_key in item_pos :
-            datetime_str = item_pos[date_time_key]
+        if  item_pos is not None and path_to_date[-1] in item_pos :
+            datetime_str = item_pos[ path_to_date[-1]]
             time = datetime.datetime.fromisoformat(datetime_str).isoformat()
             file_meta =  (*file_meta, time)
         else:
