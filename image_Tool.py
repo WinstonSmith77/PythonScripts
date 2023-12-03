@@ -102,7 +102,6 @@ def do_it(working_dir, caches: CacheGroup):
 
     def handle_xmp(file, file_meta):
         def parse_xmp(file):
-            with pathlib.Path(file).open(mode='r', encoding='utf-8') as f:
                 return xmltodict.parse(f.read())
 
         json = caches[XMP].lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
@@ -206,6 +205,21 @@ def find_files_to_delete(all):
 
     return result
 
+def get_group_by_size(all):
+    result = {}
+
+    for name, images in all.items():
+       for ext, file in images.items():
+           if ext == XMP:
+               continue
+           size = file[LEN]
+           list_len = result.setdefault(size, [])
+           list_len.append((name+ ext, file))
+
+    result = {size : images for size, images in result.items() if len(images) > 1}      
+
+    return result
+
 def dump_it(name, obj):
     path = pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json')
     with path.open(mode='w', encoding='utf-8') as f:
@@ -219,10 +233,13 @@ triples = find_triples(all_images)
 fixed_time_rw2 = copy_time_from_xmp_to_rw2(triples)
 doubles_by_time = find_doubles_by_time(fixed_time_rw2)
 files_to_delete = find_files_to_delete(doubles_by_time)
+group_by_size = get_group_by_size(all_images)
 
+dump_it('all_images', all_images)
 dump_it("doubles", doubles_by_time)
 dump_it("to delete", files_to_delete)
 dump_it("fixed_time_rw2e", fixed_time_rw2)
+dump_it("group_by_size", group_by_size)
 
  
 
