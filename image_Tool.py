@@ -20,7 +20,7 @@ FS = '.fs'
 
 FILE = 'file'
 LEN = 'length'
-DATETIME = 'datetime'
+DATETIME = 'DateTime'
 EXIF = 'exif'
 XML = 'XML'
 MAKE = 'Make'
@@ -67,7 +67,7 @@ def do_it(working_dir, caches: list[Cache]):
         return date_time       
 
     def handle_jpg(file, file_meta):
-        filter = [MAKE, MODEL, 'DateTime']
+        filter = [MAKE, MODEL, DATETIME]
         # filter = []
         try:
             key = [extract_exif_from_file.__name__, file]
@@ -82,7 +82,7 @@ def do_it(working_dir, caches: list[Cache]):
             time_str :str = exif[key_time]
             file_meta[DATETIME]  = parse_exif_date(time_str)
 
-        file_meta[DATETIME]  = exif
+        file_meta[EXIF]  = exif
         return file_meta
     
 
