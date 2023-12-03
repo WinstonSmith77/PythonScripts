@@ -12,8 +12,6 @@ import dateparser
 import datetime
 from cache import *
 
-
-
 JPG = '.jpg'
 PANA = '.rw2'
 XMP = '.xmp'
@@ -54,6 +52,18 @@ def do_it(working_dir, caches: list[Cache]):
     def filter_exif(exif, *only):
         return {k: v for k, v in exif.items() if k in only or not only}
 
+    def parse_exif_date(date : str):
+        splits = date.split(' ')
+        all_splits = splits[0].split(':') + splits[1].split(':')
+        date = f'{all_splits[0]}-{all_splits[1]}-{all_splits[2]}T{all_splits[3]}:{all_splits[4]}:{all_splits[5]}'
+
+        try:
+            date_time = datetime.datetime.fromisoformat(date).isoformat()
+        except ValueError:
+            date_time = None
+
+        return date_time       
+
     def handle_jpg(file, file_meta):
         filter = ['Make', 'Model', 'DateTime']
         # filter = []
@@ -64,33 +74,30 @@ def do_it(working_dir, caches: list[Cache]):
         except PIL.UnidentifiedImageError:
             exif = caches[JPG].add_result(*key, value={ERROR: ERROR})
 
-        def parse_wrapper(time_str : str):
-            date_time = dateparser.parse(time_str) if time_str.count(':') != 4 else None
-            if date_time is None:
-                return None
-            else: 
-                return date_time.isoformat()
-
-
         key_time = 'DateTime'
 
         if key_time in exif:
             time_str :str = exif[key_time]
-            
-            splits = time_str.split(' ')
-            all_splits = splits[0].split(':') + splits[1].split(':')
-            time_str = f'{all_splits[0]}-{all_splits[1]}-{all_splits[2]}T{all_splits[3]}:{all_splits[4]}:{all_splits[5]}'
-            
-            try:
-                date_time = datetime.datetime.fromisoformat(time_str).isoformat()
-            except ValueError:
-                date_time = None    
-
-            file_meta[DATETIME]  = date_time
-            return file_meta
+            file_meta[DATETIME]  = parse_exif_date(time_str)
 
         file_meta[DATETIME]  = exif
         return file_meta
+    
+
+    def find_in_xmp(xmp, path):
+        item_pos = xmp
+        for path_item in path[:-1]:
+            if path_item in item_pos:
+                item_pos = item_pos[path_item]
+            else:
+                item_pos = None
+                break
+
+        name = path[-1]           
+        if  item_pos is not None and  name in item_pos :
+            return item_pos[name]        
+            
+
 
     def handle_xmp(file, file_meta):
         def parse_xmp(file):
@@ -101,20 +108,12 @@ def do_it(working_dir, caches: list[Cache]):
 
         path_to_date = ["x:xmpmeta", "rdf:RDF", "rdf:Description", '@exif:DateTimeOriginal']
 
-        item_pos = json
-        for path_item in path_to_date[:-1]:
-            if path_item in item_pos:
-                item_pos = item_pos[path_item]
-            else:
-                item_pos = None
-                break
-
-        if  item_pos is not None and path_to_date[-1] in item_pos :
-            datetime_str = item_pos[ path_to_date[-1]]
-            time = datetime.datetime.fromisoformat(datetime_str).isoformat()
+        date_time_str =  find_in_xmp(json, path_to_date)       
+        if  date_time_str is not None:    
+            time = datetime.datetime.fromisoformat(date_time_str).isoformat()
             file_meta[DATETIME]  = time
         else:
-           file_meta[XML]  = json
+            file_meta[XML]  = json
 
 
         return file_meta
