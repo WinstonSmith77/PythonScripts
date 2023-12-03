@@ -235,9 +235,9 @@ def copy_time_from_xmp_to_rw2(all_images):
         pana = images[PANA]
         xmp = images[XMP]
 
-        if datetime in xmp:
+        if DATETIME in xmp:
             pana = dict(pana)
-            pana[datetime] = xmp[datetime]
+            pana[DATETIME] = xmp[DATETIME]
             images[PANA] = pana
         
         result[name] = images
