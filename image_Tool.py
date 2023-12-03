@@ -92,11 +92,11 @@ def do_it(working_dir, caches: list[Cache]):
             else:
                 item_pos = None
                 break
-
-        name = path[-1]           
-        if  item_pos is not None and  name in item_pos :
-            return item_pos[name]        
-            
+                
+        if  item_pos is not None:
+            name = path[-1]  
+            if name in item_pos:
+                return item_pos[name]        
 
 
     def handle_xmp(file, file_meta):
