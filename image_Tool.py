@@ -23,6 +23,8 @@ LEN = 'length'
 DATETIME = 'datetime'
 EXIF = 'exif'
 XML = 'XML'
+MAKE = 'Make'
+MODEL= 'Model'
 
 def do_it(working_dir, caches: list[Cache]):
     def get_all_files(path, pattern):
@@ -65,7 +67,7 @@ def do_it(working_dir, caches: list[Cache]):
         return date_time       
 
     def handle_jpg(file, file_meta):
-        filter = ['Make', 'Model', 'DateTime']
+        filter = [MAKE, MODEL, 'DateTime']
         # filter = []
         try:
             key = [extract_exif_from_file.__name__, file]
@@ -106,7 +108,11 @@ def do_it(working_dir, caches: list[Cache]):
 
         json = caches[XMP].lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
 
-        path_to_date = ["x:xmpmeta", "rdf:RDF", "rdf:Description", '@exif:DateTimeOriginal']
+        path_to =  ["x:xmpmeta", "rdf:RDF", "rdf:Description"]
+      
+        path_to_date = [*path_to, '@exif:DateTimeOriginal']
+        path_to_make = [*path_to, f"@tiff:{MAKE}"]
+        path_to_model = [*path_to, f"@tiff:{MODEL}"]
 
         date_time_str =  find_in_xmp(json, path_to_date)       
         if  date_time_str is not None:    
@@ -115,6 +121,12 @@ def do_it(working_dir, caches: list[Cache]):
         else:
             file_meta[XML]  = json
 
+        paths_to_add = [(MAKE, path_to_make), (MODEL, path_to_model)]
+
+        for path_to_add in paths_to_add:
+            data = find_in_xmp(json, path_to_add[1])
+            if data is not None:
+                file_meta[path_to_add[0]] = data
 
         return file_meta
 
