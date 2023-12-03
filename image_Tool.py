@@ -8,7 +8,6 @@ import PIL.TiffImagePlugin
 import json
 import base64
 import xmltodict
-import dateparser
 import datetime
 from cache import *
 
@@ -26,7 +25,7 @@ XML = 'XML'
 MAKE = 'Make'
 MODEL= 'Model'
 
-def do_it(working_dir, caches: list[Cache]):
+def do_it(working_dir, caches: CacheGroup):
     def get_all_files(path, pattern):
         result = path.rglob(pattern, case_sensitive=False)
         result = list(map(str, result))
@@ -172,11 +171,10 @@ def copy_time_from_xmp_to_rw2(all_images):
     for name, images in all_images.items():
         pana = images[PANA]
         xmp = images[XMP]
+        del images[XMP]
 
         if DATETIME in xmp:
-            pana = dict(pana)
             pana[DATETIME] = xmp[DATETIME]
-            images[PANA] = pana
         
         result[name] = images
 
