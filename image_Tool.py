@@ -273,7 +273,15 @@ def get_group_by_size(all, caches : CacheGroup):
                         key = f'{i}:{size}'
                         new_result[key] = (comb[0], comb[1])
 
-    return new_result
+    new_result2 = {}
+    for key, value in new_result.items():
+       new_key = key.split(':')[1]
+       inner_dict = new_result2.setdefault(new_key, {})
+       for item in value:
+           inner_dict[item[0]] = item[1]
+       new_result2[new_key] = inner_dict
+
+    return new_result2
 
 def dump_it(name, obj):
     path = pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json')
@@ -294,7 +302,15 @@ with  CacheGroup(JPG, XMP, FS, HASH) as caches:
 dump_it('all_images', all_images)
 dump_it("doubles", doubles_by_time)
 dump_it("to delete", files_to_delete2)
-dump_it("fixed_time_rw2e", fixed_time_rw2)
+dump_it("fixed_time_rw2", fixed_time_rw2)
 dump_it("group_by_size", group_by_size)
+
+# for file in files_to_delete2:
+#     source = pathlib.Path(file[0])
+#     dest =  pathlib.Path(file[1])
+    
+#     dest.parent.mkdir(parents=True, exist_ok=True)
+    
+#     source.rename(dest)
 
 # pprint.pprint(result)
