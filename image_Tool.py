@@ -1,6 +1,7 @@
 import pathlib
 import os
 import pprint
+import itertools
 
 import PIL.Image
 import PIL.ExifTags
@@ -79,7 +80,9 @@ def do_it(working_dir, caches: CacheGroup):
 
         if key_time in exif:
             time_str :str = exif[key_time]
-            file_meta[DATETIME]  = parse_exif_date(time_str)
+            parsed_time = parse_exif_date(time_str)
+            if parsed_time is not None:
+                file_meta[DATETIME] = parsed_time
 
         file_meta[EXIF]  = exif
         return file_meta
@@ -178,36 +181,37 @@ def copy_time_from_xmp_to_rw2(all):
                 if field_to_copy in xmp:
                     pana[field_to_copy] = xmp[field_to_copy]
             
-            result[name] = images
+        result[name] = images
 
     return result
 
 
-# def find_doubles_by_time(all):
-#     result = {}
+def find_doubles_by_time(all):
+    result = {}
 
-#     for name, images in all.items():
-#         pana = images[PANA]
-#         jpg = images[JPG]
+    for name, images in all.items():
+        if {PANA, JPG} <= images.keys():
+            pana = images[PANA]
+            jpg = images[JPG]
 
-#         pana_time = datetime.datetime.fromisoformat(pana[DATETIME])
-#         jpg_time = datetime.datetime.fromisoformat(jpg[DATETIME])
+            pana_time = datetime.datetime.fromisoformat(pana[DATETIME])
+            jpg_time = datetime.datetime.fromisoformat(jpg[DATETIME])
 
-#         diff = pana_time - jpg_time
-#         if diff.total_seconds() > 1:
-#             continue
+            diff = pana_time - jpg_time
+            if abs(diff.total_seconds()) > 1:
+                continue
 
-#         result[name] = images
+            result[name] = images
 
-#     return result
+    return result
 
-# def find_files_to_delete(all):
-#     result = []
+def find_files_to_delete(all):
+    result = []
 
-#     for name in all:
-#         result.append(name + JPG)
+    for name in all:
+        result.append(name + JPG)
 
-#     return result
+    return result
 
 def get_group_by_size(all):
     result = {}
@@ -222,7 +226,22 @@ def get_group_by_size(all):
 
     result = {size : images for size, images in result.items() if len(images) > 1}      
 
-    return result
+    new_result = {}
+    for size, images in result.items():
+        combinations = itertools.combinations(images, 2)
+        for i, comb in enumerate(combinations):
+
+            meta = comb[0][1]
+            meta2 =  comb[1][1]
+
+            if DATETIME in meta and DATETIME in meta2:
+
+                diff = abs(datetime.datetime.fromisoformat(meta[DATETIME]) -  datetime.datetime.fromisoformat(meta2[DATETIME]))
+                if diff.total_seconds() < 0.3:
+                    key = f'{i}:{size}'
+                    new_result[key] = (comb[0], comb[1])
+
+    return new_result
 
 def dump_it(name, obj):
     path = pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json')
@@ -235,18 +254,14 @@ with  CacheGroup(JPG, XMP, FS) as caches:
 
 #triples = find_triples(all_images)
 fixed_time_rw2 = copy_time_from_xmp_to_rw2(all_images)
-#doubles_by_time = find_doubles_by_time(fixed_time_rw2)
+doubles_by_time = find_doubles_by_time(fixed_time_rw2)
 #files_to_delete = find_files_to_delete(doubles_by_time)
 group_by_size = get_group_by_size(fixed_time_rw2)
 
 dump_it('all_images', all_images)
-#dump_it("doubles", doubles_by_time)
+dump_it("doubles", doubles_by_time)
 #dump_it("to delete", files_to_delete)
 dump_it("fixed_time_rw2e", fixed_time_rw2)
 dump_it("group_by_size", group_by_size)
-
- 
-
-
 
 # pprint.pprint(result)
