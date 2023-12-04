@@ -188,7 +188,7 @@ def copy_time_from_xmp_to_rw2(all):
     return result
 
 
-def find_doubles_by_time(all):
+def find_doubles_raw_jpeg_by_time(all):
     result = {}
 
     for name, images in all.items():
@@ -235,7 +235,7 @@ def get_group_by_size(all, caches : CacheGroup):
     
     def get_md5_file(file):
         bytes = pathlib.Path(file).read_bytes()
-        md5_returned = hashlib.md5(bytes).hexdigest()
+        md5_returned = hashlib.sha256(bytes).hexdigest()
         return md5_returned
     
     result = {}
@@ -246,14 +246,15 @@ def get_group_by_size(all, caches : CacheGroup):
                continue
            size = file[LEN]
            list_len = result.setdefault(size, [])
-           list_len.append((name+ ext, file))
+           list_len.append((name + ext, file))
 
     result = {size : images for size, images in result.items() if len(images) > 1}      
 
     new_result = {}
     for size, images in result.items():
+       
         combinations = itertools.combinations(images, 2)
-        for i, comb in enumerate(combinations):
+        for comb in combinations:
 
             meta = comb[0][1]
             meta2 =  comb[1][1]
@@ -261,7 +262,7 @@ def get_group_by_size(all, caches : CacheGroup):
             if DATETIME in meta and DATETIME in meta2:
 
                 diff = abs(datetime.datetime.fromisoformat(meta[DATETIME]) -  datetime.datetime.fromisoformat(meta2[DATETIME]))
-                if diff.total_seconds() < 0.3:
+                if diff.total_seconds() < 1:
 
                     a_file = comb[0][0]
                     b_file = comb[1][0]
@@ -269,19 +270,11 @@ def get_group_by_size(all, caches : CacheGroup):
                     b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_md5_file(b_file))   
 
                     if a_hash == b_hash:
+                        inner_dict = new_result.setdefault(size, {})
+                        inner_dict[comb[0][0]] = comb[0][1]
+                        inner_dict[comb[1][0]] = comb[1][1]
 
-                        key = f'{i}:{size}'
-                        new_result[key] = (comb[0], comb[1])
-
-    new_result2 = {}
-    for key, value in new_result.items():
-       new_key = key.split(':')[1]
-       inner_dict = new_result2.setdefault(new_key, {})
-       for item in value:
-           inner_dict[item[0]] = item[1]
-       new_result2[new_key] = inner_dict
-
-    return new_result2
+    return new_result
 
 def dump_it(name, obj):
     path = pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json')
@@ -294,14 +287,14 @@ with  CacheGroup(JPG, XMP, FS, HASH) as caches:
 
     #triples = find_triples(all_images)
     fixed_time_rw2 = copy_time_from_xmp_to_rw2(all_images)
-    doubles_by_time = find_doubles_by_time(fixed_time_rw2)
+    #doubles_by_time = find_doubles_raw_jpeg_by_time(fixed_time_rw2)
     #files_to_delete = find_files_to_delete(doubles_by_time)
     group_by_size = get_group_by_size(fixed_time_rw2, caches)
-    files_to_delete2 = find_files_to_delete2(group_by_size)
+    #files_to_delete2 = find_files_to_delete2(group_by_size)
 
 dump_it('all_images', all_images)
-dump_it("doubles", doubles_by_time)
-dump_it("to delete", files_to_delete2)
+#dump_it("doubles", doubles_by_time)
+#dump_it("to delete", files_to_delete2)
 dump_it("fixed_time_rw2", fixed_time_rw2)
 dump_it("group_by_size", group_by_size)
 
