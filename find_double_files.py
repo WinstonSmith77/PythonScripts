@@ -18,14 +18,31 @@ def get_length(file):
 
 
 def do_it(working_dir, caches : CacheGroup):
-     def get_all_files(path : pathlib.Path, pattern):
+    def get_all_files(path : pathlib.Path, pattern):
         result = path.rglob(pattern, case_sensitive=False)
         result = filter(os.path.isfile, result)
         result = list(map(lambda x : (str(x), get_length(x)), result))
 
         return result
+
+    def find_doubles(all):
+
+        results = {}
+
+        for file, length in all:
+
+            items_for_length = results.setdefault(length, [])
+            items_for_length.append(file)
+
+        results = {key: items for key, items in results.items() if len(items) > 1}           
+
+        return results 
+
      
-     return caches[FS].lookup(str(working_dir), toCall = lambda: get_all_files(working_dir, '*.*'))
+    fs = caches[FS].lookup(str(working_dir), toCall = lambda: get_all_files(working_dir, '*.*'))
+    doubles = find_doubles(fs)
+
+    return doubles
      
 with CacheGroup(FS) as caches:
 
