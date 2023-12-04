@@ -3,6 +3,7 @@ import itertools
 import pathlib
 import json
 import os
+from timeit import default_timer as timer 
 
 from cache import *
 
@@ -71,9 +72,13 @@ def do_it(working_dir, caches : CacheGroup):
      
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 
+
+start = timer()
 with CacheGroup(FS, HASH) as caches:
     all_doubles = do_it(working_dir, caches)
 dump_it('all_files', all_doubles)
+end = timer()
+print(end - start) # Time in seconds, e.g. 5.38091952400282
 
 
 
