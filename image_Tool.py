@@ -102,7 +102,8 @@ def do_it(working_dir, caches: CacheGroup):
 
     def handle_xmp(file, file_meta):
         def parse_xmp(file):
-                return xmltodict.parse(f.read())
+                with pathlib.Path(file).open(mode='r', encoding='utf-8') as f:
+                    return xmltodict.parse(f.read())
 
         json = caches[XMP].lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
 
@@ -167,14 +168,15 @@ def copy_time_from_xmp_to_rw2(all):
     result = {}
 
     for name, images in all.items():
-        pana = images[PANA]
-        xmp = images[XMP]
-        del images[XMP]
+        if PANA in images and XMP in images:
+            pana = images[PANA]
+            xmp = images[XMP]
+            del images[XMP]
 
-        if DATETIME in xmp:
-            pana[DATETIME] = xmp[DATETIME]
-        
-        result[name] = images
+            if DATETIME in xmp:
+                pana[DATETIME] = xmp[DATETIME]
+            
+            result[name] = images
 
     return result
 
@@ -229,15 +231,15 @@ working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
 with  CacheGroup(JPG, XMP, FS) as caches:
     all_images = do_it(working_dir, caches)
 
-triples = find_triples(all_images)
-fixed_time_rw2 = copy_time_from_xmp_to_rw2(triples)
-doubles_by_time = find_doubles_by_time(fixed_time_rw2)
-files_to_delete = find_files_to_delete(doubles_by_time)
-group_by_size = get_group_by_size(all_images)
+#triples = find_triples(all_images)
+fixed_time_rw2 = copy_time_from_xmp_to_rw2(all_images)
+#doubles_by_time = find_doubles_by_time(fixed_time_rw2)
+#files_to_delete = find_files_to_delete(doubles_by_time)
+group_by_size = get_group_by_size(fixed_time_rw2)
 
 dump_it('all_images', all_images)
-dump_it("doubles", doubles_by_time)
-dump_it("to delete", files_to_delete)
+#dump_it("doubles", doubles_by_time)
+#dump_it("to delete", files_to_delete)
 dump_it("fixed_time_rw2e", fixed_time_rw2)
 dump_it("group_by_size", group_by_size)
 
