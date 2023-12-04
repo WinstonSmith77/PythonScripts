@@ -183,31 +183,31 @@ def copy_time_from_xmp_to_rw2(all):
     return result
 
 
-def find_doubles_by_time(all):
-    result = {}
+# def find_doubles_by_time(all):
+#     result = {}
 
-    for name, images in all.items():
-        pana = images[PANA]
-        jpg = images[JPG]
+#     for name, images in all.items():
+#         pana = images[PANA]
+#         jpg = images[JPG]
 
-        pana_time = datetime.datetime.fromisoformat(pana[DATETIME])
-        jpg_time = datetime.datetime.fromisoformat(jpg[DATETIME])
+#         pana_time = datetime.datetime.fromisoformat(pana[DATETIME])
+#         jpg_time = datetime.datetime.fromisoformat(jpg[DATETIME])
 
-        diff = pana_time - jpg_time
-        if diff.total_seconds() > 1:
-            continue
+#         diff = pana_time - jpg_time
+#         if diff.total_seconds() > 1:
+#             continue
 
-        result[name] = images
+#         result[name] = images
 
-    return result
+#     return result
 
-def find_files_to_delete(all):
-    result = []
+# def find_files_to_delete(all):
+#     result = []
 
-    for name in all:
-        result.append(name + JPG)
+#     for name in all:
+#         result.append(name + JPG)
 
-    return result
+#     return result
 
 def get_group_by_size(all):
     result = {}
