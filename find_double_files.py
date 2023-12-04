@@ -14,7 +14,6 @@ def dump_it(name, obj):
     with path.open(mode='w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2)
 
-working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder/_lightroom/masters")
 def get_length(file):
     stat = os.stat(file)
     return stat.st_size
@@ -70,6 +69,8 @@ def do_it(working_dir, caches : CacheGroup):
 
     return doubles
      
+working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
+
 with CacheGroup(FS, HASH) as caches:
     all_doubles = do_it(working_dir, caches)
 dump_it('all_files', all_doubles)
