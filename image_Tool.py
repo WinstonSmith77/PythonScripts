@@ -168,13 +168,15 @@ def copy_time_from_xmp_to_rw2(all):
     result = {}
 
     for name, images in all.items():
-        if PANA in images and XMP in images:
+        if{XMP, PANA} <= images.keys():
             pana = images[PANA]
             xmp = images[XMP]
             del images[XMP]
 
-            if DATETIME in xmp:
-                pana[DATETIME] = xmp[DATETIME]
+            fields_to_copy = [DATETIME, MAKE, MODEL]
+            for field_to_copy in fields_to_copy: 
+                if field_to_copy in xmp:
+                    pana[field_to_copy] = xmp[field_to_copy]
             
             result[name] = images
 
