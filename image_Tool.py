@@ -215,6 +215,22 @@ def find_files_to_delete(all):
 
     return result
 
+def find_files_to_delete2(all):
+    result = []
+
+    path_for_old_files = pathlib.Path(pathlib.Path(__file__).parent, '#old_files').parts
+
+    for value in all.values():
+       for item in value:
+           file = item[0]
+           if 'icloud' in file:
+               path_to_move_to = pathlib.Path(file)
+               parts = list(path_to_move_to.parts)
+               parts[0:1] = path_for_old_files 
+               result.append((file, str(pathlib.Path(*parts))))
+
+    return result
+
 def get_group_by_size(all, caches : CacheGroup):
     
     def get_md5_file(file):
@@ -273,10 +289,11 @@ with  CacheGroup(JPG, XMP, FS, HASH) as caches:
     doubles_by_time = find_doubles_by_time(fixed_time_rw2)
     #files_to_delete = find_files_to_delete(doubles_by_time)
     group_by_size = get_group_by_size(fixed_time_rw2, caches)
+    files_to_delete2 = find_files_to_delete2(group_by_size)
 
 dump_it('all_images', all_images)
 dump_it("doubles", doubles_by_time)
-#dump_it("to delete", files_to_delete)
+dump_it("to delete", files_to_delete2)
 dump_it("fixed_time_rw2e", fixed_time_rw2)
 dump_it("group_by_size", group_by_size)
 
