@@ -46,7 +46,8 @@ def do_it(working_dir, caches : CacheGroup):
 
         new_result = {}
         for size, files in results.items():
-       
+            inner_dict_size ={}
+            new_result[size] = inner_dict_size
             combinations = itertools.combinations(files, 2)
             for comb in combinations:
                 a_file = comb[0]
@@ -56,8 +57,6 @@ def do_it(working_dir, caches : CacheGroup):
                 b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_sha_file(b_file))   
 
                 if a_hash == b_hash:
-                    
-                    inner_dict_size = new_result.setdefault(size, {})
                     inner_set = inner_dict_size.setdefault(a_hash, set())
                     
                     inner_set.add(a_file)
@@ -68,10 +67,12 @@ def do_it(working_dir, caches : CacheGroup):
         new_result2 = {}
 
         for size, dict_hashes in new_result.items():
-            list_for_hashes = new_result2.setdefault(size, [])
-            for item in dict_hashes.values():
-                list_for_hashes.append(list(item))
-            new_result2[size] =  list_for_hashes   
+            list_for_hashes = []
+            for items in dict_hashes.values():
+                if items:
+                    list_for_hashes.append(list(items))
+            if list_for_hashes:
+                new_result2[size] =  list_for_hashes   
 
 
         return sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True)
