@@ -1,5 +1,6 @@
 import pathlib
 import json
+import os
 
 from cache import *
 
@@ -10,11 +11,17 @@ def dump_it(name, obj):
     with path.open(mode='w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2)
 
-working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder/_lightroom/2004-01-20")
+working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder/_lightroom/masters")
+def get_length(file):
+    stat = os.stat(file)
+    return stat.st_size
+
+
 def do_it(working_dir, caches : CacheGroup):
      def get_all_files(path : pathlib.Path, pattern):
         result = path.rglob(pattern, case_sensitive=False)
-        result = list(map(str, result))
+        result = filter(os.path.isfile, result)
+        result = list(map(lambda x : (str(x), get_length(x)), result))
 
         return result
      
