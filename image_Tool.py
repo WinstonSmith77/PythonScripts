@@ -274,7 +274,7 @@ def get_group_by_size(all, caches : CacheGroup):
                         inner_dict[comb[0][0]] = comb[0][1]
                         inner_dict[comb[1][0]] = comb[1][1]
 
-    return new_result
+    return dict(sorted(new_result))
 
 def dump_it(name, obj):
     path = pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json')

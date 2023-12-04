@@ -62,7 +62,7 @@ def do_it(working_dir, caches : CacheGroup):
 
         new_result = {key: list(items) for key, items in new_result.items()}               
 
-        return new_result 
+        return sorted(new_result.items(), key= lambda item : int(item[0]), reverse=True)
 
      
     fs = caches[FS].lookup(str(working_dir), toCall = lambda: get_all_files(working_dir, '*.*'))
