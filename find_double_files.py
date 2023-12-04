@@ -61,8 +61,6 @@ def do_it(working_dir, caches : CacheGroup):
                     
                     inner_set.add(a_file)
                     inner_set.add(b_file)   
-        
-         
 
         new_result2 = {}
 
