@@ -56,13 +56,25 @@ def do_it(working_dir, caches : CacheGroup):
                 b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_sha_file(b_file))   
 
                 if a_hash == b_hash:
-                    inner_set = new_result.setdefault(size, set())
+                    
+                    inner_dict_size = new_result.setdefault(size, {})
+                    inner_set = inner_dict_size.setdefault(a_hash, set())
+                    
                     inner_set.add(a_file)
                     inner_set.add(b_file)   
+        
+         
 
-        new_result = {key: list(items) for key, items in new_result.items()}               
+        new_result2 = {}
 
-        return sorted(new_result.items(), key= lambda item : int(item[0]), reverse=True)
+        for size, dict_hashes in new_result.items():
+            list_for_hashes = new_result2.setdefault(size, [])
+            for item in dict_hashes.values():
+                list_for_hashes.append(list(item))
+            new_result2[size] =  list_for_hashes   
+
+
+        return sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True)
 
      
     fs = caches[FS].lookup(str(working_dir), toCall = lambda: get_all_files(working_dir, '*.*'))
