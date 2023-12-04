@@ -49,7 +49,6 @@ def do_it(working_dir, caches : CacheGroup):
        
             combinations = itertools.combinations(files, 2)
             for comb in combinations:
-
                 a_file = comb[0]
                 b_file = comb[1]
                          
@@ -60,6 +59,8 @@ def do_it(working_dir, caches : CacheGroup):
                     inner_set = new_result.setdefault(size, set())
                     inner_set.add(a_file)
                     inner_set.add(b_file)   
+
+        new_result = {key: list(items) for key, items in new_result.items()}               
 
         return new_result 
 
