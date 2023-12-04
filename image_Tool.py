@@ -2,6 +2,7 @@ import pathlib
 import os
 import pprint
 import itertools
+import hashlib
 
 import PIL.Image
 import PIL.ExifTags
@@ -25,6 +26,7 @@ EXIF = 'exif'
 XML = 'XML'
 MAKE = 'Make'
 MODEL= 'Model'
+HASH = 'hash'
 
 def do_it(working_dir, caches: CacheGroup):
     def get_all_files(path, pattern):
@@ -213,7 +215,13 @@ def find_files_to_delete(all):
 
     return result
 
-def get_group_by_size(all):
+def get_group_by_size(all, caches : CacheGroup):
+    
+    def get_md5_file(file):
+        bytes = pathlib.Path(file).read_bytes()
+        md5_returned = hashlib.md5(bytes).hexdigest()
+        return md5_returned
+    
     result = {}
 
     for name, images in all.items():
@@ -238,8 +246,16 @@ def get_group_by_size(all):
 
                 diff = abs(datetime.datetime.fromisoformat(meta[DATETIME]) -  datetime.datetime.fromisoformat(meta2[DATETIME]))
                 if diff.total_seconds() < 0.3:
-                    key = f'{i}:{size}'
-                    new_result[key] = (comb[0], comb[1])
+
+                    a_file = comb[0][0]
+                    b_file = comb[1][0]
+                    a_hash = caches[HASH].lookup(a_file, toCall= lambda: get_md5_file(a_file)) 
+                    b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_md5_file(b_file))   
+
+                    if a_hash == b_hash:
+
+                        key = f'{i}:{size}'
+                        new_result[key] = (comb[0], comb[1])
 
     return new_result
 
@@ -249,14 +265,14 @@ def dump_it(name, obj):
         json.dump(obj, f, indent=2)
 
 working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-with  CacheGroup(JPG, XMP, FS) as caches:
+with  CacheGroup(JPG, XMP, FS, HASH) as caches:
     all_images = do_it(working_dir, caches)
 
-#triples = find_triples(all_images)
-fixed_time_rw2 = copy_time_from_xmp_to_rw2(all_images)
-doubles_by_time = find_doubles_by_time(fixed_time_rw2)
-#files_to_delete = find_files_to_delete(doubles_by_time)
-group_by_size = get_group_by_size(fixed_time_rw2)
+    #triples = find_triples(all_images)
+    fixed_time_rw2 = copy_time_from_xmp_to_rw2(all_images)
+    doubles_by_time = find_doubles_by_time(fixed_time_rw2)
+    #files_to_delete = find_files_to_delete(doubles_by_time)
+    group_by_size = get_group_by_size(fixed_time_rw2, caches)
 
 dump_it('all_images', all_images)
 dump_it("doubles", doubles_by_time)
