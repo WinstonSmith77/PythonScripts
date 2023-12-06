@@ -28,10 +28,13 @@ def do_it(working_dir, caches : CacheGroup):
 
         return result
     
-    def get_sha_file(file):
-        bytes = pathlib.Path(file).read_bytes()
-        md5_returned = hashlib.sha256(bytes).hexdigest()
-        return md5_returned
+    def get_hash_file(file):
+        try:
+            bytes = pathlib.Path(file).read_bytes()
+            md5_returned = hashlib.sha256(bytes).hexdigest()
+            return md5_returned
+        except FileNotFoundError:
+            return None
 
     def find_doubles(all):
 
@@ -53,10 +56,10 @@ def do_it(working_dir, caches : CacheGroup):
                 a_file = comb[0]
                 b_file = comb[1]
                          
-                a_hash = caches[HASH].lookup(a_file, toCall= lambda: get_sha_file(a_file)) 
-                b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_sha_file(b_file))   
+                a_hash = caches[HASH].lookup(a_file, toCall= lambda: get_hash_file(a_file)) 
+                b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_hash_file(b_file))   
 
-                if a_hash == b_hash:
+                if a_hash is not None and b_hash is not None and a_hash == b_hash:
                     inner_set = inner_dict_size.setdefault(a_hash, set())
                     
                     inner_set.add(a_file)
@@ -81,8 +84,7 @@ def do_it(working_dir, caches : CacheGroup):
 
     return doubles
      
-working_dir = pathlib.Path("C:/Users/matze/OneDrive/bilder")
-
+working_dir = pathlib.Path(r"C:\Users\henning\OneDrive\books")
 
 start = timer()
 with CacheGroup(FS, HASH) as caches:
