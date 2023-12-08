@@ -26,6 +26,7 @@ def get_primes():
         to_check += 2    
 
 length = 100_000
+show = 15
 start = time.time()
 
 primes = list(itertools.islice(get_primes(), length))
@@ -34,6 +35,6 @@ end = time.time()
 
 print(end - start)
 
-pprint.pprint(primes[:10])
-pprint.pprint(primes[-10:])
+pprint.pprint(primes[:show])
+pprint.pprint(primes[-show:])
 pprint.pprint(sum(primes))
