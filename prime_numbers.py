@@ -9,8 +9,7 @@ def get_primes():
     yield 2
     primes_greater_2 =[]
 
-    to_check = 3
-    while True:
+    for to_check in itertools.count(3, 2):
         max_to_check = math.floor(math.sqrt(to_check))
         is_prime = True
         for known_prime in primes_greater_2:
@@ -23,11 +22,11 @@ def get_primes():
             primes_greater_2.append(to_check)
             yield to_check
 
-        to_check += 2    
-
 length = 100_000
 show = 15
 start = time.time()
+
+
 
 primes = list(itertools.islice(get_primes(), length))
 
