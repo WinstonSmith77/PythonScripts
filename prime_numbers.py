@@ -2,6 +2,7 @@ import itertools
 import math
 import time
 import pprint
+import statistics
 
 def get_primes():
    
@@ -12,7 +13,7 @@ def get_primes():
     for to_check in itertools.count(3, 2):
         max_to_check = math.floor(math.sqrt(to_check))
         is_prime = True
-        for known_prime in primes_greater_2:
+        for known_prime in  primes_greater_2:
             if known_prime > max_to_check:
                 break
             if not to_check % known_prime:
@@ -22,18 +23,32 @@ def get_primes():
             primes_greater_2.append(to_check)
             yield to_check
 
-length = 100_000
+def format(number):
+    return f'{number:.4}'
+
+def benchmark(index):
+    length = 100_000
+    start = time.time()
+    primes = list(itertools.islice(get_primes(), length))
+    end = time.time()   
+
+    diff = end - start
+
+    print(index, format(diff))
+    return primes, diff
+
+repeats = 100
+
+results = list(map(benchmark, range(repeats)))
+
+print(format(statistics.mean(map(lambda item : item[1], results))))
+
+primes = results[0][0]
+
 show = 15
-start = time.time()
-
-
-
-primes = list(itertools.islice(get_primes(), length))
-
-end = time.time()    
-
-print(end - start)
 
 pprint.pprint(primes[:show])
 pprint.pprint(primes[-show:])
 pprint.pprint(sum(primes))
+
+#inspect.getsource(sum)
