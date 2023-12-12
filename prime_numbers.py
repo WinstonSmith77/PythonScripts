@@ -16,7 +16,7 @@ def get_primes():
         for known_prime in primes_greater_2:
             if known_prime > max_to_check:
                 break
-            if to_check % known_prime == 0:
+            if not to_check % known_prime:
                 is_prime = False
                 break
         if is_prime:    
