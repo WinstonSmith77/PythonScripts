@@ -75,7 +75,7 @@ class CacheGroup:
     def __getitem__(self, name : str):
         return self._caches[name]
     
-    def remove(self, name:str):
+    def close_and_remove(self, name:str):
         item = self.__getitem__(name)
         item.__exit__(None, None, None)
         del self._caches[name]
