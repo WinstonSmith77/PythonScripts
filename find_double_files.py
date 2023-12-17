@@ -15,16 +15,15 @@ def dump_it(name, obj):
     with path.open(mode='w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2)
 
-def get_length(file):
-    stat = os.stat(file)
-    return stat.st_size
-
-
 def do_it(working_dir, caches : CacheGroup):
-    def get_all_files(path : pathlib.Path, pattern):
+    def get_length(file):
+        stat = os.stat(file)
+        return stat.st_size
+
+    def get_all_files(path : pathlib.Path, pattern, minLength = 1 * 1024):
         result = path.rglob(pattern, case_sensitive=False)
         result = filter(os.path.isfile, result)
-        result = list(map(lambda x : (str(x), get_length(x)), result))
+        result = list(filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result)))
 
         return result
     
