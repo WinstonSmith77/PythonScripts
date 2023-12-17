@@ -80,7 +80,7 @@ def do_it(working_dir, caches : CacheGroup):
 
      
     fs = caches[FS].lookup(str(working_dir), toCall = lambda: get_all_files(working_dir, '*.*'))
-    caches[FS].__exit__(None, None, None)
+    caches.remove(FS)
     doubles = find_doubles(fs)
 
     return doubles
