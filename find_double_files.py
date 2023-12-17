@@ -80,11 +80,12 @@ def do_it(working_dir, caches : CacheGroup):
 
      
     fs = caches[FS].lookup(str(working_dir), toCall = lambda: get_all_files(working_dir, '*.*'))
+    caches[FS].__exit__(None, None, None)
     doubles = find_doubles(fs)
 
     return doubles
      
-working_dir = pathlib.Path(r"C:\Users\henning\OneDrive\books")
+working_dir = pathlib.Path(r"C:\Users\matze\OneDrive\bilder")
 
 start = timer()
 with CacheGroup(FS, HASH) as caches:

@@ -60,8 +60,8 @@ class Cache:
 
 
 class CacheGroup:
-    def __init__(self, *names) -> None:
-        self._caches : dict[str, Cache] = {name: Cache(name) for name in names}
+    def __init__(self, *names, factory = Cache) -> None:
+        self._caches : dict[str, Cache] = {name: factory(name) for name in names}
 
     def __enter__(self):
         for cache in self._caches.values():
