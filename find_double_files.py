@@ -15,12 +15,12 @@ def dump_it(name, obj):
     with path.open(mode='w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2)
 
-def do_it(working_dir, caches : CacheGroup):
+def do_it(working_dir, minLength, caches : CacheGroup):
     def get_length(file):
         stat = os.stat(file)
         return stat.st_size
 
-    def get_all_files(path : pathlib.Path, pattern, minLength = 1 * 1024):
+    def get_all_files(path : pathlib.Path, pattern, minLength):
         result = path.rglob(pattern, case_sensitive=False)
         result = filter(os.path.isfile, result)
         result = list(filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result)))
@@ -78,7 +78,7 @@ def do_it(working_dir, caches : CacheGroup):
         return sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True)
 
      
-    fs = caches[FS].lookup(str(working_dir), toCall = lambda: get_all_files(working_dir, '*.*'))
+    fs = caches[FS].lookup(str(working_dir), str(minLength), toCall = lambda: get_all_files(working_dir, '*.*', minLength))
     caches.close_and_remove(FS)
     doubles = find_doubles(fs)
 
@@ -88,7 +88,7 @@ working_dir = pathlib.Path(r"C:\Users\matze\OneDrive\bilder")
 
 start = timer()
 with CacheGroup(FS, HASH) as caches:
-    all_doubles = do_it(working_dir, caches)
+    all_doubles = do_it(working_dir, 10 * 1024, caches)
 dump_it('all_files', all_doubles)
 end = timer()
 print(end - start) # Time in seconds, e.g. 5.38091952400282
