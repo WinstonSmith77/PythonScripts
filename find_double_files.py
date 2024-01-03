@@ -20,7 +20,8 @@ def do_it(working_dir, minLength, caches : CacheGroup):
         stat = os.stat(file)
         return stat.st_size
 
-    def get_all_files(path : pathlib.Path, pattern, minLength):
+
+    def get_all_files(path : pathlib.Path, pattern, minLength = 5 * 1024):
         result = path.rglob(pattern, case_sensitive=False)
         result = filter(os.path.isfile, result)
         result = list(filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result)))
