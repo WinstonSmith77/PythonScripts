@@ -7,7 +7,7 @@ import os
 
 from double_finder.cache import *
 
-def do_it(working_dir, minLength, caches : CacheGroup = None):
+def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
     def get_length(file):
         stat = os.stat(file)
         return stat.st_size

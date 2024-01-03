@@ -14,10 +14,8 @@ def dump_it(name, obj):
 
 working_dir = pathlib.Path(r"C:\Users\matze\OneDrive\bilder")
 
-
-
 start = timer()
-all_doubles = do_it(working_dir, 10 * 1024)
+all_doubles = do_it(working_dir)
 dump_it('all_files', all_doubles)
 end = timer()
 print(end - start) # Time in seconds, e.g. 5.38091952400282
