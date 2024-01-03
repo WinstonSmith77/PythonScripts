@@ -1,6 +1,9 @@
 import pathlib
 import json
 
+FS = '.fs'
+HASH = '.hash'
+
 class PassThroughCache:
     def __init__(self, name) -> None:
         pass
@@ -17,6 +20,7 @@ class PassThroughCache:
 
 class Cache:
     def __init__(self, name) -> None:
+        self._isDirty = False
         self._path = pathlib.Path(pathlib.Path(__file__).parent, f'{name}.cache.json')
 
         if self._path.exists():
@@ -28,6 +32,7 @@ class Cache:
                 pass
 
         self._innerCache = {}
+       
 
     def add_result(self, *key_parts, value):
         key = self._make_key(*key_parts)

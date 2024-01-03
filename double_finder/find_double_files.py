@@ -3,19 +3,11 @@ import itertools
 import pathlib
 import json
 import os
-from timeit import default_timer as timer 
 
-from cache import *
 
-FS = '.fs'
-HASH = '.hash'
+from double_finder.cache import *
 
-def dump_it(name, obj):
-    path = pathlib.Path(pathlib.Path(__file__).parent, f'result_{name}_.json')
-    with path.open(mode='w', encoding='utf-8') as f:
-        json.dump(obj, f, indent=2)
-
-def do_it(working_dir, minLength, caches : CacheGroup):
+def do_it(working_dir, minLength, caches : CacheGroup = None):
     def get_length(file):
         stat = os.stat(file)
         return stat.st_size
@@ -78,22 +70,20 @@ def do_it(working_dir, minLength, caches : CacheGroup):
 
         return sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True)
 
+    needsToDispose = False
+    if caches is None:
+        caches = CacheGroup(FS, HASH)
+        needsToDispose = True
+
+    try: 
+        fs = caches[FS].lookup(str(working_dir), str(minLength), toCall = lambda: get_all_files(working_dir, '*.*', minLength))
+        caches.close_and_remove(FS)
+        doubles = find_doubles(fs)
+
+        return doubles
+    finally:
+        if needsToDispose:
+            caches.__exit__(None, None, None)
      
-    fs = caches[FS].lookup(str(working_dir), str(minLength), toCall = lambda: get_all_files(working_dir, '*.*', minLength))
-    caches.close_and_remove(FS)
-    doubles = find_doubles(fs)
-
-    return doubles
-     
-working_dir = pathlib.Path(r"C:\Users\matze\OneDrive\bilder")
-
-start = timer()
-with CacheGroup(FS, HASH) as caches:
-    all_doubles = do_it(working_dir, 10 * 1024, caches)
-dump_it('all_files', all_doubles)
-end = timer()
-print(end - start) # Time in seconds, e.g. 5.38091952400282
-
-
 
 
