@@ -62,8 +62,8 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
         for size, dict_hashes in new_result.items():
             list_for_hashes = []
             for items in dict_hashes.values():
-                if items:
-                    list_for_hashes.append(list(items))
+                for item in items:
+                    list_for_hashes.append(item)
             if list_for_hashes:
                 new_result2[size] =  list_for_hashes   
 
