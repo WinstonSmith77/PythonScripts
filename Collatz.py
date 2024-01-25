@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def collatz(start):
     n = start
     while True:
@@ -11,7 +13,13 @@ def collatz(start):
             else:
                 n = 3 * n + 1
 
-result = [i for i in collatz(10000 ** 340 -1)]
+y = [i for i in collatz(10000 ** 5 -1)]
+x = range(0, len(y))
 
-print(len(result))
+plt.figure(num = 0, dpi= 120)
+
+plt.plot(x,y)
+plt.yscale('log')
+plt.show()
+
         
