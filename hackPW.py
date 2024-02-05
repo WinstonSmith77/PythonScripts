@@ -2,11 +2,12 @@ import string
 import random
 import ubelt
 import itertools
+import time
 
 valid_key_elements = list(string.ascii_letters) + list(string.digits)
 #print(len(valid_key_elements))
 randomGen = random.Random()
-length = 4 + 1
+length = 4
 
 
 def get_pw(valid_key_elements, l, r : random.Random) -> str:
@@ -26,11 +27,13 @@ print(pw_to_find, hash_to_find)
 #         result += random.
 #     return result    
 
+start = time.time()
 for pw in map(lambda c : ''.join(c), itertools.permutations(valid_key_elements, length)):
     hash = hash_it(pw)
     
     if hash_to_find == hash:
-        print(f'found {pw_to_find} {hash}')
+        end = time.time()
+        print(f'found {pw_to_find} {hash} {end - start}')
         break
 
 
