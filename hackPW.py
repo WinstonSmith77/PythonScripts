@@ -7,7 +7,7 @@ import time
 valid_key_elements = string.digits + string.ascii_letters
 #valid_key_elements = list(string.digits) + list(string.ascii_letters)
 #print((valid_key_elements))
-randomGen = random.Random()
+randomGen = random.Random(562)
 length = 4
 
 
