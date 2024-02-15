@@ -22,9 +22,9 @@ def get_id_set(items):
 
 symbols = (style for style in styles if style[TYPE] == SYMBOL)
 hasFont = (style for style in styles if LAYOUT in style and TEXT_FONT in style[LAYOUT])
-aubahn = (style for style in styles if 'autobahn' in style[ID].lower())
+aubahn = (style for style in styles if 'Nummer_Autobahn' == style[ID])
 
-pprint(get_id_set(symbols))
-pprint(get_id_set(aubahn))
 
-pprint(get_id_set(aubahn).intersection(get_id_set(aubahn)))
+pprint(list(aubahn))
+
+

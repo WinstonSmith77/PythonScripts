@@ -1,6 +1,4 @@
 import random
-import math
-
 total = 0
 in_circle = 0 
 
