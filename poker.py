@@ -29,4 +29,3 @@ all = list(product(ranks, suits))
 
 
 print(all, len(all))
-
