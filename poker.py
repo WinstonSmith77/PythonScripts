@@ -42,7 +42,8 @@ class Card:
    rank : Rank
    suit : Suit
 
-all = list(map(lambda x: Card(rank = x[0], suit = x[1] ), product(ranks, suits)))
+
+all = [Card(rank=rank, suit=suit)  for rank in ranks for suit in suits]
 hand =  sorted(choices(all, k = 5), reverse=True)
 
 print(hand)
