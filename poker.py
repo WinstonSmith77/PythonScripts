@@ -1,5 +1,4 @@
 from enum import IntEnum
-from itertools import product
 from random import choices
 from dataclasses import dataclass
 
@@ -15,19 +14,19 @@ class Suit(IntEnum):
       return str(self) 
 
 class Rank(IntEnum):
-    TWOS = 0,    
-    THREES = 1,
-    FOURS = 2,
-    FIVES = 3,
+    TWO = 0,    
+    THREE = 1,
+    FOUR = 2,
+    FIVE = 3,
     SIXES = 4,
-    SEVENS = 5,
-    EIGHTS = 6,
+    SEVEN = 5,
+    EIGHT = 6,
     NINE = 7,
-    TENS = 8,
-    JACKS = 9,
-    QUEENS = 10,
-    KINGS = 11,
-    ACES = 12
+    TEN = 8,
+    JACK = 9,
+    QUEEN = 10,
+    KING = 11,
+    ACE = 12
 
     def __str__(self):
        return self.name   
@@ -41,12 +40,19 @@ ranks = list(Rank)
 class Card:
    rank : Rank
    suit : Suit
+   def __str__(self):
+       return f'({self.rank} {self.suit})'   
+   def __repr__(self):
+       return str(self) 
 
 
 all = [Card(rank=rank, suit=suit)  for rank in ranks for suit in suits]
-hand =  sorted(choices(all, k = 5), reverse=True)
 
-print(hand)
+for _ in range(10):
+    hand =  sorted(choices(all, k = 5), reverse=True)
+    print(hand)
+
+
 
 
 
