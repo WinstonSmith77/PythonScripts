@@ -41,8 +41,7 @@ ranks = list(Rank)
 all = list(product(ranks, suits))
 hand =  sorted(choices(all, k = 5), key = lambda x : x[0].value, reverse=True)
 
-for card in hand:
-      print(card)
+print(hand)
 
 
 
