@@ -2,19 +2,22 @@ from enum import IntEnum
 from random import choices
 from dataclasses import dataclass
 
+
 class Suit(IntEnum):
     HEARTS = 0,
-    DIAMONTS = 1,
+    DIAMONDS = 1,
     CLUBS = 2,
     SPADES = 3
 
     def __str__(self):
-       return self.name    
+        return self.name
+
     def __repr__(self):
-      return str(self) 
+        return str(self)
+
 
 class Rank(IntEnum):
-    TWO = 0,    
+    TWO = 0,
     THREE = 1,
     FOUR = 2,
     FIVE = 3,
@@ -29,30 +32,30 @@ class Rank(IntEnum):
     ACE = 12
 
     def __str__(self):
-       return self.name   
+        return self.name
+
     def __repr__(self):
-       return str(self) 
+        return str(self)
+
 
 suits = list(Suit)
 ranks = list(Rank)
 
-@dataclass(frozen = True, order=True)
+
+@dataclass(frozen=True, order=True)
 class Card:
-   rank : Rank
-   suit : Suit
-   def __str__(self):
-       return f'({self.rank} {self.suit})'   
-   def __repr__(self):
-       return str(self) 
+    rank: Rank
+    suit: Suit
+
+    def __str__(self):
+        return f'({self.rank} {self.suit})'
+
+    def __repr__(self):
+        return str(self)
 
 
-all = [Card(rank=rank, suit=suit)  for rank in ranks for suit in suits]
+all = [Card(rank=rank, suit=suit) for rank in ranks for suit in suits]
 
 for _ in range(10):
-    hand =  sorted(choices(all, k = 5), reverse=True)
+    hand = sorted(choices(all, k=5), reverse=True)
     print(hand)
-
-
-
-
-
