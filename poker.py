@@ -1,6 +1,7 @@
 from enum import IntEnum
 from itertools import product
 from random import choices
+from dataclasses import dataclass
 
 class Suit(IntEnum):
     HEARTS = 0,
@@ -36,10 +37,15 @@ class Rank(IntEnum):
 suits = list(Suit)
 ranks = list(Rank)
 
+@dataclass(frozen = True)
+class Card:
+   rank : Rank
+   suit : Suit
 
 
-all = list(product(ranks, suits))
-hand =  sorted(choices(all, k = 5), key = lambda x : x[0].value, reverse=True)
+
+all = list(map(lambda x: Card(rank = x[0], suit = x[1] ), product(ranks, suits)))
+hand =  sorted(choices(all, k = 5), key = lambda x : x.rank.value, reverse=True)
 
 print(hand)
 
