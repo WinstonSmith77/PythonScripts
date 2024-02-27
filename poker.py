@@ -37,15 +37,13 @@ class Rank(IntEnum):
 suits = list(Suit)
 ranks = list(Rank)
 
-@dataclass(frozen = True)
+@dataclass(frozen = True, order=True)
 class Card:
    rank : Rank
    suit : Suit
 
-
-
 all = list(map(lambda x: Card(rank = x[0], suit = x[1] ), product(ranks, suits)))
-hand =  sorted(choices(all, k = 5), key = lambda x : x.rank.value, reverse=True)
+hand =  sorted(choices(all, k = 5), reverse=True)
 
 print(hand)
 
