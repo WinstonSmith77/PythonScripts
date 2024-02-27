@@ -54,8 +54,11 @@ class Card:
         return str(self)
 
 
-all = [Card(rank=rank, suit=suit) for rank in ranks for suit in suits]
+def get_all_cards():
+    all = [Card(rank=rank, suit=suit) for rank in ranks for suit in suits]
+    return all
 
+allCards = get_all_cards()
 for _ in range(10):
-    hand = sorted(choices(all, k=5), reverse=True)
+    hand = sorted(choices(allCards, k=5), reverse=True)
     print(hand)
