@@ -3,12 +3,7 @@ from random import choices
 from dataclasses import dataclass
 
 
-class Suit(IntEnum):
-    HEARTS = 0,
-    DIAMONDS = 1,
-    CLUBS = 2,
-    SPADES = 3
-
+class CardComponentBase(IntEnum):
     def __str__(self):
         return self.name
 
@@ -16,7 +11,14 @@ class Suit(IntEnum):
         return str(self)
 
 
-class Rank(IntEnum):
+class Suit(CardComponentBase):
+    HEARTS = 0,
+    DIAMONDS = 1,
+    CLUBS = 2,
+    SPADES = 3
+
+
+class Rank(CardComponentBase):
     TWO = 0,
     THREE = 1,
     FOUR = 2,
@@ -30,12 +32,6 @@ class Rank(IntEnum):
     QUEEN = 10,
     KING = 11,
     ACE = 12
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return str(self)
 
 
 suits = list(Suit)
@@ -57,6 +53,7 @@ class Card:
 def get_all_cards():
     all = [Card(rank=rank, suit=suit) for rank in ranks for suit in suits]
     return all
+
 
 allCards = get_all_cards()
 for _ in range(10):
