@@ -1,7 +1,7 @@
 from poker import get_all_cards
 import unittest
 
-class TestStringMethods(unittest.TestCase):
+class CardTests(unittest.TestCase):
 
     def test_number_of_cards(self):
         self.assertEqual(len( get_all_cards()), 52)
