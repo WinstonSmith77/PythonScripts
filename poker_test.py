@@ -1,13 +1,20 @@
-from poker import get_all_cards
+from poker import get_all_cards, Suit, Rank
 import unittest
 
 
 class CardTests(unittest.TestCase):
-    cards_per_suit = 13
-    suits = 4
-    total_number_of_cards = suits * cards_per_suit
+    cards_per_rank = 13
+    cards_per_suits = 4
+    total_number_of_cards = cards_per_suits * cards_per_rank
+    
     def test_number_of_cards(self):
         self.assertEqual(len(get_all_cards()), CardTests.total_number_of_cards)
+
+    def test_number_of_suits(self):
+        self.assertEqual(len(Suit), CardTests.cards_per_suits)
+
+    def test_number_of_ranks(self):
+        self.assertEqual(len(Rank), CardTests.cards_per_rank)
 
 
 if __name__ == '__main__':
