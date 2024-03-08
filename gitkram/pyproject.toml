@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "gitkram"
+version = "0.1.0"
+description = ""
+authors = ["Matthias Henning <henning@geomarketing.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+gitpython = "^3.1.42"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
