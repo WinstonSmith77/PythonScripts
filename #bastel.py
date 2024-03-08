@@ -1,24 +1,12 @@
-import itertools
-import string
 
-length = 3
-valid_key_elements = list(string.digits)
+a = 1
 
-
-print(list(map(lambda x : ''.join(x), )))
-
-all_numbers = set(range(0 , 10 ** length))
-all_numbers_list = list(all_numbers)
-
-print(all_numbers_list[0])
-print(all_numbers_list[-1])
+b = [[2,3], []]
 
 
+def merge(l, lofl):
+        result = [l] + [j for alist in lofl for j in alist]
+        return result
 
-
-
-# for pw in map(lambda c : ''.join(c), itertools.combinations_with_replacement(valid_key_elements, length)):
-#     all_numbers.remove(int(pw))
-
-# print(all_numbers)    
+print(merge(a, b))
 

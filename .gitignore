@@ -1,4 +1,4 @@
-.idea
+.idea/
 
 *.cache.json
 result.json
@@ -11,6 +11,7 @@ s
 
 # C extensions
 *.so
+*bastel.py
 
 # Distribution / packaging
 .Python
