@@ -2,15 +2,7 @@ import git
 import argparse
 
 
-def is_file_conflicted(repo, filename):
-    """
-    Checks if a file is unmerged (has conflicts) in the current commit.
-    """
-    try:
-        repo.git.checkout('HEAD', '--', filename)
-        return False
-    except git.exc.GitCommandError:
-        return True
+
 
 def get_conflicted_files(repo):
     """
