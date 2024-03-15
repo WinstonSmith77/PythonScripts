@@ -1,12 +1,6 @@
 
-a = 1
+a = [1,2,3,4, 5]
 
-b = [[2,3], []]
+all = a + a[-2:-(len(a)) :-1]
 
-
-def merge(l, lofl):
-        result = [l] + [j for alist in lofl for j in alist]
-        return result
-
-print(merge(a, b))
-
+print (all)

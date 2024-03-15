@@ -1,5 +1,6 @@
 import pathlib
 import json
+import pprint
 from timeit import default_timer as timer 
 
 from double_finder import do_it
@@ -20,4 +21,12 @@ dump_it('all_files', all_doubles)
 end = timer()
 print(end - start) # Time in seconds, e.g. 5.38091952400282
 
+def contains_icloud(path : str):
+    return 'icloud' in path
 
+def any_map(filter, items):
+    return any(map(filter, items))
+
+temp = [i[1] for i in all_doubles if any_map(contains_icloud, i[1]) and any_map(lambda x: not contains_icloud(x), i[1] )]
+pprint.pprint(temp)
+print(len(temp))
