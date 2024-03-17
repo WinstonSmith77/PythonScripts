@@ -17,8 +17,7 @@ def delete_old_backups():
         send2trash.send2trash(item[0].replace('/', "\\"))
 
 def start_Exe():
-    subprocess.Popen(pathToExe, shell=True,
-             stdin=None, stdout=None, stderr=None)
+    subprocess.call(pathToExe)
 
 if __name__ == "__main__":
     delete_old_backups()
