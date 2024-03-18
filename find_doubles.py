@@ -39,6 +39,9 @@ def any_map(filter, items):
     return any(map(filter, items))
 
 all_double_with_icloud = [i[1] for i in all_doubles if any_map(contains_icloud, i[1]) and any_map(lambda x: not contains_icloud(x), i[1] )]
+
+dump_it('icloud', all_double_with_icloud)
+
 all_double_with_icloud_in_icloud = [j for i in all_double_with_icloud for j in i if contains_icloud(j)]
 
 all_double_with_icloud_in_icloud
