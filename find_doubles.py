@@ -7,7 +7,6 @@ from double_finder import do_it
 import send2trash
 
 
-
 def dump_it(name, obj):
     path = Path(Path(__file__).parent, f'result_{name}_.json')
     with path.open(mode='w', encoding='utf-8') as f:
@@ -48,7 +47,6 @@ all_double_with_icloud_in_icloud
 
 pprint.pprint(all_double_with_icloud)
 print(len(all_double_with_icloud_in_icloud))
-
 
 
 
