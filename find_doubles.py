@@ -47,7 +47,9 @@ all_doubles_parts_to_remove = [k
                                 for k in all_but_first(i[1])
                                  ]
 
-print(all_doubles_parts_to_remove)
+pprint.pprint(all_doubles)
+
+#pprint.pprint(all_doubles_parts_to_remove)
 
 
 move_files(all_doubles_parts_to_remove, working_dir, r"C:\Users\matze\Desktop\##old_files")
