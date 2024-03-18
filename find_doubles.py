@@ -1,16 +1,7 @@
 from pathlib import Path
-import json
 import pprint
 from timeit import default_timer as timer 
-
-from double_finder import do_it
-import send2trash
-
-
-def dump_it(name, obj):
-    path = Path(Path(__file__).parent, f'result_{name}_.json')
-    with path.open(mode='w', encoding='utf-8') as f:
-        json.dump(obj, f, indent=2)
+from double_finder import do_it, dump_it
 
 def move_files(files, replacePath, withPath, dryRun = True):
     for file in files:

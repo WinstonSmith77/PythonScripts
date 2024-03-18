@@ -1,12 +1,14 @@
 import hashlib
 import itertools
-import pathlib
+from pathlib import Path
 import json
 import os
-import send2trash
-
-
 from double_finder.cache import *
+
+def dump_it(name, obj):
+    path = Path(Path(__file__).parent, f'result_{name}_.json')
+    with path.open(mode='w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2)
 
 def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
     def get_length(file):
@@ -38,7 +40,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
             items_for_length = results.setdefault(length, [])
             items_for_length.append(file)
 
-        results = {key: items for key, items in results.items() if len(items) > 1}       
+        results = {key: items for key, items in results.items() if len(items) > 1}     
 
         new_result = {}
         for size, files in results.items():
