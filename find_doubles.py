@@ -52,4 +52,4 @@ pprint.pprint(all_doubles)
 #pprint.pprint(all_doubles_parts_to_remove)
 
 
-move_files(all_doubles_parts_to_remove, working_dir, r"C:\Users\matze\Desktop\##old_files")
+move_files(all_doubles_parts_to_remove, working_dir, r"C:\Users\matze\Desktop\###old_files")
