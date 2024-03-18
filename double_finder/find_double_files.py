@@ -3,6 +3,7 @@ import itertools
 import pathlib
 import json
 import os
+import send2trash
 
 
 from double_finder.cache import *

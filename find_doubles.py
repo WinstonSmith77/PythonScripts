@@ -4,6 +4,7 @@ import pprint
 from timeit import default_timer as timer 
 
 from double_finder import do_it
+import send2trash
 
 
 
@@ -32,3 +33,7 @@ all_double_jpgs_in_icloud = [[j for j in i if contains_icloud(j)] for i in all_d
 
 pprint.pprint(all_double_jpgs_in_icloud)
 print(len(all_double_jpgs_in_icloud))
+
+for i in all_double_jpgs_in_icloud:
+    for j in i:
+       print(j)
