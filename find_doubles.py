@@ -28,12 +28,9 @@ def contains_icloud(path : str):
 def any_map(filter, items):
     return any(map(filter, items))
 
-all_double_jpgs = [i[1] for i in all_doubles if any_map(contains_icloud, i[1]) and any_map(lambda x: not contains_icloud(x), i[1] ) and all(map(lambda f : f.lower().endswith('.jpg'), i[1]))]
+all_double_jpgs = [i[1] for i in all_doubles if any_map(contains_icloud, i[1]) and any_map(lambda x: not contains_icloud(x), i[1] ) and all(map(lambda f : f.lower().endswith('.heic'), i[1]))]
 all_double_jpgs_in_icloud = [[j for j in i if contains_icloud(j)] for i in all_double_jpgs]
 
-pprint.pprint(all_double_jpgs_in_icloud)
+pprint.pprint(all_double_jpgs)
 print(len(all_double_jpgs_in_icloud))
 
-for i in all_double_jpgs_in_icloud:
-    for j in i:
-       print(j)
