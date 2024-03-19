@@ -19,7 +19,7 @@ def bump_counter(ants : str):
     
     number_of_ants = len(ants)
     
-    range_ = range(number_of_ants)
+    range_ = range(number_of_ants - 1)
     counters = array('i', repeat(0, number_of_ants))
   
     any_bump = True
@@ -27,8 +27,6 @@ def bump_counter(ants : str):
     while any_bump:
         any_bump = False
         for i in range_:
-            if i == number_of_ants - 1:
-                break 
             j = i + 1
             if ants[i] == R and  ants[j] == L:
                 counters[i] += 1
