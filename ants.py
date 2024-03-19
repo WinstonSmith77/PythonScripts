@@ -12,7 +12,6 @@ def to_str(counters):
 
 def bump_counter(ants : str):
     ants =  array('i', map(lambda x: int(x), ants.encode()))
-    print(ants)
     L = ord('L')
     R = ord('R')
     
@@ -35,7 +34,7 @@ def bump_counter(ants : str):
  
     return to_str(counters)
 
-print(bump_counter('RRL'))
+print(bump_counter('RRLRRRLL'))
 
 
 
