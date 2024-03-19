@@ -1,3 +1,7 @@
+#https://www.codewars.com/kata/65ee024f99785f0906e65bee/train/python
+
+from array import array
+
 def to_str(counters):
     result = ''
 
@@ -7,12 +11,12 @@ def to_str(counters):
     return result.strip()
 
 def bump_counter(ants):
-    ants = list(ants)
+    ants =  list(ants)
     L = 'L'
     R = 'R'
     
     number_of_ants = len(ants)
-    counters = [0] * number_of_ants
+    counters = array('i' , [0] * number_of_ants)
     any_bump = True
 
     while any_bump:
@@ -20,7 +24,7 @@ def bump_counter(ants):
         for i, l in enumerate(ants):
             if i == number_of_ants - 1:
                 break 
-            j = i +1
+            j = i + 1
             if l == R and  ants[j] == L:
                 counters[i] += 1
                 counters[j] += 1
