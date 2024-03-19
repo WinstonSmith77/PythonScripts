@@ -10,10 +10,11 @@ def to_str(counters):
 
     return result.strip()
 
-def bump_counter(ants):
-    ants =  list(ants)
-    L = 'L'
-    R = 'R'
+def bump_counter(ants : str):
+    ants =  array('i', map(lambda x: int(x), ants.encode()))
+    print(ants)
+    L = ord('L')
+    R = ord('R')
     
     number_of_ants = len(ants)
     counters = array('i' , [0] * number_of_ants)

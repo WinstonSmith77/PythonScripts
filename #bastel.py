@@ -1,10 +1,5 @@
-from datetime import datetime, timedelta
+from array import array
 
-now = datetime.now()
-later = datetime.now()
 
-diff:timedelta = (later - now)
-
-print(type(diff))
-
-print(diff.seconds)
+a = 'ab'.encode()
+print(a[1])
