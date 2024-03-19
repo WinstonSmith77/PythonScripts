@@ -1,6 +1,10 @@
+from datetime import datetime, timedelta
 
-a = [1,2,3,4, 5]
+now = datetime.now()
+later = datetime.now()
 
-all = a + a[-2:-(len(a)) :-1]
+diff:timedelta = (later - now)
 
-print (all)
+print(type(diff))
+
+print(diff.seconds)

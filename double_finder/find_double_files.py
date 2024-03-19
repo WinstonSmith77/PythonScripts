@@ -3,7 +3,7 @@ import itertools
 from pathlib import Path
 import json
 import os
-from double_finder.cache import *
+from double_finder.cache import CacheGroup, HASH, FS
 
 def dump_it(name, obj):
     path = Path(Path(__file__).parent, f'result_{name}_.json')
@@ -16,7 +16,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
         return stat.st_size
 
 
-    def get_all_files(path : pathlib.Path, pattern, minLength = 5 * 1024):
+    def get_all_files(path : Path, pattern, minLength = 5 * 1024):
         result = path.rglob(pattern, case_sensitive=False)
         result = filter(os.path.isfile, result)
         result = list(filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result)))
@@ -25,7 +25,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
     
     def get_hash_file(file):
         try:
-            bytes = pathlib.Path(file).read_bytes()
+            bytes = Path(file).read_bytes()
             md5_returned = hashlib.sha256(bytes).hexdigest()
             return md5_returned
         except FileNotFoundError:
@@ -33,17 +33,17 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
 
     def find_doubles(all):
 
-        results = {}
+        groups = {}
 
         for file, length in all:
 
-            items_for_length = results.setdefault(length, [])
+            items_for_length = groups.setdefault(length, [])
             items_for_length.append(file)
 
-        results = {key: items for key, items in results.items() if len(items) > 1}     
+        groups = {key: items for key, items in groups.items() if len(items) > 1}     
 
         new_result = {}
-        for size, files in results.items():
+        for size, files in groups.items():
             inner_dict_size ={}
             new_result[size] = inner_dict_size
             combinations = itertools.combinations(files, 2)
@@ -71,7 +71,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
                 new_result2[size] =  list_for_hashes   
 
 
-        return sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True)
+        return (sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True), groups)
 
     needsToDispose = False
     if caches is None:
