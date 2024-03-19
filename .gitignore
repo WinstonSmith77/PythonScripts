@@ -1,13 +1,14 @@
 .idea/
 
 *.cache.json
-result.json
+result*.json
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.clas
-s
+
 
 # C extensions
 *.so
