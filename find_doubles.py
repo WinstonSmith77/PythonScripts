@@ -20,7 +20,7 @@ def move_files(files, replacePath, withPath, dryRun = True):
         pass       
 
 
-working_dir = Path(r"C:\Users\henning\source")
+working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
 
 start = timer()
 all_doubles, group_doubles = do_it(working_dir)
