@@ -3,7 +3,10 @@ import itertools
 from pathlib import Path
 import json
 import os
-from double_finder.cache import CacheGroup, HASH, FS
+from double_finder.cache import CacheGroup
+
+FS = '.fs'
+HASH = '.hash'
 
 def dump_it(name, obj):
     path = Path(Path(__file__).parent, f'result_{name}_.json')

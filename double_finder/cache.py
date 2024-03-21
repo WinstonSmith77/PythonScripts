@@ -1,8 +1,6 @@
 import pathlib
 import json
 
-FS = '.fs'
-HASH = '.hash'
 
 class PassThroughCache:
     def __init__(self, name) -> None:
