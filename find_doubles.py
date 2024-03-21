@@ -23,9 +23,9 @@ def move_files(files, replacePath, withPath, dryRun = True):
 working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
 
 start = timer()
-all_doubles, group_doubles = do_it(working_dir)
+all_doubles, group_length_without_doubles = do_it(working_dir)
 dump_it('all_files', all_doubles)
-dump_it('groups', group_doubles)
+dump_it('group_length_without_doubles', group_length_without_doubles)
 end = timer()
 print(end - start) # Time in seconds, e.g. 5.38091952400282
 

@@ -70,8 +70,14 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
             if list_for_hashes:
                 new_result2[size] =  list_for_hashes   
 
+        doubles = dict(sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True))
 
-        return (sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True), groups)
+        for length, files in doubles.items():
+            for double in files:
+                groups[length].remove(double) 
+
+
+        return (doubles, groups)
 
     needsToDispose = False
     if caches is None:
