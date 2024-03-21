@@ -41,13 +41,13 @@ class Cache:
     def _make_key(self, *key_parts):
         return ",".join(key_parts)
 
-    def lookup(self, *key_parts, toCall):
+    def lookup(self, *key_parts, callIfMissing):
         key = self._make_key(*key_parts)
 
         if key in self._innerCache:
             return self._innerCache[key]
         else:
-            new_entry = toCall()
+            new_entry = callIfMissing()
             self._innerCache[key] = new_entry
             self._isDirty = True
             return new_entry

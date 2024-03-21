@@ -13,38 +13,28 @@ def dump_it(name, obj):
     with path.open(mode='w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2)
 
+def get_hash_file(file):
+     try:
+        bytes = Path(file).read_bytes()
+        md5_returned = hashlib.sha256(bytes).hexdigest()
+        return md5_returned
+     except FileNotFoundError:
+        return None
+
+def get_length(file):
+    stat = os.stat(file)
+    return stat.st_size
+
+def get_all_files(path : Path, pattern, minLength = 5 * 1024):
+    result = path.rglob(pattern, case_sensitive=False)
+    result = filter(os.path.isfile, result)
+    result = list(filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result)))
+
+    return result
+
 def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
-    def get_length(file):
-        stat = os.stat(file)
-        return stat.st_size
-
-
-    def get_all_files(path : Path, pattern, minLength = 5 * 1024):
-        result = path.rglob(pattern, case_sensitive=False)
-        result = filter(os.path.isfile, result)
-        result = list(filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result)))
-
-        return result
     
-    def get_hash_file(file):
-        try:
-            bytes = Path(file).read_bytes()
-            md5_returned = hashlib.sha256(bytes).hexdigest()
-            return md5_returned
-        except FileNotFoundError:
-            return None
-
-    def find_doubles(all):
-
-        groups = {}
-
-        for file, length in all:
-
-            items_for_length = groups.setdefault(length, [])
-            items_for_length.append(file)
-
-        groups = {key: items for key, items in groups.items() if len(items) > 1}     
-
+    def doubles_from_groups(groups):
         new_result = {}
         for size, files in groups.items():
             inner_dict_size ={}
@@ -54,8 +44,8 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
                 a_file = comb[0]
                 b_file = comb[1]
                          
-                a_hash = caches[HASH].lookup(a_file, toCall= lambda: get_hash_file(a_file)) 
-                b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_hash_file(b_file))   
+                a_hash = caches[HASH].lookup(a_file, callIfMissing= lambda: get_hash_file(a_file)) 
+                b_hash = caches[HASH].lookup(b_file, callIfMissing= lambda: get_hash_file(b_file))   
 
                 if a_hash is not None and b_hash is not None and a_hash == b_hash:
                     inner_set = inner_dict_size.setdefault(a_hash, set())
@@ -75,6 +65,25 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
 
         doubles = dict(sorted(new_result2.items(), key= lambda item : int(item[0]), reverse=True))
 
+        return doubles
+    
+    def make_groups(all):
+        groups = {}
+
+        for file, length in all:
+
+            items_for_length = groups.setdefault(length, [])
+            items_for_length.append(file)
+
+        groups = {key: items for key, items in groups.items() if len(items) > 1}   
+        return groups 
+
+    def find_doubles(all):
+
+        groups = make_groups(all)
+
+        doubles = doubles_from_groups(groups)
+
         for length, files in doubles.items():
             for double in files:
                 groups[length].remove(double) 
@@ -88,7 +97,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
         needsToDispose = True
 
     try: 
-        fs = caches[FS].lookup(str(working_dir), str(minLength), toCall = lambda: get_all_files(working_dir, '*.*', minLength))
+        fs = caches[FS].lookup(str(working_dir), str(minLength), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
         caches.close_and_remove(FS)
         doubles = find_doubles(fs)
 

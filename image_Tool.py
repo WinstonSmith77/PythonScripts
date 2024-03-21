@@ -73,7 +73,7 @@ def do_it(working_dir, caches: CacheGroup):
         # filter = []
         try:
             key = [extract_exif_from_file.__name__, file]
-            exif = caches[JPG].lookup(*key, toCall=lambda: extract_exif_from_file(file))
+            exif = caches[JPG].lookup(*key, callIfMissing=lambda: extract_exif_from_file(file))
             exif = filter_exif(exif, *filter)
         except PIL.UnidentifiedImageError:
             exif = caches[JPG].add_result(*key, value={ERROR: ERROR})
@@ -110,7 +110,7 @@ def do_it(working_dir, caches: CacheGroup):
                 with pathlib.Path(file).open(mode='r', encoding='utf-8') as f:
                     return xmltodict.parse(f.read())
 
-        json = caches[XMP].lookup(parse_xmp.__name__, file, toCall=lambda: parse_xmp(file))
+        json = caches[XMP].lookup(parse_xmp.__name__, file, callIfMissing=lambda: parse_xmp(file))
 
         path_to =  ["x:xmpmeta", "rdf:RDF", "rdf:Description"]
       
@@ -158,7 +158,7 @@ def do_it(working_dir, caches: CacheGroup):
         return result
 
     images = [caches[FS].lookup(get_all_files.__name__, ext, str(working_dir),
-                                toCall=lambda: get_all_files(working_dir, f'*{ext}'))
+                                callIfMissing=lambda: get_all_files(working_dir, f'*{ext}'))
               for ext in
               [JPG, PANA, XMP]]
 
@@ -266,8 +266,8 @@ def get_group_by_size(all, caches : CacheGroup):
 
                     a_file = comb[0][0]
                     b_file = comb[1][0]
-                    a_hash = caches[HASH].lookup(a_file, toCall= lambda: get_md5_file(a_file)) 
-                    b_hash = caches[HASH].lookup(b_file, toCall= lambda: get_md5_file(b_file))   
+                    a_hash = caches[HASH].lookup(a_file, callIfMissing= lambda: get_md5_file(a_file)) 
+                    b_hash = caches[HASH].lookup(b_file, callIfMissing= lambda: get_md5_file(b_file))   
 
                     if a_hash == b_hash:
                         inner_dict = new_result.setdefault(size, {})
