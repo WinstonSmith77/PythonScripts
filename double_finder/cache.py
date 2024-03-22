@@ -41,7 +41,7 @@ class Cache:
     def _make_key(self, *key_parts):
         return ",".join(key_parts)
 
-    def lookup(self, *key_parts, callIfMissing):
+    def lookup(self, *key_parts, callIfMissing, forceSave = False):
         key = self._make_key(*key_parts)
 
         if key in self._innerCache:
@@ -50,6 +50,10 @@ class Cache:
             new_entry = callIfMissing()
             self._innerCache[key] = new_entry
             self._isDirty = True
+            
+            if forceSave:
+                self.__save()
+            
             return new_entry
 
     def __enter__(self):
@@ -57,11 +61,14 @@ class Cache:
         return self
 
     def __exit__(self, type, value, tb):
-        if self._isDirty:
+       self.__save()
+
+    def __save(self):
+         if self._isDirty:
             with self._path.open(mode='w', encoding='utf-8') as f:
                 json.dump(self._innerCache, f, indent=2)
-
-
+            self._isDirty = False    
+            
 class CacheGroup:
     def __init__(self, *names, factory = Cache) -> None:
         self._caches : dict[str, Cache] = {name: factory(name) for name in names}

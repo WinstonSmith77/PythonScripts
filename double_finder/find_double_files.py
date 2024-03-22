@@ -37,21 +37,33 @@ def get_all_files(path : Path, pattern, minLength = 5 * 1024):
 
 def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
     
-    def possible_doubles_from_groups(groups):
-         result = {}
+    def possible_doubles_from_groups(groups, min_Ratio = .95):
+         results = {}
          for size, files in groups.items():
             group_result = []
             combinations = itertools.combinations(files, 2)
+            cache_content = {}
+            def get_blob(path : Path):
+                path_as_str = str(path)
+                if path_as_str in cache_content:
+                    return cache_content[path_as_str]
+                else:
+                    return cache_content.setdefault(path_as_str,  path.read_bytes())
+
             for comb in combinations:
                 a_file = Path(comb[0])
                 b_file = Path(comb[1])
 
                 ratio_name = caches[FILEDIFF].lookup(comb[0], comb[1], 'FileName' , callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio())
-                quick_ratio_content = caches[FILEDIFF].lookup(comb[0], comb[1], 'Content' , callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.read_bytes(), b_file.read_bytes()).real_quick_ratio())
+               
+                if ratio_name > min_Ratio:
+                    quick_ratio_content = caches[FILEDIFF].lookup(comb[0], comb[1], 'Content' , callIfMissing= lambda : difflib.SequenceMatcher(None, get_blob(a_file),  get_blob(b_file)).quick_ratio(), forceSave= True)
+                    group_result.append((comb[0], comb[1], ratio_name, quick_ratio_content))
+            results[size] = group_result
 
-                group_result.append((comb[0], comb[1], ratio_name, quick_ratio_content))
-            result[size] = group_result
-         return result       
+            results = {key:value for key, value in results.items() if value}
+
+         return results       
 
 
     def doubles_from_groups(groups):
