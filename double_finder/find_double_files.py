@@ -7,9 +7,9 @@ import difflib
 
 from double_finder.cache import CacheGroup
 
-FS = '.fs'
+DIR = '.directory'
 HASH = '.hash'
-FD =  '.fd'
+FILEDIFF =  '.fileDiff'
 
 def dump_it(name, obj):
     path = Path(Path(__file__).parent, f'result_{name}_.json')
@@ -46,9 +46,10 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
                 a_file = Path(comb[0])
                 b_file = Path(comb[1])
 
-                ratio = caches[FD].lookup(comb[0], comb[1], callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio())
+                ratio_name = caches[FILEDIFF].lookup(comb[0], comb[1], 'FileName' , callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio())
+                quick_ratio_content = caches[FILEDIFF].lookup(comb[0], comb[1], 'Content' , callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.read_bytes(), b_file.read_bytes()).real_quick_ratio())
 
-                group_result.append((comb[0], comb[1], f'Name {ratio}'))
+                group_result.append((comb[0], comb[1], ratio_name, quick_ratio_content))
             result[size] = group_result
          return result       
 
@@ -112,12 +113,12 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
 
     needsToDispose = False
     if caches is None:
-        caches = CacheGroup(FS, HASH, FD)
+        caches = CacheGroup(DIR, HASH, FILEDIFF)
         needsToDispose = True
 
     try: 
-        fs = caches[FS].lookup(str(working_dir), str(minLength), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
-        caches.close_and_remove(FS)
+        fs = caches[DIR].lookup(str(working_dir), str(minLength), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
+        caches.close_and_remove(DIR)
         doubles = find_doubles(fs)
 
         return doubles

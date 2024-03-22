@@ -1,8 +1,14 @@
 import difflib
+from pathlib import Path
 
-a = 'image_5656'
-b = 'image_5656(2)'
+a = 'C:\\Users\\matze\\OneDrive\\bilder\\icloud\\IMG_3439.HEIC'
+b = 'C:\\Users\\matze\\OneDrive\\bilder\\_lightroom\\2020-06-29\\IMG_3439.HEIC'
 
-r = difflib.SequenceMatcher(None, a,b).ratio()
-print(r)
+n = difflib.SequenceMatcher(None, a,b).ratio()
+print(n)
+
+
+c = difflib.SequenceMatcher(None, Path(a).read_bytes(), Path(b).read_bytes()).quick_ratio()
+print(c)
+
 
