@@ -105,8 +105,9 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
 
         for file, length in all:
 
-            items_for_length = groups.setdefault(length, [])
-            items_for_length.append(file)
+            if os.path.exists(file):
+                items_for_length = groups.setdefault(length, [])
+                items_for_length.append(file)
 
         groups = {key: items for key, items in groups.items() if len(items) > 1}   
         return groups 
