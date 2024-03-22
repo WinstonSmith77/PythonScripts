@@ -8,7 +8,7 @@ n = difflib.SequenceMatcher(None, a,b).ratio()
 print(n)
 
 
-c = difflib.SequenceMatcher(None, Path(a).read_bytes(), Path(b).read_bytes()).quick_ratio()
+c = difflib.SequenceMatcher(None, Path(a).read_bytes(), Path(b).read_bytes()).get_matching_blocks()
 print(c)
 
 
