@@ -9,6 +9,7 @@ from double_finder.cache import CacheGroup
 
 FS = '.fs'
 HASH = '.hash'
+FD =  '.fd'
 
 def dump_it(name, obj):
     path = Path(Path(__file__).parent, f'result_{name}_.json')
@@ -44,7 +45,10 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
             for comb in combinations:
                 a_file = Path(comb[0])
                 b_file = Path(comb[1])
-                group_result.append((str(a_file),str(b_file), difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio()))
+
+                ratio = caches[FD].lookup(comb[0], comb[1], callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio())
+
+                group_result.append((comb[0], comb[1], f'Name {ratio}'))
             result[size] = group_result
          return result       
 
@@ -108,7 +112,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
 
     needsToDispose = False
     if caches is None:
-        caches = CacheGroup(FS, HASH)
+        caches = CacheGroup(FS, HASH, FD)
         needsToDispose = True
 
     try: 
