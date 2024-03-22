@@ -3,6 +3,8 @@ import itertools
 from pathlib import Path
 import json
 import os
+import difflib
+
 from double_finder.cache import CacheGroup
 
 FS = '.fs'
@@ -34,6 +36,19 @@ def get_all_files(path : Path, pattern, minLength = 5 * 1024):
 
 def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
     
+    def possible_doubles_from_groups(groups):
+         result = {}
+         for size, files in groups.items():
+            group_result = []
+            combinations = itertools.combinations(files, 2)
+            for comb in combinations:
+                a_file = Path(comb[0])
+                b_file = Path(comb[1])
+                group_result.append((str(a_file),str(b_file), difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio()))
+            result[size] = group_result
+         return result       
+
+
     def doubles_from_groups(groups):
         new_result = {}
         for size, files in groups.items():
@@ -89,7 +104,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
                 groups[length].remove(double) 
 
 
-        return (doubles, groups)
+        return (doubles, groups, possible_doubles_from_groups(groups))
 
     needsToDispose = False
     if caches is None:

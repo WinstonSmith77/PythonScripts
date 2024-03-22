@@ -1,5 +1,8 @@
-from array import array
+import difflib
 
+a = 'image_5656'
+b = 'image_5656(2)'
 
-a = 'ab'.encode()
-print(a[1])
+r = difflib.SequenceMatcher(None, a,b).ratio()
+print(r)
+
