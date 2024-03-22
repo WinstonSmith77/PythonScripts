@@ -37,7 +37,7 @@ def get_all_files(path : Path, pattern, minLength = 5 * 1024):
 
 def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
     
-    def possible_doubles_from_groups(groups, min_Ratio = .95):
+    def possible_doubles_from_groups(groups, min_ratio_filr = .9, min_ratio_content = .999):
          results = {}
          for size, files in groups.items():
             group_result = []
@@ -56,9 +56,10 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
 
                 ratio_name = caches[FILEDIFF].lookup(comb[0], comb[1], 'FileName' , callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio())
                
-                if ratio_name > min_Ratio:
-                    quick_ratio_content = caches[FILEDIFF].lookup(comb[0], comb[1], 'Content' , callIfMissing= lambda : difflib.SequenceMatcher(None, get_blob(a_file),  get_blob(b_file)).quick_ratio(), forceSave= True)
-                    group_result.append((comb[0], comb[1], ratio_name, quick_ratio_content))
+                if ratio_name > min_ratio_filr:
+                    quick_ratio_content = caches[FILEDIFF].lookup(comb[0], comb[1], 'Content' , callIfMissing= lambda : difflib.SequenceMatcher(None, get_blob(a_file),  get_blob(b_file)).quick_ratio(), forceSave= len(group_result) % 20 == 0)
+                    if quick_ratio_content > min_ratio_content:
+                        group_result.append((comb[0], comb[1], ratio_name, quick_ratio_content))
             results[size] = group_result
 
             results = {key:value for key, value in results.items() if value}
