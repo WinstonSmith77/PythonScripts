@@ -57,7 +57,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
                 ratio_name = caches[FILEDIFF].lookup(comb[0], comb[1], 'FileName' , callIfMissing= lambda : difflib.SequenceMatcher(None, a_file.name, b_file.name).ratio())
                
                 if ratio_name > min_ratio_filr:
-                    quick_ratio_content = caches[FILEDIFF].lookup(comb[0], comb[1], 'Content' , callIfMissing= lambda : difflib.SequenceMatcher(None, get_blob(a_file),  get_blob(b_file)).quick_ratio(), forceSave= len(group_result) % 20 == 0)
+                    quick_ratio_content = caches[FILEDIFF].lookup(comb[0], comb[1], 'Content' , callIfMissing= lambda : difflib.SequenceMatcher(None, get_blob(a_file),  get_blob(b_file)).quick_ratio())
                     if quick_ratio_content > min_ratio_content:
                         group_result.append((comb[0], comb[1], ratio_name, quick_ratio_content))
             results[size] = group_result
@@ -68,6 +68,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
 
 
     def doubles_from_groups(groups):
+        count = 0
         new_result = {}
         for size, files in groups.items():
             inner_dict_size ={}
@@ -77,6 +78,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
                 a_file = comb[0]
                 b_file = comb[1]
                          
+                count += 1         
                 a_hash = caches[HASH].lookup(a_file, callIfMissing= lambda: get_hash_file(a_file)) 
                 b_hash = caches[HASH].lookup(b_file, callIfMissing= lambda: get_hash_file(b_file))   
 

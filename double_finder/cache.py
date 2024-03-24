@@ -1,5 +1,6 @@
 import pathlib
 import json
+from datetime import datetime
 
 
 class PassThroughCache:
@@ -19,6 +20,7 @@ class PassThroughCache:
 class Cache:
     def __init__(self, name) -> None:
         self._isDirty = False
+        self._lastSaved = datetime.now()
         self._path = pathlib.Path(pathlib.Path(__file__).parent, f'{name}.cache.json')
 
         if self._path.exists():
@@ -41,7 +43,7 @@ class Cache:
     def _make_key(self, *key_parts):
         return ",".join(key_parts)
 
-    def lookup(self, *key_parts, callIfMissing, forceSave = False):
+    def lookup(self, *key_parts, callIfMissing):
         key = self._make_key(*key_parts)
 
         if key in self._innerCache:
@@ -50,9 +52,8 @@ class Cache:
             new_entry = callIfMissing()
             self._innerCache[key] = new_entry
             self._isDirty = True
-            
-            if forceSave:
-                self.__save()
+
+            self.__save_if_needed()
             
             return new_entry
 
@@ -61,13 +62,16 @@ class Cache:
         return self
 
     def __exit__(self, type, value, tb):
-       self.__save()
+       self.__save_if_needed(True)
 
-    def __save(self):
-         if self._isDirty:
+    SAVEAFTER = 20   
+
+    def __save_if_needed(self, enforceSave = False):
+         if self._isDirty and (enforceSave or (datetime.now() - self._lastSaved).seconds > Cache.SAVEAFTER):
             with self._path.open(mode='w', encoding='utf-8') as f:
                 json.dump(self._innerCache, f, indent=2)
-            self._isDirty = False    
+            self._isDirty = False
+            self._lastSaved = datetime.now()    
             
 class CacheGroup:
     def __init__(self, *names, factory = Cache) -> None:
