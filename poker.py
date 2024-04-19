@@ -71,22 +71,24 @@ def get_hand_types(hand):
         return x.rank
 
     hand_by_rank =  sorted(hand, key= get_rank)
-    groups = [(k, list(g)) for k,g in groupby(hand_by_rank, key= get_rank)]
-    groups_with_length =  [(k, g, len(g)) for k,g in groups]
+    groups_cards = [(k, list(g)) for k,g in groupby(hand_by_rank, key= get_rank)]
+    len_groups = sorted([ len(g) for k , g in groups_cards], reverse=True)
 
-    has_pair = any(map(lambda x : x[2] == 2, groups_with_length))
-    has_three = any(map(lambda x : x[2] == 3, groups_with_length))
+    has_three = 3 in len_groups
+    has_pair =  2 in len_groups
+   
                                            
     if has_pair:
         result.add(HandType.PAIR)
     if has_three:
         result.add(HandType.THREE_OF_A_KIND)
+        #result.add(HandType.PAIR)
     if has_three and has_pair:
         result.add(HandType.FULL_HOUSE)
 
     return result    
 
-number = 1_000_000
+number = 500_000
 length = 5
 
 total = {
