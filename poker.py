@@ -19,7 +19,6 @@ class HandType(CardComponentBase):
     THREE_OF_A_KIND = 2,
     FULL_HOUSE = 3,
     FOUR_OF_A_KIND = 4
-   
 
 
 class Suit(CardComponentBase):
@@ -95,13 +94,7 @@ def get_hand_types(hand):
 number = 500_000
 length = 8
 
-total = {
-    HandType.HIGH : 0,
-    HandType.PAIR : 0,
-    HandType.THREE_OF_A_KIND : 0,
-    HandType.FULL_HOUSE : 0,
-    HandType.FOUR_OF_A_KIND : 0 
-         }
+total = {type : 0 for type in  HandType}
 
 for i in range(number):
 
