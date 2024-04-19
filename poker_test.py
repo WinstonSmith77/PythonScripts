@@ -4,8 +4,8 @@ import itertools
 
 
 class CardTests(unittest.TestCase):
-    cards_per_rank = 13
-    cards_per_suits = 4
+    cards_per_rank = len(Rank)
+    cards_per_suits = len(Suit)
     total_number_of_cards = cards_per_suits * cards_per_rank
     
     def test_number_of_distinct_cards(self):
