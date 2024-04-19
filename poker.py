@@ -15,7 +15,8 @@ class CardComponentBase(IntEnum):
 class HandType(CardComponentBase):
     HIGH = 0,
     PAIR = 1
-    THREE_OF_A_KIND = 2
+    THREE_OF_A_KIND = 2,
+    FULL_HOUSE = 3
    
 
 
@@ -71,23 +72,28 @@ def get_hand_types(hand):
 
     hand_by_rank =  sorted(hand, key= get_rank)
     groups = [(k, list(g)) for k,g in groupby(hand_by_rank, key= get_rank)]
+    groups_with_length =  [(k, g, len(g)) for k,g in groups]
 
-    has_pair = any(map(lambda x : len(x[1]) == 2, groups))
-    has_three = any(map(lambda x : len(x[1]) == 3, groups))
+    has_pair = any(map(lambda x : x[2] == 2, groups_with_length))
+    has_three = any(map(lambda x : x[2] == 3, groups_with_length))
                                            
     if has_pair:
         result.add(HandType.PAIR)
     if has_three:
         result.add(HandType.THREE_OF_A_KIND)
+    if has_three and has_pair:
+        result.add(HandType.FULL_HOUSE)
 
     return result    
 
-number = 100_000
+number = 1_000_000
 length = 5
 
 total = {
+    HandType.HIGH : 0,
     HandType.PAIR : 0,
-    HandType.THREE_OF_A_KIND : 0 
+    HandType.THREE_OF_A_KIND : 0,
+    HandType.FULL_HOUSE : 0 
          }
 
 for i in range(number):
