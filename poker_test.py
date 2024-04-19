@@ -1,22 +1,15 @@
-from poker import get_all_cards, Suit, Rank
+from poker import ALL_CARDS, SUITS, RANKS
 import unittest
 import itertools
 
 
 class CardTests(unittest.TestCase):
-    cards_per_rank = len(Rank)
-    cards_per_suits = len(Suit)
+    cards_per_rank = len(RANKS)
+    cards_per_suits = len(SUITS)
     total_number_of_cards = cards_per_suits * cards_per_rank
     
     def test_number_of_distinct_cards(self):
-        self.assertEqual(len(sorted(list(itertools.groupby(get_all_cards())))), CardTests.total_number_of_cards)
-
-    def test_number_of_suits(self):
-        self.assertEqual(len(Suit), CardTests.cards_per_suits)
-
-    def test_number_of_ranks(self):
-        self.assertEqual(len(Rank), CardTests.cards_per_rank)
-
+        self.assertEqual(len(sorted(list(itertools.groupby(ALL_CARDS)))), CardTests.total_number_of_cards)
 
 if __name__ == '__main__':
     unittest.main()

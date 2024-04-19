@@ -1,5 +1,6 @@
 from enum import IntEnum
 from random import choices
+from itertools import groupby
 from dataclasses import dataclass
 
 
@@ -9,6 +10,13 @@ class CardComponentBase(IntEnum):
 
     def __repr__(self):
         return str(self)
+
+
+class HandType(CardComponentBase):
+    HIGH = 0,
+    PAIR = 1
+    THREE_OF_A_KIND = 2
+   
 
 
 class Suit(CardComponentBase):
@@ -23,7 +31,7 @@ class Rank(CardComponentBase):
     THREE = 1,
     FOUR = 2,
     FIVE = 3,
-    SIXES = 4,
+    SIX = 4,
     SEVEN = 5,
     EIGHT = 6,
     NINE = 7,
@@ -32,10 +40,6 @@ class Rank(CardComponentBase):
     QUEEN = 10,
     KING = 11,
     ACE = 12
-
-
-suits = list(Suit)
-ranks = list(Rank)
 
 
 @dataclass(frozen=True, order=True)
@@ -49,13 +53,39 @@ class Card:
     def __repr__(self):
         return str(self)
 
+SUITS= list(Suit)
+RANKS = list(Rank)
 
-def get_all_cards():
-    all = [Card(rank=rank, suit=suit) for rank in ranks for suit in suits]
-    return all
+ALL_CARDS = [Card(rank=rank, suit=suit) for rank in RANKS for suit in SUITS]
 
 
-allCards = get_all_cards()
-for _ in range(10):
-    hand = sorted(choices(allCards, k=5), reverse=True)
-    print(hand)
+def get_hand(length):
+    result = choices(ALL_CARDS, k = length)
+    return result
+
+def get_hand_types(hand  : list):
+    result = {HandType.HIGH}
+
+    get_rank = lambda x : x.rank
+
+    hand_by_rank =  sorted(hand, key= get_rank)
+    print(hand_by_rank)
+    groups = [(k, list(g)) for k,g in groupby(hand_by_rank, key= get_rank)]
+
+    for rank, cards in groups:
+        if len(cards) >= 2:
+            result.add(HandType.PAIR)
+        if len(cards) >= 3:
+            result.add(HandType.THREE_OF_A_KIND)
+
+
+    print(groups)    
+
+    return result
+
+
+hand = get_hand(5)
+hand_types = get_hand_types(hand)
+
+print(hand)
+print(hand_types)
