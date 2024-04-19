@@ -2,6 +2,7 @@ from enum import IntEnum
 from random import choices
 from itertools import groupby
 from dataclasses import dataclass
+from  pprint import pprint
 
 
 class CardComponentBase(IntEnum):
@@ -16,7 +17,8 @@ class HandType(CardComponentBase):
     HIGH = 0,
     PAIR = 1
     THREE_OF_A_KIND = 2,
-    FULL_HOUSE = 3
+    FULL_HOUSE = 3,
+    FOUR_OF_A_KIND = 4
    
 
 
@@ -76,8 +78,8 @@ def get_hand_types(hand):
 
     has_three = 3 in len_groups
     has_pair =  2 in len_groups
-   
-                                           
+    has_four =  4 in len_groups
+
     if has_pair:
         result.add(HandType.PAIR)
     if has_three:
@@ -85,17 +87,20 @@ def get_hand_types(hand):
         #result.add(HandType.PAIR)
     if has_three and has_pair:
         result.add(HandType.FULL_HOUSE)
+    if has_four:
+        result.add(HandType.FOUR_OF_A_KIND)
 
     return result    
 
 number = 500_000
-length = 5
+length = 8
 
 total = {
     HandType.HIGH : 0,
     HandType.PAIR : 0,
     HandType.THREE_OF_A_KIND : 0,
-    HandType.FULL_HOUSE : 0 
+    HandType.FULL_HOUSE : 0,
+    HandType.FOUR_OF_A_KIND : 0 
          }
 
 for i in range(number):
@@ -106,4 +111,9 @@ for i in range(number):
     for type in total:
         total[type] += 1 if type in hand_types else 0
 
-print(total)
+for type in total:
+    total[type] = (total[type], total[type] / number)
+
+total = sorted(total.items(), key= lambda x: x[1][1])    
+
+pprint(total)
