@@ -63,29 +63,43 @@ def get_hand(length):
     result = choices(ALL_CARDS, k = length)
     return result
 
-def get_hand_types(hand  : list):
+def get_hand_types(hand):
     result = {HandType.HIGH}
 
-    get_rank = lambda x : x.rank
+    def get_rank(x):
+        return x.rank
 
     hand_by_rank =  sorted(hand, key= get_rank)
-    print(hand_by_rank)
     groups = [(k, list(g)) for k,g in groupby(hand_by_rank, key= get_rank)]
 
-    for rank, cards in groups:
-        if len(cards) >= 2:
-            result.add(HandType.PAIR)
-        if len(cards) >= 3:
-            result.add(HandType.THREE_OF_A_KIND)
+    has_pair = any(map(lambda x : len(x[1]) == 2, groups))
+    has_three = any(map(lambda x : len(x[1]) == 3, groups))
+                                           
+    if has_pair:
+        result.add(HandType.PAIR)
+    if has_three:
+        result.add(HandType.THREE_OF_A_KIND)
 
+    return result    
 
-    print(groups)    
+   
 
-    return result
+number = 100_000
+length = 5
 
+has_pair = 0
+has_three = 0
 
-hand = get_hand(5)
-hand_types = get_hand_types(hand)
+for i in range(number):
 
-print(hand)
-print(hand_types)
+    hand = get_hand(length)  
+    hand_types = get_hand_types(hand)
+
+    if HandType.PAIR in hand_types:
+        has_pair += 1
+
+    if HandType.THREE_OF_A_KIND in hand_types:
+        has_three += 1
+
+print(has_pair / number)
+print(has_three / number)
