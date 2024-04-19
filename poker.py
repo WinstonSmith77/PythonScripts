@@ -82,24 +82,20 @@ def get_hand_types(hand):
 
     return result    
 
-   
-
 number = 100_000
 length = 5
 
-has_pair = 0
-has_three = 0
+total = {
+    HandType.PAIR : 0,
+    HandType.THREE_OF_A_KIND : 0 
+         }
 
 for i in range(number):
 
     hand = get_hand(length)  
     hand_types = get_hand_types(hand)
 
-    if HandType.PAIR in hand_types:
-        has_pair += 1
+    for type in total:
+        total[type] += 1 if type in hand_types else 0
 
-    if HandType.THREE_OF_A_KIND in hand_types:
-        has_three += 1
-
-print(has_pair / number)
-print(has_three / number)
+print(total)
