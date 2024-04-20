@@ -47,10 +47,10 @@ class Rank(CardComponentBase):
 @dataclass(frozen=True, order=True)
 class Card:
     _subst_suits = {
-        Suit.HEARTS: ['♥'],
-        Suit.DIAMONDS: ['♦'],
-        Suit.CLUBS: ['♣'],
-        Suit.SPADES: ['♠']
+        Suit.HEARTS: ['♥','h'],
+        Suit.DIAMONDS: ['♦', 'd'],
+        Suit.CLUBS: ['♣', 'c'],
+        Suit.SPADES: ['♠','s']
         }
     
     _subst_ranks = {
