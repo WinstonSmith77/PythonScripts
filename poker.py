@@ -46,7 +46,14 @@ class Rank(CardComponentBase):
 
 @dataclass(frozen=True, order=True)
 class Card:
-    _subst_suits = {Suit.HEARTS: ['♡']}
+    _subst_suits = {
+        Suit.HEARTS: ['♥'],
+        Suit.DIAMONDS: ['♦'],
+        Suit.CLUBS: ['♣'],
+        Suit.SPADES: ['♠']
+        }
+    rank: Rank
+    rank: Rank
     rank: Rank
     suit: Suit
 
@@ -54,7 +61,7 @@ class Card:
         suit = self.suit
         suit = self._subst_suits.get(suit, [str(suit)])[0]
 
-        return f'({self.rank} {suit})'
+        return f'({suit} {self.rank})'
 
     def __repr__(self):
         return str(self)
