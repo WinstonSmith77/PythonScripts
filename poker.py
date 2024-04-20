@@ -52,16 +52,28 @@ class Card:
         Suit.CLUBS: ['♣'],
         Suit.SPADES: ['♠']
         }
-    rank: Rank
-    rank: Rank
+    
+    _subst_ranks = {
+        Rank.TWO: ['2'],
+        Rank.THREE: ['3'],
+        Rank.FOUR: ['4'],
+        Rank.FIVE: ['5'],
+        Rank.SIX: ['6'],
+        Rank.SEVEN: ['7'],
+        Rank.EIGHT: ['8'],
+        Rank.NINE: ['9'],
+        Rank.TEN: ['10'],
+        }
     rank: Rank
     suit: Suit
 
     def __str__(self):
         suit = self.suit
         suit = self._subst_suits.get(suit, [str(suit)])[0]
+        rank = self.rank
+        rank = self._subst_ranks.get(rank, [str(rank)[0]])[0]
 
-        return f'({suit} {self.rank})'
+        return f'({suit}{rank})'
 
     def __repr__(self):
         return str(self)
