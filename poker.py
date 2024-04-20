@@ -46,13 +46,13 @@ class Rank(CardComponentBase):
 
 @dataclass(frozen=True, order=True)
 class Card:
-    _subst_suits = {0: ['♡']}
+    _subst_suits = {Suit.HEARTS: ['♡']}
     rank: Rank
     suit: Suit
 
     def __str__(self):
         suit = self.suit
-        suit = self._subst_suits.get(int(suit), [str(suit)])[0]
+        suit = self._subst_suits.get(suit, [str(suit)])[0]
 
         return f'({self.rank} {suit})'
 
