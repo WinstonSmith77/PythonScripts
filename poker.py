@@ -46,11 +46,15 @@ class Rank(CardComponentBase):
 
 @dataclass(frozen=True, order=True)
 class Card:
+    _subst_suits = {0: ['♡']}
     rank: Rank
     suit: Suit
 
     def __str__(self):
-        return f'({self.rank} {self.suit})'
+        suit = self.suit
+        suit = self._subst_suits.get(int(suit), [str(suit)])[0]
+
+        return f'({self.rank} {suit})'
 
     def __repr__(self):
         return str(self)
@@ -91,7 +95,11 @@ def get_hand_types(hand):
 
     return result    
 
-number = 500_000
+
+for c in ALL_CARDS:
+    pprint(c)
+
+number = 5
 length = 8
 
 total = {type : 0 for type in  HandType}
