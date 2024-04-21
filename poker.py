@@ -77,6 +77,32 @@ class Card:
 
     def __repr__(self):
         return str(self)
+    
+    @staticmethod
+    def resubs(shortText, subs):
+          for enumValue, subsList in subs.items():
+            
+            if enumValue.name[0].lower ==  shortText:
+                return enumValue
+            
+            if shortText in subsList:
+               return enumValue
+            
+
+    @classmethod
+    def parse(cls, shortText : str):
+        shortText = shortText.strip('()')
+
+        suitText = shortText[0]
+        rankText = shortText[1:]
+        suitText = suitText.lower()
+        rankText = rankText.lower()
+
+        suit = Card.resubs(suitText, cls._subst_suits)
+        rank = Card.resubs(rankText, cls._subst_ranks)
+
+        return Card(rank, suit)
+                  
 
 SUITS= list(Suit)
 RANKS = list(Rank)
@@ -114,26 +140,29 @@ def get_hand_types(hand):
 
     return result    
 
+if __name__ == '__main__':
 
-for c in ALL_CARDS:
-    pprint(c)
+    for c in ALL_CARDS:
+        pprint(c)
 
-number = 5
-length = 8
+    pprint(Card.parse('h7'))    
 
-total = {type : 0 for type in  HandType}
+    number = 5
+    length = 8
 
-for i in range(number):
+    total = {type : 0 for type in  HandType}
 
-    hand = get_hand(length)  
-    hand_types = get_hand_types(hand)
+    for i in range(number):
+
+        hand = get_hand(length)  
+        hand_types = get_hand_types(hand)
+
+        for type in total:
+            total[type] += 1 if type in hand_types else 0
 
     for type in total:
-        total[type] += 1 if type in hand_types else 0
+        total[type] = (total[type], total[type] / number)
 
-for type in total:
-    total[type] = (total[type], total[type] / number)
+    total = sorted(total.items(), key= lambda x: x[1][1])    
 
-total = sorted(total.items(), key= lambda x: x[1][1])    
-
-pprint(total)
+    pprint(total)
