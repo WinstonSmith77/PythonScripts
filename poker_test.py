@@ -14,12 +14,9 @@ class CardTests(unittest.TestCase):
 
     def test_str_and_parse_works(self):
         for card in ALL_CARDS:
-            if card.suit == Suit.HEARTS and card.rank == Rank.JACK:
-                pass
             text = str(card)
-            pprint(text)
-           
             parsed = Card.parse(text)
+
             self.assertEqual(card, parsed)
 
 if __name__ == '__main__':
