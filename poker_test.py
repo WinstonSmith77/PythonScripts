@@ -1,4 +1,4 @@
-from poker import ALL_CARDS, SUITS, RANKS, Card
+from poker import ALL_CARDS, SUITS, RANKS, Card, Rank, Suit
 import unittest
 import itertools
 from pprint import pprint
@@ -14,10 +14,11 @@ class CardTests(unittest.TestCase):
 
     def test_str_and_parse_works(self):
         for card in ALL_CARDS:
+            if card.suit == Suit.HEARTS and card.rank == Rank.JACK:
+                pass
             text = str(card)
             pprint(text)
-            if len(text) < 2:
-                pass
+           
             parsed = Card.parse(text)
             self.assertEqual(card, parsed)
 

@@ -79,15 +79,13 @@ class Card:
         return str(self)
     
     @staticmethod
-    def resubs(shortText, subs):
-          for enumValue, subsList in subs.items():
-            
-            if enumValue.name[0].lower ==  shortText:
+    def resubs(enumType, shortText, subs):
+        for enumValue in enumType: 
+            if enumValue.name[0].lower() == shortText:
                 return enumValue
-            
-            if shortText in subsList:
-               return enumValue
-            
+            if enumValue in subs:
+                if shortText in subs[enumValue]:
+                    return enumValue
 
     @classmethod
     def parse(cls, shortText : str):
@@ -98,8 +96,8 @@ class Card:
         suitText = suitText.lower()
         rankText = rankText.lower()
 
-        suit = Card.resubs(suitText, cls._subst_suits)
-        rank = Card.resubs(rankText, cls._subst_ranks)
+        suit = Card.resubs(Suit, suitText, cls._subst_suits)
+        rank = Card.resubs(Rank, rankText, cls._subst_ranks)
 
         return Card(rank, suit)
                   
