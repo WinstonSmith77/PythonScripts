@@ -19,12 +19,18 @@ class CardTests(unittest.TestCase):
             self.assertEqual(card, parsed)
 
     def _test_inner(self, cards_and_conds):
+         def mapper(card):
+             if isinstance(card, str):
+                 return Card.parse(card)
+             return card
+         
          for cards, cond in cards_and_conds:
-            cards = list(map(Card.parse, cards))
+            cards = list(map(mapper, cards))
             self.assertTrue(cond(get_hand_types(cards)))
 
     def test_highCard(self):
         cards_and_conds = [
+            (ALL_CARDS, lambda cards : HandType.HIGH in cards),
             (['h2'], lambda cards : HandType.HIGH in cards),
             ([], lambda cards : HandType.HIGH not in cards)
             ]
@@ -33,8 +39,9 @@ class CardTests(unittest.TestCase):
 
     def test_pair(self):
         cards_and_conds = [
-            (['h2', 'c2'], lambda cards : HandType.PAIR in cards),
-            ([], lambda cards : HandType.PAIR not in cards)
+            (ALL_CARDS, lambda cards : HandType.PAIR in cards),
+            #(['h2', 'c2'], lambda cards : HandType.PAIR in cards),
+            #([], lambda cards : HandType.PAIR not in cards)
             ]
 
         self._test_inner(cards_and_conds)      

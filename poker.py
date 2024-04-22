@@ -126,9 +126,9 @@ def get_hand_types(hand):
     groups_cards = [(k, list(g)) for k, g in groupby(hand_by_rank, key=get_rank)]
     len_groups = sorted([len(g) for k, g in groups_cards], reverse=True)
 
-    has_three = 3 in len_groups
-    has_pair = 2 in len_groups
     has_four = 4 in len_groups
+    has_three = has_four or 3 in len_groups
+    has_pair = has_three or 2 in len_groups
 
     if has_pair:
         result.add(HandType.PAIR)
