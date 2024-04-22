@@ -86,7 +86,7 @@ class Card:
     def resubs(enumType, shortText, subs):
         for enumValue in enumType:
             if shortText.upper() in subs[enumValue]:
-                    return enumValue
+                return enumValue
 
     @classmethod
     def parse(cls, shortText: str):
@@ -140,7 +140,6 @@ def get_hand_types(hand):
 
 
 if __name__ == "__main__":
-
     for c in ALL_CARDS:
         pprint(c)
 
@@ -152,7 +151,6 @@ if __name__ == "__main__":
     total = {type: 0 for type in HandType}
 
     for i in range(number):
-
         hand = get_hand(length)
         hand_types = get_hand_types(hand)
 
