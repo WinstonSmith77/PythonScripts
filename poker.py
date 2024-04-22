@@ -116,6 +116,7 @@ def get_hand(length):
 
 
 def get_hand_types(hand):
+
     result = {HandType.HIGH} if hand else set()
 
     def get_rank(x):

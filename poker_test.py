@@ -40,4 +40,5 @@ class CardTests(unittest.TestCase):
         self._test_inner(cards_and_conds)      
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=1)
+git caw
