@@ -1,28 +1,27 @@
-import urllib
-import urllib.request
-from pprint import pprint
-import json
-import pathlib
+class Fibonacci_below:
+    def __init__(self, max):
+        self.max = max
 
-import mapbox_vector_tile
+    def __iter__(self):
+        self.first = self.second = 1
+        return self
 
-def dump_to_file_json(path, jsonData):
-   
-    with open(path, mode="w", encoding='utf8') as file:
-        json.dump(jsonData, file, indent=4)
-
-
-url = 'https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/6/33/20.pbf'
-tile = urllib.request.urlopen(url).read()
-
-data = mapbox_vector_tile.decode(tile)
-
-path = pathlib.Path(__file__)
-parent = path.parent
-file = pathlib.Path(parent, 'dump.json')
-
-dump_to_file_json(file, data)
+    def __next__(self):
+        to_return = self.first
+        if to_return >= self.max:
+            raise StopIteration
+        self.first, self.second = self.second, self.first + self.second 
+        return to_return  
 
 
 
+x = Fibonacci_below(5)
 
+for i in iter(x):
+    print(i)
+    break
+
+print('')
+
+for i in iter(x):
+    print(i)    
