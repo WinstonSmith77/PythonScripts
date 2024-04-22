@@ -18,15 +18,12 @@ class CardTests(unittest.TestCase):
 
             self.assertEqual(card, parsed)
 
-    def _test_inner(self, cards_and_conds, debug = False):
+    def _test_inner(self, cards_and_conds):
          def mapper(card):
              if isinstance(card, str):
                  return Card.parse(card)
              return card
-         
-         if debug:
-             pass
-         
+        
          for cards, cond in cards_and_conds:
             cards = list(map(mapper, cards))
             self.assertTrue(cond(get_hand_types(cards)))
@@ -59,7 +56,17 @@ class CardTests(unittest.TestCase):
             ([], lambda cards : typeToTest not in cards)
             ]
 
-        self._test_inner(cards_and_conds)          
+        self._test_inner(cards_and_conds)        
+
+    def test_four_of_a_kind(self):
+        typeToTest = HandType.FOUR_OF_A_KIND
+        cards_and_conds = [
+            (ALL_CARDS, lambda cards : typeToTest in cards),
+            (['h2', 'c2', 's2', 'D2'], lambda cards :typeToTest in cards),
+            ([], lambda cards : typeToTest not in cards)
+            ]
+
+        self._test_inner(cards_and_conds)              
 
 if __name__ == '__main__':
     unittest.main(verbosity=4)
