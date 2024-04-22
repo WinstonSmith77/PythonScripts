@@ -14,43 +14,43 @@ class CardComponentBase(IntEnum):
 
 
 class HandType(CardComponentBase):
-    HIGH = (0,)
+    HIGH = 0
     PAIR = 1
-    THREE_OF_A_KIND = (2,)
-    FULL_HOUSE = (3,)
+    THREE_OF_A_KIND = 2
+    FULL_HOUSE = 3
     FOUR_OF_A_KIND = 4
 
 
 class Suit(CardComponentBase):
-    HEARTS = (0,)
-    DIAMONDS = (1,)
-    CLUBS = (2,)
+    HEARTS = 0
+    DIAMONDS = 1
+    CLUBS = 2
     SPADES = 3
 
 
 class Rank(CardComponentBase):
-    TWO = (0,)
-    THREE = (1,)
-    FOUR = (2,)
-    FIVE = (3,)
-    SIX = (4,)
-    SEVEN = (5,)
-    EIGHT = (6,)
-    NINE = (7,)
-    TEN = (8,)
-    JACK = (9,)
-    QUEEN = (10,)
-    KING = (11,)
+    TWO = 0
+    THREE = 1
+    FOUR = 2
+    FIVE = 3
+    SIX = 4
+    SEVEN = 5
+    EIGHT = 6
+    NINE = 7
+    TEN = 8
+    JACK = 9
+    QUEEN = 10
+    KING = 11
     ACE = 12
 
 
 @dataclass(frozen=True, order=True)
 class Card:
     _subst_suits = {
-        Suit.HEARTS: ["♥", "h"],
-        Suit.DIAMONDS: ["♦", "d"],
-        Suit.CLUBS: ["♣", "c"],
-        Suit.SPADES: ["♠", "s"],
+        Suit.HEARTS: ["♥", "H"],
+        Suit.DIAMONDS: ["♦", "D"],
+        Suit.CLUBS: ["♣", "C"],
+        Suit.SPADES: ["♠", "S"],
     }
 
     _subst_ranks = {
@@ -63,6 +63,10 @@ class Card:
         Rank.EIGHT: ["8"],
         Rank.NINE: ["9"],
         Rank.TEN: ["10"],
+        Rank.JACK: ["J"],
+        Rank.KING: ["K"],
+        Rank.QUEEN: ["Q"],
+        Rank.ACE: ["A"],
     }
     rank: Rank
     suit: Suit
@@ -81,20 +85,15 @@ class Card:
     @staticmethod
     def resubs(enumType, shortText, subs):
         for enumValue in enumType:
-            if enumValue.name[0].lower() == shortText:
-                return enumValue
-            if enumValue in subs:
-                if shortText in subs[enumValue]:
+            if shortText.upper() in subs[enumValue]:
                     return enumValue
 
     @classmethod
     def parse(cls, shortText: str):
         shortText = shortText.strip("()")
 
-        suitText = shortText[0]
-        rankText = shortText[1:]
-        suitText = suitText.lower()
-        rankText = rankText.lower()
+        suitText = shortText[0].upper()
+        rankText = shortText[1:].upper()
 
         suit = Card.resubs(Suit, suitText, cls._subst_suits)
         rank = Card.resubs(Rank, rankText, cls._subst_ranks)
