@@ -20,11 +20,12 @@ class CardTests(unittest.TestCase):
 
     def _test_inner(self, cards_and_conds):
          for cards, cond in cards_and_conds:
+            cards = list(map(Card.parse, cards))
             self.assertTrue(cond(get_hand_types(cards)))
 
     def test_highCard(self):
         cards_and_conds = [
-            ([Card.parse('h2')], lambda cards : HandType.HIGH in cards),
+            (['h2'], lambda cards : HandType.HIGH in cards),
             ([], lambda cards : HandType.HIGH not in cards)
             ]
         
@@ -32,7 +33,7 @@ class CardTests(unittest.TestCase):
 
     def test_pair(self):
         cards_and_conds = [
-            ([Card.parse('h2'), Card.parse('c2')], lambda cards : HandType.PAIR in cards),
+            (['h2', 'c2'], lambda cards : HandType.PAIR in cards),
             ([], lambda cards : HandType.PAIR not in cards)
             ]
 

@@ -99,6 +99,9 @@ class Card:
         rank = Card.resubs(Rank, rankText, cls._subst_ranks)
 
         return Card(rank, suit)
+    
+    def __getattr__(self, name):
+        return self.parse(name)
 
 
 SUITS = list(Suit)
