@@ -127,12 +127,12 @@ def get_hand_types(hand):
     len_groups = sorted([len(g) for k, g in groups_cards], reverse=True)
 
     has_four = 4 in len_groups
-    has_three = has_four or 3 in len_groups
-    has_pair = has_three or 2 in len_groups
+    has_three = 3 in len_groups
+    has_pair =  2 in len_groups
 
-    if has_pair:
+    if has_pair or has_three or has_four:
         result.add(HandType.PAIR)
-    if has_three:
+    if has_three or has_four:
         result.add(HandType.THREE_OF_A_KIND)
         # result.add(HandType.PAIR)
     if has_three and has_pair:
