@@ -1,6 +1,7 @@
-from poker import ALL_CARDS, SUITS, RANKS, Card, Rank, Suit
+from poker import ALL_CARDS, SUITS, RANKS, Card, Rank, Suit, HandType, get_hand_types
 import unittest
 import itertools
+import pprint
 
 class CardTests(unittest.TestCase):
     cards_per_rank = len(RANKS)
@@ -16,6 +17,15 @@ class CardTests(unittest.TestCase):
             parsed = Card.parse(text)
 
             self.assertEqual(card, parsed)
+
+    def test_highCard(self):
+        cards_and_conds = [
+            ([Card.parse('h2')], lambda cards : HandType.HIGH in cards),
+            ([], lambda cards : HandType.HIGH not in cards)
+            ]
+
+        for cards, cond in cards_and_conds:
+            self.assertTrue(cond(get_hand_types(cards)))
 
 if __name__ == '__main__':
     unittest.main()
