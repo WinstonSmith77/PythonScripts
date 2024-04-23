@@ -123,7 +123,6 @@ def get_hand_types(hand):
 
     hand_by_rank = sorted(hand, key=get_rank)
     len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_rank, key=get_rank)])
- 
 
     found_at_least_ = {
         2: 0,
@@ -150,7 +149,7 @@ def get_hand_types(hand):
 
 if __name__ == "__main__":
     number = 500_000
-    length = 8
+    length = 5
 
     total = {type: 0 for type in HandType}
 
