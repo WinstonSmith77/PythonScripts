@@ -123,7 +123,6 @@ def get_hand_types(hand):
 
     hand_by_rank = sorted(hand, key=get_rank)
     len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_rank, key=get_rank)])
-  
     number_of_len = [(number, len(list(g))) for number, g in groupby(len_groups)]
 
     found_at_least_ = {
@@ -150,12 +149,7 @@ def get_hand_types(hand):
 
 
 if __name__ == "__main__":
-    for c in ALL_CARDS:
-        pprint(c)
-
-    pprint(Card.parse("h7"))
-
-    number = 5
+    number = 500_000
     length = 8
 
     total = {type: 0 for type in HandType}

@@ -73,6 +73,7 @@ class CardTests(unittest.TestCase):
         cards_and_conds = [
             (ALL_CARDS, lambda cards : typeToTest in cards),
             (['h2', 'c2', 's3', 'D3', 'h3'], lambda cards : typeToTest in cards),
+            (['h2', 'c2', 's3', 'D3', 'h3', 'h3'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
 
