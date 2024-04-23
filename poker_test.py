@@ -52,7 +52,7 @@ class CardTests(unittest.TestCase):
         typeToTest = HandType.THREE_OF_A_KIND
         cards_and_conds = [
             (ALL_CARDS, lambda cards : typeToTest in cards),
-            (['h2', 'c2', 's2'], lambda cards :typeToTest in cards),
+            (['h2', 'c2', 's2'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
 
@@ -62,8 +62,18 @@ class CardTests(unittest.TestCase):
         typeToTest = HandType.FOUR_OF_A_KIND
         cards_and_conds = [
             (ALL_CARDS, lambda cards : typeToTest in cards),
-            (['h2', 'c2', 's2', 'D2'], lambda cards :typeToTest in cards),
+            (['h2', 'c2', 's2', 'D2'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
+            ]
+
+        self._test_inner(cards_and_conds)     
+
+    def test_full_house(self):
+        typeToTest = HandType.FULL_HOUSE
+        cards_and_conds = [
+            (ALL_CARDS, lambda cards : typeToTest in cards),
+           # (['h2', 'c2', 's3', 'D3', 'h3'], lambda cards : typeToTest in cards),
+            #([], lambda cards : typeToTest not in cards)
             ]
 
         self._test_inner(cards_and_conds)              

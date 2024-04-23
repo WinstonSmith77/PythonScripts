@@ -116,7 +116,6 @@ def get_hand(length):
 
 
 def get_hand_types(hand):
-
     result = {HandType.HIGH} if hand else set()
 
     def get_rank(x):
@@ -125,19 +124,27 @@ def get_hand_types(hand):
     hand_by_rank = sorted(hand, key=get_rank)
     groups_cards = [(k, list(g)) for k, g in groupby(hand_by_rank, key=get_rank)]
     len_groups = sorted([len(g) for k, g in groups_cards], reverse=True)
+    number_of_len = [(number, len(list(g))) for number, g in groupby(len_groups)]
 
-    has_four = 4 in len_groups
-    has_three = 3 in len_groups
-    has_pair =  2 in len_groups
+    found_at_least_two = 0
+    found_at_least_three = 0
+    found_at_least_four = 0
 
-    if has_pair or has_three or has_four:
+    for _length, count in number_of_len:
+        if _length >=2:
+            found_at_least_two += count 
+        if _length >=3:
+            found_at_least_three += count 
+        if _length >=4:
+            found_at_least_four += count 
+
+    if found_at_least_two:
         result.add(HandType.PAIR)
-    if has_three or has_four:
-        result.add(HandType.THREE_OF_A_KIND)
-        # result.add(HandType.PAIR)
-    if has_three and has_pair:
+    if found_at_least_two > 2 and found_at_least_three:
         result.add(HandType.FULL_HOUSE)
-    if has_four:
+    if found_at_least_three:
+        result.add(HandType.THREE_OF_A_KIND)
+    if found_at_least_four:
         result.add(HandType.FOUR_OF_A_KIND)
 
     return result
