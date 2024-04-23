@@ -126,25 +126,24 @@ def get_hand_types(hand):
     len_groups = sorted([len(g) for k, g in groups_cards], reverse=True)
     number_of_len = [(number, len(list(g))) for number, g in groupby(len_groups)]
 
-    found_at_least_two = 0
-    found_at_least_three = 0
-    found_at_least_four = 0
+    found_at_least_ = {
+        2: 0,
+        3: 0,
+        4: 0
+        }
 
     for _length, count in number_of_len:
-        if _length >=2:
-            found_at_least_two += count 
-        if _length >=3:
-            found_at_least_three += count 
-        if _length >=4:
-            found_at_least_four += count 
-
-    if found_at_least_two:
+        for repeat in found_at_least_:
+            if _length >= repeat:
+                found_at_least_[repeat] += count
+       
+    if found_at_least_[2]:
         result.add(HandType.PAIR)
-    if found_at_least_two > 2 and found_at_least_three:
+    if found_at_least_[2] > 2 and found_at_least_[3]:
         result.add(HandType.FULL_HOUSE)
-    if found_at_least_three:
+    if found_at_least_[3]:
         result.add(HandType.THREE_OF_A_KIND)
-    if found_at_least_four:
+    if found_at_least_[4]:
         result.add(HandType.FOUR_OF_A_KIND)
 
     return result
