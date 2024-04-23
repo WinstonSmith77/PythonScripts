@@ -72,8 +72,8 @@ class CardTests(unittest.TestCase):
         typeToTest = HandType.FULL_HOUSE
         cards_and_conds = [
             (ALL_CARDS, lambda cards : typeToTest in cards),
-           # (['h2', 'c2', 's3', 'D3', 'h3'], lambda cards : typeToTest in cards),
-            #([], lambda cards : typeToTest not in cards)
+            (['h2', 'c2', 's3', 'D3', 'h3'], lambda cards : typeToTest in cards),
+            ([], lambda cards : typeToTest not in cards)
             ]
 
         self._test_inner(cards_and_conds)              

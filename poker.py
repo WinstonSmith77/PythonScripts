@@ -122,8 +122,8 @@ def get_hand_types(hand):
         return x.rank
 
     hand_by_rank = sorted(hand, key=get_rank)
-    groups_cards = [(k, list(g)) for k, g in groupby(hand_by_rank, key=get_rank)]
-    len_groups = sorted([len(g) for k, g in groups_cards], reverse=True)
+    len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_rank, key=get_rank)])
+  
     number_of_len = [(number, len(list(g))) for number, g in groupby(len_groups)]
 
     found_at_least_ = {
@@ -139,7 +139,7 @@ def get_hand_types(hand):
        
     if found_at_least_[2]:
         result.add(HandType.PAIR)
-    if found_at_least_[2] > 2 and found_at_least_[3]:
+    if found_at_least_[2] >= 2 and found_at_least_[3]:
         result.add(HandType.FULL_HOUSE)
     if found_at_least_[3]:
         result.add(HandType.THREE_OF_A_KIND)
