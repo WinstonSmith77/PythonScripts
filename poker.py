@@ -123,7 +123,7 @@ def get_hand_types(hand):
 
     hand_by_rank = sorted(hand, key=get_rank)
     len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_rank, key=get_rank)])
-    number_of_len = [(number, len(list(g))) for number, g in groupby(len_groups)]
+ 
 
     found_at_least_ = {
         2: 0,
@@ -131,10 +131,10 @@ def get_hand_types(hand):
         4: 0
         }
 
-    for _length, count in number_of_len:
+    for _length in len_groups:
         for repeat in found_at_least_:
             if _length >= repeat:
-                found_at_least_[repeat] += count
+                found_at_least_[repeat] += 1
        
     if found_at_least_[2]:
         result.add(HandType.PAIR)
