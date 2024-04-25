@@ -1,3 +1,5 @@
+from pprint import pprint
+
 text = "Hänger am Škoda. Mit øl!"
 
 def format_byte_array(bytes):
@@ -15,4 +17,4 @@ output = [
               for c in text]
 
 for item in output:
-    print(item)
+    pprint(item)

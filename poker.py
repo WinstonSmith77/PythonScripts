@@ -114,6 +114,17 @@ def get_hand(length):
     result = choices(ALL_CARDS, k=length)
     return result
 
+def find_len_groups(hand, key, found_at_least_length):
+    found_at_least_length = {length:0 for length in found_at_least_length}
+    hand_by_key = sorted(hand, key=key)
+    len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
+
+    for _length in len_groups:
+        for repeat in found_at_least_length:
+            if _length >= repeat:
+                found_at_least_length[repeat] += 1
+
+    return found_at_least_length            
 
 def get_hand_types(hand):
     result = {HandType.HIGH} if hand else set()
@@ -121,27 +132,16 @@ def get_hand_types(hand):
     def get_rank(x):
         return x.rank
 
-    hand_by_rank = sorted(hand, key=get_rank)
-    len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_rank, key=get_rank)])
-
-    found_at_least_ = {
-        2: 0,
-        3: 0,
-        4: 0
-        }
-
-    for _length in len_groups:
-        for repeat in found_at_least_:
-            if _length >= repeat:
-                found_at_least_[repeat] += 1
+    found_at_least_indice = [2,3,4]
+    found_at_least_indice=find_len_groups(hand, get_rank, found_at_least_indice)
        
-    if found_at_least_[2]:
+    if found_at_least_indice[2]:
         result.add(HandType.PAIR)
-    if found_at_least_[2] >= 2 and found_at_least_[3]:
+    if found_at_least_indice[2] >= 2 and found_at_least_indice[3]:
         result.add(HandType.FULL_HOUSE)
-    if found_at_least_[3]:
+    if found_at_least_indice[3]:
         result.add(HandType.THREE_OF_A_KIND)
-    if found_at_least_[4]:
+    if found_at_least_indice[4]:
         result.add(HandType.FOUR_OF_A_KIND)
 
     return result
