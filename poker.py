@@ -16,10 +16,11 @@ class CardComponentBase(IntEnum):
 class HandType(CardComponentBase):
     HIGH = 0
     PAIR = 1
-    THREE_OF_A_KIND = 2
-    FULL_HOUSE = 3
-    FLUSH = 4
-    FOUR_OF_A_KIND = 5
+    TWO_PAIR = 2
+    THREE_OF_A_KIND = 3
+    FULL_HOUSE = 4
+    FLUSH = 5
+    FOUR_OF_A_KIND = 6
 
 
 class Suit(CardComponentBase):
@@ -142,6 +143,8 @@ def get_hand_types(hand, highest_only=False):
         result.add(HandType.THREE_OF_A_KIND)
     if found_at_least_rank[4]:
         result.add(HandType.FOUR_OF_A_KIND)
+    if found_at_least_rank[2] >= 2:
+        result.add(HandType.TWO_PAIR)    
 
     found_at_least_suit = find_len_groups(hand, lambda c: c.suit, [5])
 
