@@ -77,7 +77,17 @@ class CardTests(unittest.TestCase):
             ([], lambda cards : typeToTest not in cards)
             ]
 
-        self._test_inner(cards_and_conds)              
+        self._test_inner(cards_and_conds)             
+
+    def test_flush(self):
+        typeToTest = HandType.FLUSH
+        cards_and_conds = [
+            (ALL_CARDS, lambda cards : typeToTest in cards),
+            (['h2', 'h3', 'h4', 'hq', 'ha'], lambda cards : typeToTest in cards),
+            ([], lambda cards : typeToTest not in cards)
+            ]
+
+        self._test_inner(cards_and_conds)                  
 
 if __name__ == '__main__':
     unittest.main(verbosity=4)
