@@ -100,7 +100,7 @@ class Card:
         rank = Card.resubs(Rank, rankText, cls._subst_ranks)
 
         return Card(rank, suit)
-    
+
     def __getattr__(self, name):
         return self.parse(name)
 
@@ -115,8 +115,9 @@ def get_hand(length):
     result = choices(ALL_CARDS, k=length)
     return result
 
+
 def find_len_groups(hand, key, found_at_least_length):
-    found_at_least_length = {length:0 for length in found_at_least_length}
+    found_at_least_length = {length: 0 for length in found_at_least_length}
     hand_by_key = sorted(hand, key=key)
     len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
 
@@ -125,13 +126,14 @@ def find_len_groups(hand, key, found_at_least_length):
             if _length >= repeat:
                 found_at_least_length[repeat] += 1
 
-    return found_at_least_length            
+    return found_at_least_length
 
-def get_hand_types(hand):
+
+def get_hand_types(hand, highest_only=False):
     result = {HandType.HIGH} if hand else set()
-  
-    found_at_least_rank=find_len_groups(hand, lambda c : c.rank, [2,3,4])
-       
+
+    found_at_least_rank = find_len_groups(hand, lambda c: c.rank, [2, 3, 4])
+
     if found_at_least_rank[2]:
         result.add(HandType.PAIR)
     if found_at_least_rank[2] >= 2 and found_at_least_rank[3]:
@@ -140,11 +142,16 @@ def get_hand_types(hand):
         result.add(HandType.THREE_OF_A_KIND)
     if found_at_least_rank[4]:
         result.add(HandType.FOUR_OF_A_KIND)
-  
-    found_at_least_suit=find_len_groups(hand,  lambda c : c.suit, [5])
+
+    found_at_least_suit = find_len_groups(hand, lambda c: c.suit, [5])
 
     if found_at_least_suit[5]:
-          result.add(HandType.FLUSH)
+        result.add(HandType.FLUSH)
+
+    if highest_only:
+        highest = sorted(result, reverse=True)[0]
+        result = set()
+        result.add(highest)
 
     return result
 
@@ -157,7 +164,7 @@ if __name__ == "__main__":
 
     for i in range(number):
         hand = get_hand(length)
-        hand_types = get_hand_types(hand)
+        hand_types = get_hand_types(hand, True)
 
         for type in total:
             total[type] += 1 if type in hand_types else 0
@@ -165,6 +172,6 @@ if __name__ == "__main__":
     for type in total:
         total[type] = (total[type], total[type] / number)
 
-    total = sorted(total.items(), key=lambda x: x[1][1])
+    total = sorted(total.items(), key=lambda x: x[1][1], reverse=True)
 
     pprint(total)
