@@ -18,8 +18,8 @@ class HandType(CardComponentBase):
     PAIR = 1
     THREE_OF_A_KIND = 2
     FULL_HOUSE = 3
-    FOUR_OF_A_KIND = 4
-    FLUSH = 5
+    FLUSH = 4
+    FOUR_OF_A_KIND = 5
 
 
 class Suit(CardComponentBase):
@@ -150,7 +150,7 @@ def get_hand_types(hand):
 
 
 if __name__ == "__main__":
-    number = 500_000
+    number = 1_000_000
     length = 5
 
     total = {type: 0 for type in HandType}
