@@ -19,6 +19,7 @@ class HandType(CardComponentBase):
     THREE_OF_A_KIND = 2
     FULL_HOUSE = 3
     FOUR_OF_A_KIND = 4
+    FLUSH = 5
 
 
 class Suit(CardComponentBase):
@@ -129,20 +130,27 @@ def find_len_groups(hand, key, found_at_least_length):
 def get_hand_types(hand):
     result = {HandType.HIGH} if hand else set()
 
-    def get_rank(x):
+    def get_rank(x : Card):
         return x.rank
-
-    found_at_least_indice = [2,3,4]
-    found_at_least_indice=find_len_groups(hand, get_rank, found_at_least_indice)
+  
+    found_at_least_rank=find_len_groups(hand, get_rank, [2,3,4])
        
-    if found_at_least_indice[2]:
+    if found_at_least_rank[2]:
         result.add(HandType.PAIR)
-    if found_at_least_indice[2] >= 2 and found_at_least_indice[3]:
+    if found_at_least_rank[2] >= 2 and found_at_least_rank[3]:
         result.add(HandType.FULL_HOUSE)
-    if found_at_least_indice[3]:
+    if found_at_least_rank[3]:
         result.add(HandType.THREE_OF_A_KIND)
-    if found_at_least_indice[4]:
+    if found_at_least_rank[4]:
         result.add(HandType.FOUR_OF_A_KIND)
+
+    def get_suit(x: Card):
+        return x.suit
+  
+    found_at_least_suit=find_len_groups(hand, get_suit, [5])
+
+    if found_at_least_suit[5]:
+          result.add(HandType.FLUSH)
 
     return result
 
