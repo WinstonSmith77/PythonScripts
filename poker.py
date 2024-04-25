@@ -158,7 +158,7 @@ def get_hand_types(hand, highest_only=False):
 
 if __name__ == "__main__":
     number = 1_000_000
-    length = 5
+    length = 8
 
     total = {type: 0 for type in HandType}
 
