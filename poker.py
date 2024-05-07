@@ -5,6 +5,22 @@ from dataclasses import dataclass
 from pprint import pprint
 
 from multiprocessing.pool import Pool
+import functools
+import time
+
+
+def benchmark(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = f(*args, **kwargs)
+        stop_time = time.time()
+        delta = stop_time - start_time
+        pprint(f"{f.__name__} Delta {delta}")
+        return result
+
+    return wrapper
+
 
 
 class CardComponentBase(IntEnum):
@@ -173,11 +189,15 @@ def doit(param):
 
     return total        
 
-def main():
-    number = 10_000
+@benchmark
+def to_bench():
+    total_number = 1_000_000
+    chunks = 50
+    per_chunks = total_number //chunks 
+
     length = 8
 
-    input = list(repeat((number, length), 200))
+    input = list(repeat((per_chunks, length), chunks))
     with  Pool() as pool :
         results = list(pool.map(doit,input))
 
@@ -189,15 +209,15 @@ def main():
     sum = 0
     for type in all_types:
         sum += all_types[type]
-        all_types[type] = (all_types[type], all_types[type] / number)
+        all_types[type] = (all_types[type], all_types[type] / total_number)
         
 
     all_types = sorted(all_types.items(), key=lambda x: x[1][1], reverse=True)
 
-    pprint(sum)
-    pprint(all_types)
+    pprint(sum, underscore_numbers=True)
+    pprint(all_types, underscore_numbers=True)
 
 if __name__ == "__main__":
-    main()
+    to_bench()
 
     
