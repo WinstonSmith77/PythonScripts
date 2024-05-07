@@ -191,13 +191,13 @@ def doit(param):
 
 @benchmark
 def to_bench():
-    total_number = 1_000_000
+    total_number = 2_000_000
     chunks = 50
     per_chunks = total_number //chunks 
 
-    length = 8
+    hand_size = 8
 
-    input = list(repeat((per_chunks, length), chunks))
+    input = list(repeat((per_chunks, hand_size), chunks))
     with  Pool() as pool :
         results = list(pool.map(doit,input))
 
