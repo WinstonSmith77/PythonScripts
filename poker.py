@@ -1,8 +1,10 @@
 from enum import IntEnum
 from random import choices
-from itertools import groupby
+from itertools import groupby, repeat
 from dataclasses import dataclass
 from pprint import pprint
+
+from multiprocessing.pool import Pool
 
 
 class CardComponentBase(IntEnum):
@@ -123,9 +125,9 @@ def find_len_groups(hand, key, found_at_least_length):
     len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
 
     for _length in len_groups:
-        for repeat in found_at_least_length:
-            if _length >= repeat:
-                found_at_least_length[repeat] += 1
+        for _repeat in found_at_least_length:
+            if _length >= _repeat:
+                found_at_least_length[_repeat] += 1
 
     return found_at_least_length
 
@@ -158,11 +160,8 @@ def get_hand_types(hand, highest_only=False):
 
     return result
 
-
-if __name__ == "__main__":
-    number = 1_000_000
-    length = 8
-
+def doit(param):
+    number, length = param
     total = {type: 0 for type in HandType}
 
     for i in range(number):
@@ -172,9 +171,33 @@ if __name__ == "__main__":
         for type in total:
             total[type] += 1 if type in hand_types else 0
 
-    for type in total:
-        total[type] = (total[type], total[type] / number)
+    return total        
 
-    total = sorted(total.items(), key=lambda x: x[1][1], reverse=True)
+def main():
+    number = 10_000
+    length = 8
 
-    pprint(total)
+    input = list(repeat((number, length), 200))
+    with  Pool() as pool :
+        results = list(pool.map(doit,input))
+
+    all_types = {hand:0 for hand in HandType}
+    for result in results:
+        for type in result:
+            all_types[type] += result[type]
+
+    sum = 0
+    for type in all_types:
+        sum += all_types[type]
+        all_types[type] = (all_types[type], all_types[type] / number)
+        
+
+    all_types = sorted(all_types.items(), key=lambda x: x[1][1], reverse=True)
+
+    pprint(sum)
+    pprint(all_types)
+
+if __name__ == "__main__":
+    main()
+
+    

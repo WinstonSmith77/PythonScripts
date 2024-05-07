@@ -1,7 +1,7 @@
-xrange = range(5)
+a = False
 
-adders = [lambda y, x = x : x + y  for x in xrange]
+print(bool(a))
 
+a = 'test'
 
-for i in xrange:
-    print(adders[i](10))
+print(bool(a))
