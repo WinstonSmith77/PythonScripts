@@ -191,8 +191,8 @@ def doit(param):
 
 @benchmark
 def to_bench():
-    total_number = 2_000_000
-    chunks = 50
+    total_number = 2_000_000 
+    chunks = 500
     per_chunks = total_number //chunks 
 
     hand_size = 8
