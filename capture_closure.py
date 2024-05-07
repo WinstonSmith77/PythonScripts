@@ -1,6 +1,14 @@
+from pprint import pprint
+
 xrange = range(5)
 
-adders = [lambda y, x = x : x + y  for x in xrange]
+def make_adder_freeze_x(x):
+    pprint(locals())
+    def adder(y):
+        return x + y
+    return adder
+
+adders = [make_adder_freeze_x(x)  for x in xrange]
 
 
 for i in xrange:
