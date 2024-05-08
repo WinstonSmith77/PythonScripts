@@ -22,7 +22,6 @@ def benchmark(f):
     return wrapper
 
 
-
 class CardComponentBase(IntEnum):
     def __str__(self):
         return self.name
@@ -162,7 +161,7 @@ def get_hand_types(hand, highest_only=False):
     if found_at_least_rank[4]:
         result.add(HandType.FOUR_OF_A_KIND)
     if found_at_least_rank[2] >= 2:
-        result.add(HandType.TWO_PAIR)    
+        result.add(HandType.TWO_PAIR)
 
     found_at_least_suit = find_len_groups(hand, lambda c: c.suit, [5])
 
@@ -176,6 +175,7 @@ def get_hand_types(hand, highest_only=False):
 
     return result
 
+
 def doit(param):
     number, length = param
     total = {type: 0 for type in HandType}
@@ -187,21 +187,25 @@ def doit(param):
         for type in total:
             total[type] += 1 if type in hand_types else 0
 
-    return total        
+    return total
+
 
 @benchmark
-def to_bench():
-    total_number = 2_000_000 
+def to_bench(use_parallel, scale = 1):
+    total_number = 2_000_000 //scale
     chunks = 500
-    per_chunks = total_number //chunks 
+    per_chunks = total_number // chunks
 
     hand_size = 8
 
     input = list(repeat((per_chunks, hand_size), chunks))
-    with  Pool() as pool :
-        results = list(pool.map(doit,input))
+    if use_parallel:
+        with Pool() as pool:
+            results = list(pool.map(doit, input))
+    else:
+        results = list(map(doit, input))
 
-    all_types = {hand:0 for hand in HandType}
+    all_types = {hand: 0 for hand in HandType}
     for result in results:
         for type in result:
             all_types[type] += result[type]
@@ -210,14 +214,14 @@ def to_bench():
     for type in all_types:
         sum += all_types[type]
         all_types[type] = (all_types[type], all_types[type] / total_number)
-        
 
     all_types = sorted(all_types.items(), key=lambda x: x[1][1], reverse=True)
 
+    pprint(f'Multiprocessing {use_parallel}')
     pprint(sum, underscore_numbers=True)
     pprint(all_types, underscore_numbers=True)
 
-if __name__ == "__main__":
-    to_bench()
 
-    
+if __name__ == "__main__":
+    to_bench(True, 10)
+    to_bench(False, 10)
