@@ -223,5 +223,5 @@ def to_bench(use_parallel, scale = 1):
 
 
 if __name__ == "__main__":
-    to_bench(True
+    to_bench(True)
     to_bench(False)
