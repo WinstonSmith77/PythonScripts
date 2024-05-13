@@ -129,51 +129,60 @@ RANKS = set(Rank)
 ALL_CARDS = [Card(rank=rank, suit=suit) for rank in RANKS for suit in SUITS]
 
 
-def get_hand(length, random):
-    result = random.choices(ALL_CARDS, k=length)
-    return result
+class HandUtils:
+    @classmethod
+    def get_hand(cls, length, random):
+        result = random.choices(ALL_CARDS, k=length)
+        return result
 
+    @classmethod
+    def find_len_groups(cls, hand, key, found_at_least_length):
+        found_at_least_length = {length: 0 for length in found_at_least_length}
+        hand_by_key = sorted(hand, key=key)
+        len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
 
-def find_len_groups(hand, key, found_at_least_length):
-    found_at_least_length = {length: 0 for length in found_at_least_length}
-    hand_by_key = sorted(hand, key=key)
-    len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
+        for _length in len_groups:
+            for _repeat in found_at_least_length:
+                if _length >= _repeat:
+                    found_at_least_length[_repeat] += 1
 
-    for _length in len_groups:
-        for _repeat in found_at_least_length:
-            if _length >= _repeat:
-                found_at_least_length[_repeat] += 1
+        return found_at_least_length
 
-    return found_at_least_length
+    flush = {5}
+    other = {2, 3, 4}
 
+    @classmethod
+    def get_hand_types(cls, hand, highest_only=False):
+        result = {HandType.HIGH} if hand else set()
 
-def get_hand_types(hand, highest_only=False):
-    result = {HandType.HIGH} if hand else set()
+        found_at_least_rank = HandUtils.find_len_groups(
+            hand, lambda c: c.rank, HandUtils.other
+        )
 
-    found_at_least_rank = find_len_groups(hand, lambda c: c.rank, {2, 3, 4})
+        if found_at_least_rank[2]:
+            result.add(HandType.PAIR)
+        if found_at_least_rank[2] >= 2 and found_at_least_rank[3]:
+            result.add(HandType.FULL_HOUSE)
+        if found_at_least_rank[3]:
+            result.add(HandType.THREE_OF_A_KIND)
+        if found_at_least_rank[4]:
+            result.add(HandType.FOUR_OF_A_KIND)
+        if found_at_least_rank[2] >= 2:
+            result.add(HandType.TWO_PAIR)
 
-    if found_at_least_rank[2]:
-        result.add(HandType.PAIR)
-    if found_at_least_rank[2] >= 2 and found_at_least_rank[3]:
-        result.add(HandType.FULL_HOUSE)
-    if found_at_least_rank[3]:
-        result.add(HandType.THREE_OF_A_KIND)
-    if found_at_least_rank[4]:
-        result.add(HandType.FOUR_OF_A_KIND)
-    if found_at_least_rank[2] >= 2:
-        result.add(HandType.TWO_PAIR)
+        found_at_least_suit = HandUtils.find_len_groups(
+            hand, lambda c: c.suit, HandUtils.flush
+        )
 
-    found_at_least_suit = find_len_groups(hand, lambda c: c.suit, {5})
+        if found_at_least_suit[5]:
+            result.add(HandType.FLUSH)
 
-    if found_at_least_suit[5]:
-        result.add(HandType.FLUSH)
+        if highest_only:
+            highest = sorted(result, reverse=True)[0]
+            result = set()
+            result.add(highest)
 
-    if highest_only:
-        highest = sorted(result, reverse=True)[0]
-        result = set()
-        result.add(highest)
-
-    return result
+        return result
 
 
 def doit(param):
@@ -182,8 +191,8 @@ def doit(param):
 
     ran = Random(seed)
     for _ in range(number):
-        hand = get_hand(length, ran)
-        hand_types = get_hand_types(hand, True)
+        hand = HandUtils.get_hand(length, ran)
+        hand_types = HandUtils.get_hand_types(hand, True)
 
         for type in total:
             total[type] += 1 if type in hand_types else 0
@@ -192,8 +201,8 @@ def doit(param):
 
 
 @benchmark
-def to_bench(use_parallel, scale = 1):
-    total_number = 2_000_000 //scale
+def to_bench(use_parallel, scale=1):
+    total_number = 2_000_000 // scale
     chunks = 500
     per_chunks = total_number // chunks
 
@@ -202,7 +211,7 @@ def to_bench(use_parallel, scale = 1):
     ran = Random(42)
 
     input = list(repeat((per_chunks, hand_size), chunks))
-    input = [(a,b, ran.random()) for a,b in input]
+    input = [(a, b, ran.random()) for a, b in input]
     if use_parallel:
         with Pool() as pool:
             results = list(pool.map(doit, input))
@@ -221,7 +230,7 @@ def to_bench(use_parallel, scale = 1):
 
     all_types = sorted(all_types.items(), key=lambda x: x[1][1], reverse=True)
 
-    pprint(f'Multiprocessing {use_parallel}')
+    pprint(f"Multiprocessing {use_parallel}")
     pprint(sum, underscore_numbers=True)
     pprint(all_types, underscore_numbers=True)
 
