@@ -1,5 +1,5 @@
 from enum import IntEnum
-from random import choices
+from random import Random
 from itertools import groupby, repeat
 from dataclasses import dataclass
 from pprint import pprint
@@ -123,14 +123,14 @@ class Card:
         return self.parse(name)
 
 
-SUITS = list(Suit)
-RANKS = list(Rank)
+SUITS = set(Suit)
+RANKS = set(Rank)
 
 ALL_CARDS = [Card(rank=rank, suit=suit) for rank in RANKS for suit in SUITS]
 
 
-def get_hand(length):
-    result = choices(ALL_CARDS, k=length)
+def get_hand(length, random):
+    result = random.choices(ALL_CARDS, k=length)
     return result
 
 
@@ -150,7 +150,7 @@ def find_len_groups(hand, key, found_at_least_length):
 def get_hand_types(hand, highest_only=False):
     result = {HandType.HIGH} if hand else set()
 
-    found_at_least_rank = find_len_groups(hand, lambda c: c.rank, [2, 3, 4])
+    found_at_least_rank = find_len_groups(hand, lambda c: c.rank, {2, 3, 4})
 
     if found_at_least_rank[2]:
         result.add(HandType.PAIR)
@@ -163,7 +163,7 @@ def get_hand_types(hand, highest_only=False):
     if found_at_least_rank[2] >= 2:
         result.add(HandType.TWO_PAIR)
 
-    found_at_least_suit = find_len_groups(hand, lambda c: c.suit, [5])
+    found_at_least_suit = find_len_groups(hand, lambda c: c.suit, {5})
 
     if found_at_least_suit[5]:
         result.add(HandType.FLUSH)
@@ -177,11 +177,12 @@ def get_hand_types(hand, highest_only=False):
 
 
 def doit(param):
-    number, length = param
+    number, length, seed = param
     total = {type: 0 for type in HandType}
 
-    for i in range(number):
-        hand = get_hand(length)
+    ran = Random(seed)
+    for _ in range(number):
+        hand = get_hand(length, ran)
         hand_types = get_hand_types(hand, True)
 
         for type in total:
@@ -198,7 +199,10 @@ def to_bench(use_parallel, scale = 1):
 
     hand_size = 8
 
+    ran = Random(42)
+
     input = list(repeat((per_chunks, hand_size), chunks))
+    input = [(a,b, ran.random()) for a,b in input]
     if use_parallel:
         with Pool() as pool:
             results = list(pool.map(doit, input))
