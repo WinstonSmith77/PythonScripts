@@ -123,10 +123,10 @@ class Card:
         return self.parse(name)
 
 
-SUITS = set(Suit)
-RANKS = set(Rank)
+SUITS = tuple(Suit)
+RANKS = tuple(Rank)
 
-ALL_CARDS = [Card(rank=rank, suit=suit) for rank in RANKS for suit in SUITS]
+ALL_CARDS = tuple([Card(rank=rank, suit=suit) for rank in RANKS for suit in SUITS])
 
 
 class HandUtils:
