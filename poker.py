@@ -171,12 +171,31 @@ class HandUtils:
         if found_at_least_rank[2] >= 2:
             result.add(HandType.TWO_PAIR)
 
+        hand_by_rank = sorted(hand, key=lambda c : c.rank)   
+        current_card = hand_by_rank[0]
+        length_straight = 1
+        is_straight = False
+       
+        for i in range(1, len(hand_by_rank)):
+            if hand_by_rank[i].rank.value  == current_card.rank.value + 1 :
+                length_straight += 1
+            else:
+                length_straight = 1
+            if length_straight == 5:
+                is_straight = True
+                break    
+            current_card = hand_by_rank[i]
+        
+        if is_straight:
+         result.add(HandType.STRAIGHT)      
+
         found_at_least_suit = HandUtils.find_len_groups(
             hand, lambda c: c.suit, HandUtils._flush_group_length
         )
 
         if found_at_least_suit[5]:
             result.add(HandType.FLUSH)
+
 
         if highest_only:
             highest = sorted(result, reverse=True)[0]
