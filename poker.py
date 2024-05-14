@@ -137,9 +137,9 @@ class HandUtils:
         return result
 
     @classmethod
-    def find_len_groups(cls, hand, key, found_at_least_length):
+    def find_len_groups(cls, hand_by_key, key, found_at_least_length):
         found_at_least_length = {length: 0 for length in found_at_least_length}
-        hand_by_key = sorted(hand, key=key)
+       
         len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
 
         for _length in len_groups:
@@ -156,8 +156,9 @@ class HandUtils:
     def get_hand_types(cls, hand, highest_only=False):
         result = {HandType.HIGH} if hand else set()
 
+        hand_by_rank = sorted(hand, key=lambda c : c.rank)   
         found_at_least_rank = HandUtils.find_len_groups(
-            hand, lambda c: c.rank, HandUtils._rank_group_lengths
+            hand_by_rank, lambda c: c.rank, HandUtils._rank_group_lengths
         )
 
         if found_at_least_rank[2]:
@@ -171,7 +172,7 @@ class HandUtils:
         if found_at_least_rank[2] >= 2:
             result.add(HandType.TWO_PAIR)
 
-        hand_by_rank = sorted(hand, key=lambda c : c.rank)   
+       
         current_card = hand_by_rank[0]
         length_straight = 1
         is_straight = False
@@ -189,8 +190,9 @@ class HandUtils:
         if is_straight:
          result.add(HandType.STRAIGHT)      
 
+        hand_by_suit = sorted(hand, key=lambda c : c.suit)   
         found_at_least_suit = HandUtils.find_len_groups(
-            hand, lambda c: c.suit, HandUtils._flush_group_length
+            hand_by_suit, lambda c: c.suit, HandUtils._flush_group_length
         )
 
         if found_at_least_suit[5]:
