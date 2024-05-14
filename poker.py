@@ -39,6 +39,8 @@ class HandType(CardComponentBase):
     FLUSH = 5
     FULL_HOUSE = 6
     FOUR_OF_A_KIND = 7
+    STRAIGHT_FLUSH = 8
+    ROYAL_FLUSH = 9
 
 
 class Suit(CardComponentBase):
@@ -188,7 +190,7 @@ class HandUtils:
             current_card = hand_by_rank[i]
         
         if is_straight:
-         result.add(HandType.STRAIGHT)      
+            result.add(HandType.STRAIGHT)      
 
         hand_by_suit = sorted(hand, key=lambda c : c.suit)   
         found_at_least_suit = HandUtils.find_len_groups(
@@ -197,7 +199,11 @@ class HandUtils:
 
         if found_at_least_suit[5]:
             result.add(HandType.FLUSH)
-
+            if is_straight:
+                result.add(HandType.STRAIGHT_FLUSH)      
+                if hand_by_rank[0].rank == Rank.TEN:
+                    result.add(HandType.ROYAL_FLUSH)        
+                    pprint(hand_by_rank)
 
         if highest_only:
             highest = sorted(result, reverse=True)[0]
