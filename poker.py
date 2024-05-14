@@ -35,9 +35,10 @@ class HandType(CardComponentBase):
     PAIR = 1
     TWO_PAIR = 2
     THREE_OF_A_KIND = 3
-    FULL_HOUSE = 4
+    STRAIGHT = 4
     FLUSH = 5
-    FOUR_OF_A_KIND = 6
+    FULL_HOUSE = 6
+    FOUR_OF_A_KIND = 7
 
 
 class Suit(CardComponentBase):
@@ -148,15 +149,15 @@ class HandUtils:
 
         return found_at_least_length
 
-    flush = {5}
-    other = {2, 3, 4}
+    _flush_group_length = {5}
+    _rank_group_lengths = {2, 3, 4}
 
     @classmethod
     def get_hand_types(cls, hand, highest_only=False):
         result = {HandType.HIGH} if hand else set()
 
         found_at_least_rank = HandUtils.find_len_groups(
-            hand, lambda c: c.rank, HandUtils.other
+            hand, lambda c: c.rank, HandUtils._rank_group_lengths
         )
 
         if found_at_least_rank[2]:
@@ -171,7 +172,7 @@ class HandUtils:
             result.add(HandType.TWO_PAIR)
 
         found_at_least_suit = HandUtils.find_len_groups(
-            hand, lambda c: c.suit, HandUtils.flush
+            hand, lambda c: c.suit, HandUtils._flush_group_length
         )
 
         if found_at_least_suit[5]:
