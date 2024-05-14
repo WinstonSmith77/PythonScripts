@@ -1,4 +1,4 @@
-from poker import ALL_CARDS, SUITS, RANKS, Card, Rank, Suit, HandType, get_hand_types
+from poker import ALL_CARDS, SUITS, RANKS, Card, HandType, HandUtils
 import unittest
 import itertools
 import pprint
@@ -26,7 +26,7 @@ class CardTests(unittest.TestCase):
         
          for cards, cond in cards_and_conds:
             cards = list(map(mapper, cards))
-            self.assertTrue(cond(get_hand_types(cards)))
+            self.assertTrue(cond(HandUtils.get_hand_types(cards)))
 
     def test_highCard(self):
         typeToTest = HandType.HIGH
