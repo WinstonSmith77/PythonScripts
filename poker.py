@@ -141,7 +141,7 @@ class HandUtils:
     @classmethod
     def find_len_groups(cls, hand_by_key, key, found_at_least_length):
         found_at_least_length = {length: 0 for length in found_at_least_length}
-       
+
         len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
 
         for _length in len_groups:
@@ -158,7 +158,7 @@ class HandUtils:
     def get_hand_types(cls, hand, highest_only=False):
         result = {HandType.HIGH} if hand else set()
 
-        hand_by_rank = sorted(hand, key=lambda c : c.rank)   
+        hand_by_rank = sorted(hand, key=lambda c: c.rank)
         found_at_least_rank = HandUtils.find_len_groups(
             hand_by_rank, lambda c: c.rank, HandUtils._rank_group_lengths
         )
@@ -176,27 +176,30 @@ class HandUtils:
 
         if hand_by_rank:
             last_card_rank_value = hand_by_rank[0].rank.value
-            length_straight = 1
+            length_of_straight = 1
             is_straight = False
-        
+
             for i in range(1, len(hand_by_rank)):
-                current_card_rank_value =  hand_by_rank[i].rank.value
+                current_card_rank_value = hand_by_rank[i].rank.value
 
                 if current_card_rank_value == last_card_rank_value:
-                    continue    
-                elif  current_card_rank_value  == last_card_rank_value + 1 :
-                    length_straight += 1
+                    continue
+                elif current_card_rank_value == last_card_rank_value + 1 or (
+                    last_card_rank_value == Rank.FIVE.value
+                    and current_card_rank_value == Rank.ACE.value
+                ):  # Ace as start of straight
+                    length_of_straight += 1
                 else:
-                    length_straight = 1
-                if length_straight == 5:
+                    length_of_straight = 1
+                if length_of_straight == 5:
                     is_straight = True
-                    break    
+                    break
                 last_card_rank_value = current_card_rank_value
-            
-            if is_straight:
-                result.add(HandType.STRAIGHT)      
 
-        hand_by_suit = sorted(hand, key=lambda c : c.suit)   
+            if is_straight:
+                result.add(HandType.STRAIGHT)
+
+        hand_by_suit = sorted(hand, key=lambda c: c.suit)
         found_at_least_suit = HandUtils.find_len_groups(
             hand_by_suit, lambda c: c.suit, HandUtils._flush_group_length
         )
@@ -204,9 +207,9 @@ class HandUtils:
         if found_at_least_suit[5]:
             result.add(HandType.FLUSH)
             if is_straight:
-                result.add(HandType.STRAIGHT_FLUSH)      
+                result.add(HandType.STRAIGHT_FLUSH)
                 if hand_by_rank[0].rank == Rank.TEN:
-                    result.add(HandType.ROYAL_FLUSH)        
+                    result.add(HandType.ROYAL_FLUSH)
                     pprint(hand_by_rank)
 
         if highest_only:

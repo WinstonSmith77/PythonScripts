@@ -96,7 +96,10 @@ class CardTests(unittest.TestCase):
         cards_and_conds = [
             (ALL_CARDS, lambda cards: type_2_expect in cards),
             (["h2", "c2", "s3", "D3", "h3"], lambda cards: type_2_expect in cards),
-            (["h2", "c2", "s3", "D3", "h3", "h3"], lambda cards: type_2_expect in cards),
+            (
+                ["h2", "c2", "s3", "D3", "h3", "h3"],
+                lambda cards: type_2_expect in cards,
+            ),
             ([], lambda cards: type_2_expect not in cards),
         ]
 
@@ -118,6 +121,7 @@ class CardTests(unittest.TestCase):
             (ALL_CARDS, lambda cards: type_2_expect in cards),
             (["h2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
             (["h2", "h3", "h4", "h5", "h7"], lambda cards: type_2_expect not in cards),
+            (["ha", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect in cards),
             ([], lambda cards: type_2_expect not in cards),
         ]
 
