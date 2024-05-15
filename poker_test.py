@@ -135,6 +135,7 @@ class CardTests(unittest.TestCase):
             (["c2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect not in cards),
             (["h2", "h3", "h4", "h5", "h7"], lambda cards: type_2_expect not in cards),
             (["ha", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect in cards),
+            (["h6", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect in cards),
         ]
         cards_and_conds += self._true_for_all_cards(type_2_expect)
 
