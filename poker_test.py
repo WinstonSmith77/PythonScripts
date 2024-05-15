@@ -117,7 +117,8 @@ class CardTests(unittest.TestCase):
         cards_and_conds = [
             (ALL_CARDS, lambda cards: type_2_expect in cards),
             (["h2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
-            #([], lambda cards: type_2_expect not in cards),
+            (["h2", "h3", "h4", "h5", "h7"], lambda cards: type_2_expect not in cards),
+            ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)

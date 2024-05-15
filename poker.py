@@ -175,19 +175,23 @@ class HandUtils:
             result.add(HandType.TWO_PAIR)
 
         if hand_by_rank:
-            current_card = hand_by_rank[0]
+            last_card_rank_value = hand_by_rank[0].rank.value
             length_straight = 1
             is_straight = False
         
             for i in range(1, len(hand_by_rank)):
-                if hand_by_rank[i].rank.value  == current_card.rank.value + 1 :
+                current_card_rank_value =  hand_by_rank[i].rank.value
+
+                if current_card_rank_value == last_card_rank_value:
+                    continue    
+                elif  current_card_rank_value  == last_card_rank_value + 1 :
                     length_straight += 1
                 else:
                     length_straight = 1
                 if length_straight == 5:
                     is_straight = True
                     break    
-                current_card = hand_by_rank[i]
+                last_card_rank_value = current_card_rank_value
             
             if is_straight:
                 result.add(HandType.STRAIGHT)      
