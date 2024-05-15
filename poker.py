@@ -154,9 +154,10 @@ class HandUtils:
     @classmethod
     def is_straight(cls, hand, check_flush=False):
         result = False
+        cards_in_straight = []
         if hand:
             last_card = hand[0]
-            length_of_straight = 1
+            cards_in_straight.append(last_card)
 
             for i in range(1, len(hand)):
                 current_card = hand[i]
@@ -174,15 +175,15 @@ class HandUtils:
                     )
                     and is_flush
                 ):  # Ace as start of straight
-                    length_of_straight += 1
+                    cards_in_straight.append(current_card)
                 else:
-                    length_of_straight = 1
-                if length_of_straight == 5:
+                    cards_in_straight = [current_card]
+                if len(cards_in_straight) == 5:
                     result = True
                     break
                 last_card = current_card
 
-        return result
+        return result, cards_in_straight
 
     _flush_group_length = {5}
     _rank_group_lengths = {2, 3, 4}
@@ -207,7 +208,7 @@ class HandUtils:
         if found_at_least_rank[2] >= 2:
             results.add(HandType.TWO_PAIR)
 
-        if cls.is_straight(hand_by_rank):
+        if cls.is_straight(hand_by_rank)[0]:
             results.add(HandType.STRAIGHT)
 
         hand_by_suit = sorted(hand, key=lambda c: c.suit)
@@ -219,8 +220,11 @@ class HandUtils:
             results.add(HandType.FLUSH)
 
         if HandType.FLUSH in results and HandType.STRAIGHT in results:
-            if cls.is_straight(hand_by_rank ,True):
+            is_straight_flush, cards = cls.is_straight(hand_by_rank, True)
+            if is_straight_flush:
                 results.add(HandType.STRAIGHT_FLUSH)
+                if cards[-1].rank == Rank.ACE and cards[-2].rank == Rank.KING:
+                    results.add(HandType.ROYAL_FLUSH)
 
         if highest_only:
             highest = sorted(results, reverse=True)[0]
