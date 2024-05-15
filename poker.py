@@ -7,6 +7,7 @@ from pprint import pprint
 from multiprocessing.pool import Pool
 import functools
 import time
+import cProfile
 
 
 def benchmark(f):
@@ -171,6 +172,7 @@ class HandUtils:
         result = False
         if hand_by_rank:
             last_card = hand_by_rank[0]
+            last_card_rank_value = last_card.rank.value
             length_straight = 1
 
             for i in range(1, len(hand_by_rank)):
@@ -184,9 +186,8 @@ class HandUtils:
 
                 current_card = hand_by_rank[i]
                 current_card_rank_value = current_card.rank.value
-                last_card_rank_value = last_card.rank.value
 
-                if current_card_rank_value == last_card.rank.value:
+                if current_card_rank_value == last_card_rank_value:
                     continue
                 elif current_card_rank_value == last_card_rank_value + 1 or (
                     last_card_rank_value == Rank.FIVE.value
@@ -199,6 +200,7 @@ class HandUtils:
                     result = True
                     break
                 last_card = current_card
+                last_card_rank_value = current_card_rank_value
 
         return result
 
@@ -298,5 +300,7 @@ def to_bench(use_parallel, scale=1):
 
 
 if __name__ == "__main__":
-    to_bench(True)
-    to_bench(False)
+    #to_bench(True)
+    #to_bench(False)
+
+    cProfile.run("to_bench(False, 10)", sort="tottime")
