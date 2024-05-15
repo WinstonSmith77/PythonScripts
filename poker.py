@@ -141,16 +141,14 @@ class HandUtils:
 
     @classmethod
     def find_len_groups(cls, hand_by_key, key, found_at_least_length):
-        found_at_least_length = {length: 0 for length in found_at_least_length}
+        len_groups = sorted([len(tuple(g)) for _, g in groupby(hand_by_key, key=key)])
 
-        len_groups = sorted([len(list(g)) for _, g in groupby(hand_by_key, key=key)])
+        result = {
+            number_of_repeats: sum(len_of_group >= number_of_repeats for len_of_group in len_groups)
+            for number_of_repeats in found_at_least_length
+        }
 
-        for _length in len_groups:
-            for _repeat in found_at_least_length:
-                if _length >= _repeat:
-                    found_at_least_length[_repeat] += 1
-
-        return found_at_least_length
+        return result
 
     @classmethod
     def split_suits(cls, hand_by_rank):
@@ -182,6 +180,7 @@ class HandUtils:
                 ):
                     length_straight = 1
                     last_card = hand_by_rank[i]
+                    last_card_rank_value = last_card.rank.value
                     continue
 
                 current_card = hand_by_rank[i]
@@ -205,9 +204,9 @@ class HandUtils:
         return result
 
     _order_royal_flush = tuple([Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE])
-    _flush_group_length = {5}
-    _rank_group_lengths = {2, 3, 4}
-    _len_flush = 5
+    _flush_group_length = tuple([5])
+    _rank_group_lengths = tuple({2, 3, 4})
+    
 
     @classmethod
     def get_hand_types(cls, hand, highest_only=False):
@@ -238,7 +237,8 @@ class HandUtils:
                 if cls.is_straight_flush_or_royal(cards_by_suit, royal=True):
                     results.add(HandType.ROYAL_FLUSH)
 
-        if any(map(lambda c: len(c) >= cls._len_flush, cards_by_suit)):
+        len_flush = 5
+        if any(map(lambda c: len(c) >= len_flush, cards_by_suit)):
             results.add(HandType.FLUSH)
 
         if highest_only:
@@ -300,7 +300,7 @@ def to_bench(use_parallel, scale=1):
 
 
 if __name__ == "__main__":
-    #to_bench(True)
-    #to_bench(False)
+    to_bench(True)
+    to_bench(False)
 
-    cProfile.run("to_bench(False, 10)", sort="tottime")
+    #cProfile.run("to_bench(False, 10)", sort="tottime")

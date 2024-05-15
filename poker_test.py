@@ -140,6 +140,18 @@ class CardTests(unittest.TestCase):
 
         self._test_inner(cards_and_conds)
 
+    def test_royal_flush(self):
+        type_2_expect = HandType.ROYAL_FLUSH
+        cards_and_conds = [
+            (["c2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect not in cards),
+            (["h2", "h3", "h4", "h5", "h7"], lambda cards: type_2_expect not in cards),
+            (["ha", "hk", "hq", "hj", "h10"], lambda cards: type_2_expect in cards),
+            #(["h6", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect in cards),
+        ]
+        cards_and_conds += self._true_for_all_cards(type_2_expect)
+
+        self._test_inner(cards_and_conds)    
+
 
 if __name__ == "__main__":
     unittest.main(
