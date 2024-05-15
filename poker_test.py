@@ -40,13 +40,12 @@ class CardTests(unittest.TestCase):
             self.assertEqual(card, parsed)
 
     def _true_for_all_cards(self, type_2_expect):
-         cards_and_conds = [
+        cards_and_conds = [
             (ALL_CARDS, lambda cards: type_2_expect in cards),
             ([], lambda cards: type_2_expect not in cards),
         ]
-         
-         return cards_and_conds
 
+        return cards_and_conds
 
     def _test_inner(self, cards_and_conds):
         def str_2_card(card):
@@ -139,11 +138,10 @@ class CardTests(unittest.TestCase):
         ]
         cards_and_conds += self._true_for_all_cards(type_2_expect)
 
-        self._test_inner(cards_and_conds)    
+        self._test_inner(cards_and_conds)
 
-       
-
-   
 
 if __name__ == "__main__":
-    unittest.main(verbosity=4,)
+    unittest.main(
+        verbosity=4,
+    )

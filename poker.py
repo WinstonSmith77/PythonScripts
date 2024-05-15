@@ -151,17 +151,19 @@ class HandUtils:
 
         return found_at_least_length
 
-
     @classmethod
     def split_suits(cls, hand_by_rank):
         def key_suit(card):
             return card.suit
-        sorted_by_suit= sorted(hand_by_rank, key=key_suit)
-        cards_by_suit =  tuple([tuple(v)  for _, v in groupby(sorted_by_suit, key=key_suit)])
+
+        sorted_by_suit = sorted(hand_by_rank, key=key_suit)
+        cards_by_suit = tuple(
+            [tuple(v) for _, v in groupby(sorted_by_suit, key=key_suit)]
+        )
         return cards_by_suit
 
     @classmethod
-    def is_straight_flush_or_royal(cls, cards_by_suit,*,  royal=False):
+    def is_straight_flush_or_royal(cls, cards_by_suit, *, royal=False):
         return any(cls.is_straight(cards, royal) for cards in cards_by_suit)
 
     @classmethod
@@ -172,11 +174,14 @@ class HandUtils:
             length_straight = 1
 
             for i in range(1, len(hand_by_rank)):
-                if royal and last_card.rank != cls._order_royal_flush[length_straight - 1]:
+                if (
+                    royal
+                    and last_card.rank != cls._order_royal_flush[length_straight - 1]
+                ):
                     length_straight = 1
                     last_card = hand_by_rank[i]
                     continue
-                
+
                 current_card = hand_by_rank[i]
                 current_card_rank_value = current_card.rank.value
                 last_card_rank_value = last_card.rank.value
@@ -222,13 +227,13 @@ class HandUtils:
         if found_at_least_rank[2] >= 2:
             results.add(HandType.TWO_PAIR)
 
-        cards_by_suit = cls.split_suits(hand_by_rank)    
+        cards_by_suit = cls.split_suits(hand_by_rank)
 
         if cls.is_straight(hand_by_rank):
             results.add(HandType.STRAIGHT)
             if cls.is_straight_flush_or_royal(cards_by_suit):
                 results.add(HandType.STRAIGHT_FLUSH)
-                if cls.is_straight_flush_or_royal(cards_by_suit, royal= True):
+                if cls.is_straight_flush_or_royal(cards_by_suit, royal=True):
                     results.add(HandType.ROYAL_FLUSH)
 
         if any(map(lambda c: len(c) >= cls._len_flush, cards_by_suit)):
