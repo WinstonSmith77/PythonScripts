@@ -15,11 +15,14 @@ class CardTests(unittest.TestCase):
 
         result = []
         
-        for cards, cond in cards_and_conds:
-            for i in range(number_of_shuffle):
-                cards_clone = list(cards)
-                random.shuffle(cards_clone)
-                result.append((cards_clone, cond))
+        for hand, cond in cards_and_conds:
+            clones = set()
+            for _ in range(number_of_shuffle):
+                hand_clone = list(hand)
+                random.shuffle(hand_clone)
+                clones.add(tuple(hand_clone))
+            for hand_clone_distinct in clones:
+                result.append((hand_clone_distinct, cond))
 
         return result    
 
