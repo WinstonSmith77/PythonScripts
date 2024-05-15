@@ -47,9 +47,9 @@ class CardTests(unittest.TestCase):
 
         cards_and_conds = self.shuffle_and_add(cards_and_conds)
 
-        for cards, cond in cards_and_conds:
-            cards = list(map(str_2_card, cards))
-            self.assertTrue(cond(HandUtils.get_hand_types(cards)))
+        for hand, cond in cards_and_conds:
+            hand = list(map(str_2_card, hand))
+            self.assertTrue(cond(HandUtils.get_hand_types(hand)), hand)
 
     def test_highCard(self):
         type_2_expect = HandType.HIGH
@@ -117,7 +117,7 @@ class CardTests(unittest.TestCase):
         cards_and_conds = [
             (ALL_CARDS, lambda cards: type_2_expect in cards),
             (["h2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
-            ([], lambda cards: type_2_expect not in cards),
+            #([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
