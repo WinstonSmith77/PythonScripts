@@ -129,19 +129,9 @@ class CardTests(unittest.TestCase):
 
         self._test_inner(cards_and_conds)
 
-    def test_straight_flush(self):
-        type_2_expect = HandType.STRAIGHT_FLUSH
-        cards_and_conds = [
-            (["h2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
-            (["h2", "h3", "h4", "h5", "h7"], lambda cards: type_2_expect not in cards),
-            (["ha", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect in cards),
-            (["ca", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect not in cards),
-            (["c2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect not in cards),
-        ]
-        cards_and_conds += self._true_for_all_cards(type_2_expect)
+       
 
-        self._test_inner(cards_and_conds)    
-
+   
 
 if __name__ == "__main__":
     unittest.main(verbosity=4)
