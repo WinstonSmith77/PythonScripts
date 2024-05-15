@@ -1,6 +1,7 @@
 from poker import ALL_CARDS, SUITS, RANKS, Card, HandType, HandUtils
 import unittest
 import itertools
+from random import Random
 import pprint
 
 class CardTests(unittest.TestCase):
@@ -8,6 +9,20 @@ class CardTests(unittest.TestCase):
     cards_per_suits = len(SUITS)
     total_number_of_cards = cards_per_suits * cards_per_rank
     
+    def shuffle_and_add(self, cards_and_conds, random = None, number_of_shuffle = 100):
+        if not random:
+            random = Random(42)
+
+        result = []
+        
+        for cards, cond in cards_and_conds:
+            for i in range(number_of_shuffle):
+                cards_clone = list(cards)
+                random.shuffle(cards_clone)
+                result.append((cards_clone, cond))
+
+        return result    
+
     def test_number_of_distinct_cards(self):
         self.assertEqual(len(sorted(list(itertools.groupby(ALL_CARDS)))), CardTests.total_number_of_cards)
 
@@ -35,6 +50,7 @@ class CardTests(unittest.TestCase):
             (['h2'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
+        cards_and_conds = self.shuffle_and_add(cards_and_conds)
         
         self._test_inner(cards_and_conds)
 
@@ -45,6 +61,7 @@ class CardTests(unittest.TestCase):
             (['h2', 'c2'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
+        cards_and_conds = self.shuffle_and_add(cards_and_conds)
 
         self._test_inner(cards_and_conds)      
 
@@ -55,6 +72,7 @@ class CardTests(unittest.TestCase):
             (['h2', 'c2', 's2'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
+        cards_and_conds = self.shuffle_and_add(cards_and_conds)
 
         self._test_inner(cards_and_conds)        
 
@@ -65,6 +83,7 @@ class CardTests(unittest.TestCase):
             (['h2', 'c2', 's2', 'D2'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
+        cards_and_conds = self.shuffle_and_add(cards_and_conds)
 
         self._test_inner(cards_and_conds)     
 
@@ -76,6 +95,7 @@ class CardTests(unittest.TestCase):
             (['h2', 'c2', 's3', 'D3', 'h3', 'h3'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
+        cards_and_conds = self.shuffle_and_add(cards_and_conds)
 
         self._test_inner(cards_and_conds)             
 
@@ -86,6 +106,7 @@ class CardTests(unittest.TestCase):
             (['h2', 'h3', 'h4', 'hq', 'ha'], lambda cards : typeToTest in cards),
             ([], lambda cards : typeToTest not in cards)
             ]
+        cards_and_conds = self.shuffle_and_add(cards_and_conds)
 
         self._test_inner(cards_and_conds)                  
 
