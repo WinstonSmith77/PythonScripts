@@ -39,7 +39,7 @@ class HandType(CardComponentBase):
     FLUSH = 5
     FULL_HOUSE = 6
     FOUR_OF_A_KIND = 7
-    # STRAIGHT_FLUSH = 8
+    STRAIGHT_FLUSH = 8
     # ROYAL_FLUSH = 9
 
 
@@ -154,6 +154,13 @@ class HandUtils:
     # _order_royal_flush = tuple(Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE)
 
     @classmethod
+    def is_straight_flush(cls, hand_by_rank):
+        sorted_by_suit= sorted(hand_by_rank, key=lambda c: c.suit)
+        cards_by_suit =  [list(v)  for _, v in groupby(sorted_by_suit, key=lambda c: c.suit)]
+        return any(cls.is_straight(cards) for cards in cards_by_suit)
+
+
+    @classmethod
     def is_straight(cls, hand_by_rank):
         result = False
         if hand_by_rank:
@@ -206,6 +213,8 @@ class HandUtils:
 
         if cls.is_straight(hand_by_rank):
             results.add(HandType.STRAIGHT)
+            if cls.is_straight_flush(hand_by_rank):
+                results.add(HandType.STRAIGHT_FLUSH)
 
         hand_by_suit = sorted(hand, key=lambda c: c.suit)
         found_at_least_suit = cls.find_len_groups(
