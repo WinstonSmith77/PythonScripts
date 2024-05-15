@@ -152,12 +152,11 @@ class HandUtils:
         return found_at_least_length
 
     @classmethod
-    def get_straight(cls, hand, check_flush=False):
-        result = set()
+    def is_straight(cls, hand, check_flush=False):
+        result = False
         if hand:
             last_card = hand[0]
             length_of_straight = 1
-            is_straight = False
 
             for i in range(1, len(hand)):
                 current_card = hand[i]
@@ -167,20 +166,22 @@ class HandUtils:
 
                 if current_card_rank_value == last_card.rank.value and is_flush:
                     continue
-                elif current_card_rank_value == last_card_rank_value + 1 or (
-                    last_card_rank_value == Rank.FIVE.value
-                    and current_card_rank_value == Rank.ACE.value
-                ) and is_flush:  # Ace as start of straight
+                elif (
+                    current_card_rank_value == last_card_rank_value + 1
+                    or (
+                        last_card_rank_value == Rank.FIVE.value
+                        and current_card_rank_value == Rank.ACE.value
+                    )
+                    and is_flush
+                ):  # Ace as start of straight
                     length_of_straight += 1
                 else:
                     length_of_straight = 1
                 if length_of_straight == 5:
-                    is_straight = True
+                    result = True
                     break
                 last_card = current_card
 
-            if is_straight:
-                result.add(HandType.STRAIGHT_FLUSH if check_flush else HandType.STRAIGHT)
         return result
 
     _flush_group_length = {5}
@@ -206,7 +207,8 @@ class HandUtils:
         if found_at_least_rank[2] >= 2:
             results.add(HandType.TWO_PAIR)
 
-        results = results.union(cls.get_straight(hand_by_rank))
+        if cls.is_straight(hand_by_rank):
+            results.add(HandType.STRAIGHT)
 
         hand_by_suit = sorted(hand, key=lambda c: c.suit)
         found_at_least_suit = cls.find_len_groups(
@@ -217,7 +219,8 @@ class HandUtils:
             results.add(HandType.FLUSH)
 
         if HandType.FLUSH in results and HandType.STRAIGHT in results:
-            results = results.union(cls.get_straight(hand_by_rank, True))
+            if cls.is_straight(hand_by_rank ,True):
+                results.add(HandType.STRAIGHT_FLUSH)
 
         if highest_only:
             highest = sorted(results, reverse=True)[0]
