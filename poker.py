@@ -154,14 +154,14 @@ class HandUtils:
     # _order_royal_flush = tuple(Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE)
 
     @classmethod
-    def is_straight(cls, hand):
+    def is_straight(cls, hand_by_rank):
         result = False
-        if hand:
-            last_card = hand[0]
+        if hand_by_rank:
+            last_card = hand_by_rank[0]
             length_straight = 1
 
-            for i in range(1, len(hand)):
-                current_card = hand[i]
+            for i in range(1, len(hand_by_rank)):
+                current_card = hand_by_rank[i]
                 current_card_rank_value = current_card.rank.value
                 last_card_rank_value = last_card.rank.value
 
