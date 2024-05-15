@@ -44,7 +44,7 @@ class CardTests(unittest.TestCase):
             if isinstance(card, str):
                 return Card.parse(card)
             return card
-        
+
         cards_and_conds = self.shuffle_and_add(cards_and_conds)
 
         for cards, cond in cards_and_conds:
@@ -52,62 +52,72 @@ class CardTests(unittest.TestCase):
             self.assertTrue(cond(HandUtils.get_hand_types(cards)))
 
     def test_highCard(self):
-        typeToTest = HandType.HIGH
+        type_2_expect = HandType.HIGH
         cards_and_conds = [
-            (ALL_CARDS, lambda cards: typeToTest in cards),
-            (["h2"], lambda cards: typeToTest in cards),
-            ([], lambda cards: typeToTest not in cards),
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2"], lambda cards: type_2_expect in cards),
+            ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
 
     def test_pair(self):
-        typeToTest = HandType.PAIR
+        type_2_expect = HandType.PAIR
         cards_and_conds = [
-            (ALL_CARDS, lambda cards: typeToTest in cards),
-            (["h2", "c2"], lambda cards: typeToTest in cards),
-            ([], lambda cards: typeToTest not in cards),
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2", "c2"], lambda cards: type_2_expect in cards),
+            ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
 
     def test_three_of_a_kind(self):
-        typeToTest = HandType.THREE_OF_A_KIND
+        type_2_expect = HandType.THREE_OF_A_KIND
         cards_and_conds = [
-            (ALL_CARDS, lambda cards: typeToTest in cards),
-            (["h2", "c2", "s2"], lambda cards: typeToTest in cards),
-            ([], lambda cards: typeToTest not in cards),
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2", "c2", "s2"], lambda cards: type_2_expect in cards),
+            ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
 
     def test_four_of_a_kind(self):
-        typeToTest = HandType.FOUR_OF_A_KIND
+        type_2_expect = HandType.FOUR_OF_A_KIND
         cards_and_conds = [
-            (ALL_CARDS, lambda cards: typeToTest in cards),
-            (["h2", "c2", "s2", "D2"], lambda cards: typeToTest in cards),
-            ([], lambda cards: typeToTest not in cards),
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2", "c2", "s2", "D2"], lambda cards: type_2_expect in cards),
+            ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
 
     def test_full_house(self):
-        typeToTest = HandType.FULL_HOUSE
+        type_2_expect = HandType.FULL_HOUSE
         cards_and_conds = [
-            (ALL_CARDS, lambda cards: typeToTest in cards),
-            (["h2", "c2", "s3", "D3", "h3"], lambda cards: typeToTest in cards),
-            (["h2", "c2", "s3", "D3", "h3", "h3"], lambda cards: typeToTest in cards),
-            ([], lambda cards: typeToTest not in cards),
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2", "c2", "s3", "D3", "h3"], lambda cards: type_2_expect in cards),
+            (["h2", "c2", "s3", "D3", "h3", "h3"], lambda cards: type_2_expect in cards),
+            ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
 
     def test_flush(self):
-        typeToTest = HandType.FLUSH
+        type_2_expect = HandType.FLUSH
         cards_and_conds = [
-            (ALL_CARDS, lambda cards: typeToTest in cards),
-            (["h2", "h3", "h4", "hq", "ha"], lambda cards: typeToTest in cards),
-            ([], lambda cards: typeToTest not in cards),
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2", "h3", "h4", "hq", "ha"], lambda cards: type_2_expect in cards),
+            ([], lambda cards: type_2_expect not in cards),
+        ]
+
+        self._test_inner(cards_and_conds)
+
+    def test_straight(self):
+        type_2_expect = HandType.STRAIGHT
+        cards_and_conds = [
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
+            ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
