@@ -151,29 +151,9 @@ class HandUtils:
 
         return found_at_least_length
 
-    _flush_group_length = {5}
-    _rank_group_lengths = {2, 3, 4}
-
     @classmethod
-    def get_hand_types(cls, hand, highest_only=False):
-        result = {HandType.HIGH} if hand else set()
-
-        hand_by_rank = sorted(hand, key=lambda c: c.rank)
-        found_at_least_rank = HandUtils.find_len_groups(
-            hand_by_rank, lambda c: c.rank, HandUtils._rank_group_lengths
-        )
-
-        if found_at_least_rank[2]:
-            result.add(HandType.PAIR)
-        if found_at_least_rank[2] >= 2 and found_at_least_rank[3]:
-            result.add(HandType.FULL_HOUSE)
-        if found_at_least_rank[3]:
-            result.add(HandType.THREE_OF_A_KIND)
-        if found_at_least_rank[4]:
-            result.add(HandType.FOUR_OF_A_KIND)
-        if found_at_least_rank[2] >= 2:
-            result.add(HandType.TWO_PAIR)
-
+    def get_straight(cls, hand_by_rank):
+        result = set()
         if hand_by_rank:
             last_card_rank_value = hand_by_rank[0].rank.value
             length_of_straight = 1
@@ -198,19 +178,41 @@ class HandUtils:
 
             if is_straight:
                 result.add(HandType.STRAIGHT)
+        return result    
+        
+    _flush_group_length = {5}
+    _rank_group_lengths = {2, 3, 4}
+
+    @classmethod
+    def get_hand_types(cls, hand, highest_only=False):
+        result = {HandType.HIGH} if hand else set()
+
+        hand_by_rank = sorted(hand, key=lambda c: c.rank)
+        found_at_least_rank = cls.find_len_groups(
+            hand_by_rank, lambda c: c.rank, HandUtils._rank_group_lengths
+        )
+
+        if found_at_least_rank[2]:
+            result.add(HandType.PAIR)
+        if found_at_least_rank[2] >= 2 and found_at_least_rank[3]:
+            result.add(HandType.FULL_HOUSE)
+        if found_at_least_rank[3]:
+            result.add(HandType.THREE_OF_A_KIND)
+        if found_at_least_rank[4]:
+            result.add(HandType.FOUR_OF_A_KIND)
+        if found_at_least_rank[2] >= 2:
+            result.add(HandType.TWO_PAIR)
+
+        result = result.union(cls.get_straight(hand_by_rank))   
+        
 
         hand_by_suit = sorted(hand, key=lambda c: c.suit)
-        found_at_least_suit = HandUtils.find_len_groups(
+        found_at_least_suit = cls.find_len_groups(
             hand_by_suit, lambda c: c.suit, HandUtils._flush_group_length
         )
 
         if found_at_least_suit[5]:
             result.add(HandType.FLUSH)
-            if is_straight:
-                result.add(HandType.STRAIGHT_FLUSH)
-                if hand_by_rank[0].rank == Rank.TEN:
-                    result.add(HandType.ROYAL_FLUSH)
-                    pprint(hand_by_rank)
 
         if highest_only:
             highest = sorted(result, reverse=True)[0]
