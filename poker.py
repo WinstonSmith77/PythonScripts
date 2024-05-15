@@ -153,20 +153,17 @@ class HandUtils:
 
 
     @classmethod
-    def split_suits(cls, hand):
+    def split_suits(cls, hand_by_rank):
         def key_suit(card):
             return card.suit
-        def key_rank(card):
-            return card.rank
-        sorted_by_suit= sorted(hand, key=key_suit)
-        cards_by_suit =  tuple([tuple(sorted (v, key= key_rank))  for _, v in groupby(sorted_by_suit, key=key_suit)])
+        sorted_by_suit= sorted(hand_by_rank, key=key_suit)
+        cards_by_suit =  tuple([tuple(v)  for _, v in groupby(sorted_by_suit, key=key_suit)])
         return cards_by_suit
 
     @classmethod
     def is_straight_flush_or_royal(cls, cards_by_suit,*,  royal=False):
         return any(cls.is_straight(cards, royal) for cards in cards_by_suit)
 
-    _order_royal_flush = tuple([Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE])
     @classmethod
     def is_straight(cls, hand_by_rank, royal=False):
         result = False
@@ -200,6 +197,7 @@ class HandUtils:
 
         return result
 
+    _order_royal_flush = tuple([Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE])
     _flush_group_length = {5}
     _rank_group_lengths = {2, 3, 4}
     _len_flush = 5
@@ -224,7 +222,7 @@ class HandUtils:
         if found_at_least_rank[2] >= 2:
             results.add(HandType.TWO_PAIR)
 
-        cards_by_suit = cls.split_suits(hand)    
+        cards_by_suit = cls.split_suits(hand_by_rank)    
 
         if cls.is_straight(hand_by_rank):
             results.add(HandType.STRAIGHT)
