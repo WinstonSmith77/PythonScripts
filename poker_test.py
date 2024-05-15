@@ -119,13 +119,26 @@ class CardTests(unittest.TestCase):
         type_2_expect = HandType.STRAIGHT
         cards_and_conds = [
             (ALL_CARDS, lambda cards: type_2_expect in cards),
-            (["h2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
+            (["c2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
             (["h2", "h3", "h4", "h5", "h7"], lambda cards: type_2_expect not in cards),
             (["ha", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect in cards),
             ([], lambda cards: type_2_expect not in cards),
         ]
 
         self._test_inner(cards_and_conds)
+
+    def test_straight_flush(self):
+        type_2_expect = HandType.STRAIGHT_FLUSH
+        cards_and_conds = [
+            (ALL_CARDS, lambda cards: type_2_expect in cards),
+            (["h2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect in cards),
+            (["h2", "h3", "h4", "h5", "h7"], lambda cards: type_2_expect not in cards),
+            (["ha", "h2", "h3", "h4", "h5"], lambda cards: type_2_expect in cards),
+            (["c2", "h3", "h4", "h5", "h6"], lambda cards: type_2_expect not in cards),
+            ([], lambda cards: type_2_expect not in cards),
+        ]
+
+        self._test_inner(cards_and_conds)    
 
 
 if __name__ == "__main__":

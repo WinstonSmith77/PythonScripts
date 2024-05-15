@@ -164,7 +164,7 @@ class HandUtils:
                 last_card_rank_value = last_card.rank.value
                 is_flush = (not check_flush) or current_card.suit == last_card.suit
 
-                if current_card_rank_value == last_card.rank.value and is_flush:
+                if current_card_rank_value == last_card.rank.value:
                     continue
                 elif (
                     current_card_rank_value == last_card_rank_value + 1
