@@ -146,4 +146,4 @@ class CardTests(unittest.TestCase):
    
 
 if __name__ == "__main__":
-    unittest.main(verbosity=4)
+    unittest.main(verbosity=4,)

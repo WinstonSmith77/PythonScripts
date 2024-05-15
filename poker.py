@@ -40,7 +40,7 @@ class HandType(CardComponentBase):
     FULL_HOUSE = 6
     FOUR_OF_A_KIND = 7
     STRAIGHT_FLUSH = 8
-    # ROYAL_FLUSH = 9
+    ROYAL_FLUSH = 9
 
 
 class Suit(CardComponentBase):
@@ -151,23 +151,35 @@ class HandUtils:
 
         return found_at_least_length
 
-    # _order_royal_flush = tuple(Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE)
 
     @classmethod
-    def is_straight_flush(cls, hand_by_rank):
-        sorted_by_suit= sorted(hand_by_rank, key=lambda c: c.suit)
-        cards_by_suit =  [list(v)  for _, v in groupby(sorted_by_suit, key=lambda c: c.suit)]
-        return any(cls.is_straight(cards) for cards in cards_by_suit)
-
+    def split_suits(cls, hand):
+        def key_suit(card):
+            return card.suit
+        def key_rank(card):
+            return card.rank
+        sorted_by_suit= sorted(hand, key=key_suit)
+        cards_by_suit =  tuple([tuple(sorted (v, key= key_rank))  for _, v in groupby(sorted_by_suit, key=key_suit)])
+        return cards_by_suit
 
     @classmethod
-    def is_straight(cls, hand_by_rank):
+    def is_straight_flush_or_royal(cls, cards_by_suit,*,  royal=False):
+        return any(cls.is_straight(cards, royal) for cards in cards_by_suit)
+
+    _order_royal_flush = tuple([Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE])
+    @classmethod
+    def is_straight(cls, hand_by_rank, royal=False):
         result = False
         if hand_by_rank:
             last_card = hand_by_rank[0]
             length_straight = 1
 
             for i in range(1, len(hand_by_rank)):
+                if royal and last_card.rank != cls._order_royal_flush[length_straight - 1]:
+                    length_straight = 1
+                    last_card = hand_by_rank[i]
+                    continue
+                
                 current_card = hand_by_rank[i]
                 current_card_rank_value = current_card.rank.value
                 last_card_rank_value = last_card.rank.value
@@ -190,6 +202,7 @@ class HandUtils:
 
     _flush_group_length = {5}
     _rank_group_lengths = {2, 3, 4}
+    _len_flush = 5
 
     @classmethod
     def get_hand_types(cls, hand, highest_only=False):
@@ -211,17 +224,16 @@ class HandUtils:
         if found_at_least_rank[2] >= 2:
             results.add(HandType.TWO_PAIR)
 
+        cards_by_suit = cls.split_suits(hand)    
+
         if cls.is_straight(hand_by_rank):
             results.add(HandType.STRAIGHT)
-            if cls.is_straight_flush(hand_by_rank):
+            if cls.is_straight_flush_or_royal(cards_by_suit):
                 results.add(HandType.STRAIGHT_FLUSH)
+                if cls.is_straight_flush_or_royal(cards_by_suit, royal= True):
+                    results.add(HandType.ROYAL_FLUSH)
 
-        hand_by_suit = sorted(hand, key=lambda c: c.suit)
-        found_at_least_suit = cls.find_len_groups(
-            hand_by_suit, lambda c: c.suit, HandUtils._flush_group_length
-        )
-
-        if found_at_least_suit[5]:
+        if any(map(lambda c: len(c) >= cls._len_flush, cards_by_suit)):
             results.add(HandType.FLUSH)
 
         if highest_only:
