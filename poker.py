@@ -219,14 +219,14 @@ class HandUtils:
 
         if found_at_least_rank[2]:
             results.add(HandType.PAIR)
-        if found_at_least_rank[2] >= 2 and found_at_least_rank[3]:
-            results.add(HandType.FULL_HOUSE)
-        if found_at_least_rank[3]:
-            results.add(HandType.THREE_OF_A_KIND)
-        if found_at_least_rank[4]:
-            results.add(HandType.FOUR_OF_A_KIND)
-        if found_at_least_rank[2] >= 2:
-            results.add(HandType.TWO_PAIR)
+            if found_at_least_rank[3]:
+                results.add(HandType.THREE_OF_A_KIND)
+                if found_at_least_rank[2] >= 2:
+                    results.add(HandType.FULL_HOUSE)
+            if found_at_least_rank[4]:
+                results.add(HandType.FOUR_OF_A_KIND)
+            if found_at_least_rank[2] >= 2:
+                results.add(HandType.TWO_PAIR)
 
         cards_by_suit = cls.split_suits(hand_by_rank)
 

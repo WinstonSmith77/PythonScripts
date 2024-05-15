@@ -99,6 +99,7 @@ class CardTests(unittest.TestCase):
         type_2_expect = HandType.FULL_HOUSE
         cards_and_conds = [
             (["h2", "c2", "s3", "D3", "h3"], lambda cards: type_2_expect in cards),
+            (["h2", "c2", "s3", "D3"], lambda cards: type_2_expect not in cards),
             (
                 ["h2", "c2", "s3", "D3", "h3", "h3"],
                 lambda cards: type_2_expect in cards,
