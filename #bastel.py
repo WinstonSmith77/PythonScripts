@@ -1,7 +1,20 @@
-a = False
+import requests
 
-print(bool(a))
+import certifi_win32
 
-a = 'test'
+host='maps.infas-lt.de'
+port=443
+url = '/maps/05CA1656-C77F-4F11-AD88-724AEFBE79ED/prerelease/'
 
-print(bool(a))
+req = f'https://{host}{url}'
+
+
+try:
+    r = requests.get(req)
+except requests.exceptions.RequestException as e:
+    print(e)    
+
+
+print(req)
+
+print(certifi_win32.wincerts.where())
