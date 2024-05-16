@@ -21,10 +21,13 @@ pathFile = pathlib.Path(__file__)
 parent = pathFile.parent
 
 for url, file in url_add_file:
-    tile = urllib.request.urlopen(url).read()
-    data = mapbox_vector_tile.decode(tile)
+    read_data = urllib.request.urlopen(url).read()
+    data = mapbox_vector_tile.decode(read_data)
     path = pathlib.Path(parent, f'{file}.json')
+    path_bin = pathlib.Path(parent, f'{file}.pbf')
 
+    pathlib.Path(path_bin).write_bytes(read_data)
+    
     dump_to_file_json(path, data)
 
 
