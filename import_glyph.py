@@ -5,9 +5,11 @@ import shutil
 from PIL import Image
 
 
-def parse(data):
+def parse(data, invert=False):
     bitmap = "bitmap"
     pixels = tuple(data[bitmap]["data"].values())
+    if invert:
+        pixels = tuple(255 - p for p in pixels)
     width = data[bitmap]["width"]
     height = data[bitmap]["height"]
 
@@ -16,16 +18,17 @@ def parse(data):
 
 def create_grayscale_image(bitmap, filename):
     image = Image.new("L", (bitmap.width, bitmap.height))
+    #image.remap_palette(range(255, 0, -1))
     image.putdata(bitmap.bitmap)
     image.save(filename)
     return image
 
 
-def split_file(file: str):
+def split_jsons(content: str):
     start = -1
     end = -1
     count = 0
-    for i, c in enumerate(file):
+    for i, c in enumerate(content):
         if c == "{":
             count += 1
             if count == 1:
@@ -35,7 +38,7 @@ def split_file(file: str):
             if count == 0:
                 end = i
         if count == 0 and start != -1 and end != -1:
-            yield file[start : end + 1]
+            yield content[start : end + 1]
             start = -1
             end = -1
 
@@ -49,11 +52,11 @@ class Pipeline:
     @classmethod
     def process(cls, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
-        for item in split_file(read):
+        for item in split_jsons(read):
             # print(item)
-            bitmap = parse(json.loads(item))
+            bitmap = parse(json.loads(item), True)
             # print(bitmap)
-            create_grayscale_image(bitmap, Path(cls.folder, f"{cls.count}.bmp"))
+            create_grayscale_image(bitmap, Path(cls.folder, f"{cls.count}.png"))
             cls.count += 1
 
 
