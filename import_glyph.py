@@ -14,6 +14,8 @@ def parse(data):
 
     return namedtuple('Glyph', ['pixels', 'width', 'height'])(pixels, width, height)
 
+
+
 def create_grayscale_bmp_file(bitmap, width, height, filename):
     # Calculate the size of the image data
     image_size = width * height
@@ -33,7 +35,7 @@ def create_grayscale_bmp_file(bitmap, width, height, filename):
         file.write(info_header)
         file.write(pixel_data)
 
-    print(filename)    
+    print(filename)
 
 bitmap = parse(read)
 
