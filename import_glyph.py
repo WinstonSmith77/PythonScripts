@@ -3,9 +3,6 @@ from  pathlib import Path
 from collections import namedtuple
 from PIL import Image
 
-
-
-
 def parse(data):
     bitmap = 'bitmap'
     pixels = tuple(data[bitmap]['data'].values())
@@ -20,6 +17,9 @@ def create_grayscale_image(bitmap, filename):
     image.save(filename)
     return image
 
+def split_file(path):
+    return [path]
+
 
 class Pipeline:
     count = 0
@@ -28,10 +28,12 @@ class Pipeline:
     @classmethod
     def process(cls, glyphPath):
         read = json.loads(Path(glyphPath).read_text(encoding='utf-8'))
-        bitmap = parse(read)
+        for item in split_file(read):
+            
+            bitmap = parse(item)
         # print(bitmap)
-        create_grayscale_image(bitmap, Path(cls.folder, f'{cls.count}.png'))
-        cls.count += 1
+            create_grayscale_image(bitmap, Path(cls.folder, f'{cls.count}.png'))
+            cls.count += 1
 
 
 
