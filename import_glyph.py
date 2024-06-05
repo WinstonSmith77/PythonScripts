@@ -1,7 +1,7 @@
 import json
 import pathlib
 from collections import namedtuple
-from PIL import Image, _imaging
+from PIL import Image
 
 
 read = json.loads(pathlib.Path('glyph.json').read_text(encoding='utf-8'))
