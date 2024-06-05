@@ -1,10 +1,10 @@
 import json
-import pathlib
+from  pathlib import Path
 from collections import namedtuple
 from PIL import Image
 
 
-read = json.loads(pathlib.Path('glyph.json').read_text(encoding='utf-8'))
+
 
 def parse(data):
     bitmap = 'bitmap'
@@ -14,16 +14,34 @@ def parse(data):
 
     return namedtuple('Glyph', [bitmap, 'width', 'height'])(pixels, width, height)
 
-def create_grayscale_image(pixels, width, height, filename):
-    image = Image.new('L', (width, height))
-    image.putdata(pixels)
+def create_grayscale_image(bitmap, filename):
+    image = Image.new('L', (bitmap.width, bitmap.height))
+    image.putdata(bitmap.bitmap)
     image.save(filename)
     return image
 
 
-bitmap = parse(read)
+class Pipeline:
+    count = 0
+    folder = Path('glyphs')
+    folder.mkdir(exist_ok=True)
+    @classmethod
+    def process(cls, glyphPath):
+        read = json.loads(Path(glyphPath).read_text(encoding='utf-8'))
+        bitmap = parse(read)
+        # print(bitmap)
+        create_grayscale_image(bitmap, Path(cls.folder, f'{cls.count}.png'))
+        cls.count += 1
 
-print(bitmap)
 
 
-create_grayscale_image(bitmap.bitmap, bitmap.width, bitmap.height, 'grayscale.png')
+pipeline = Pipeline()
+pipeline.process('glyph.json')
+
+
+
+
+
+
+
+
