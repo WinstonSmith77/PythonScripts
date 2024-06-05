@@ -17,8 +17,24 @@ def create_grayscale_image(bitmap, filename):
     image.save(filename)
     return image
 
-def split_file(path):
-    return [path]
+def split_file(file:str):
+    start = -1
+    end = -1
+    count = 0   
+    for i, c in enumerate(file):
+       if c == '{':
+           count += 1
+           if count == 1:
+               start = i
+       elif c == '}': 
+           count -= 1
+           if count == 0:
+               end = i
+       if count == 0 and start != -1 and end != -1:
+           yield file[start:end+1]
+           start = -1
+           end = -1        
+    
 
 
 class Pipeline:
@@ -27,10 +43,10 @@ class Pipeline:
     folder.mkdir(exist_ok=True)
     @classmethod
     def process(cls, glyphPath):
-        read = json.loads(Path(glyphPath).read_text(encoding='utf-8'))
+        read = Path(glyphPath).read_text(encoding='utf-8')
         for item in split_file(read):
-            
-            bitmap = parse(item)
+           # print(item)
+            bitmap = parse(json.loads(item))
         # print(bitmap)
             create_grayscale_image(bitmap, Path(cls.folder, f'{cls.count}.png'))
             cls.count += 1
