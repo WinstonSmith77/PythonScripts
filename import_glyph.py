@@ -7,10 +7,10 @@ read = json.loads(pathlib.Path('glyph.json').read_text(encoding='utf-8'))
 
 def parse(data):
   
-    pixels = tuple(read['bitmap']['data'].values())
-    width = read['bitmap']['width']
-    height = read['bitmap']['height']
+    pixels = tuple(data['bitmap']['data'].values())
+    width = data['bitmap']['width']
+    height = data['bitmap']['height']
 
-    return namedtuple( ['pixels', 'width', 'height'])(pixels, width, height)
+    return namedtuple('Glyph', ['pixels', 'width', 'height'])(pixels, width, height)
 
 print(parse(read))
