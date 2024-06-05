@@ -53,7 +53,7 @@ class Pipeline:
             # print(item)
             bitmap = parse(json.loads(item))
             # print(bitmap)
-            create_grayscale_image(bitmap, Path(cls.folder, f"{cls.count}.png"))
+            create_grayscale_image(bitmap, Path(cls.folder, f"{cls.count}.bmp"))
             cls.count += 1
 
 
