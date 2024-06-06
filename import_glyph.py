@@ -20,7 +20,7 @@ def parse(data, invert=False):
 
 def create_grayscale_image(bitmap, filename):
     image = Image.new("L", (bitmap.width, bitmap.height))
-    #image.remap_palette(range(255, 0, -1))
+    # image.remap_palette(range(255, 0, -1))
     image.putdata(bitmap.bitmap)
     image.save(filename)
     return image
@@ -54,23 +54,23 @@ def do_it(input):
 class Pipeline:
     count = -1
     folder = Path("glyphs")
-    shutil.rmtree(folder) 
-    folder.mkdir(exist_ok=True)
 
     @classmethod
     def process(cls, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
         count = cls.count
         splits = tuple((split, count := count + 1) for split in split_jsons(read))
-        splits = splits[:1]
-        pprint(splits)
         cls.count = count
-        
-        
-        for split in splits:
-            do_it(split)
-           
 
+        # for split in splits:
+        #     do_it(split)
 
-pipeline = Pipeline()
-pipeline.process("glyph.json")
+        with Pool() as pool:
+            pool.map(do_it, splits)
+
+if __name__ == "__main__":
+    shutil.rmtree(Pipeline.folder)
+    Pipeline.folder.mkdir(exist_ok=True)
+
+    pipeline = Pipeline()
+    pipeline.process("glyph.json")
