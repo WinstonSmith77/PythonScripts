@@ -4,6 +4,7 @@ from collections import namedtuple
 import shutil
 from PIL import Image
 from multiprocessing.pool import Pool
+from pprint import pprint
 
 
 def parse(data, invert=False):
@@ -51,7 +52,7 @@ def do_it(input):
 
 
 class Pipeline:
-    count = 0
+    count = -1
     folder = Path("glyphs")
     shutil.rmtree(folder) 
     folder.mkdir(exist_ok=True)
@@ -60,10 +61,12 @@ class Pipeline:
     def process(cls, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
         count = cls.count
-        splits = tuple((split, count := count + 1) for split in  split_jsons(read))
+        splits = tuple((split, count := count + 1) for split in split_jsons(read))
+        splits = splits[:3]
+        pprint(splits)
         cls.count = count
         
-
+        
         for split in splits:
             do_it(split)
            
