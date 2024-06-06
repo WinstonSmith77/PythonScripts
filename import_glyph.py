@@ -62,6 +62,7 @@ def split_jsons(content: str):
 class Pipeline:
     count = -1
     folder = Path("glyphs")
+    Pipeline.folder.mkdir(exist_ok=True)
 
     @classmethod
     @benchmark
@@ -77,7 +78,6 @@ class Pipeline:
 
 if __name__ == "__main__":
     shutil.rmtree(Pipeline.folder)
-    Pipeline.folder.mkdir(exist_ok=True)
 
     pipeline = Pipeline()
     pipeline.process("glyph.json")
