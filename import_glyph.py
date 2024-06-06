@@ -1,25 +1,8 @@
-import functools
 import json
 from pathlib import Path
 from collections import namedtuple
 import shutil
-import time
 from PIL import Image
-
-from pprint import pprint
-
-
-def benchmark(f):
-    @functools.wraps(f)
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = f(*args, **kwargs)
-        stop_time = time.time()
-        delta = stop_time - start_time
-        pprint(f"{f.__name__} Delta {delta}")
-        return result
-
-    return wrapper
 
 
 def parse(data, invert=False):
@@ -65,18 +48,20 @@ class Pipeline:
     shutil.rmtree(folder, ignore_errors=True)
     folder.mkdir(exist_ok=True)
 
-    @classmethod
-    @benchmark
-    def process(cls, glyphPath):
+    def __init__(self, name):
+        self.name = name
+        (Pipeline.folder / name).mkdir(exist_ok=True)
+
+    def process(self, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
 
         for split in split_jsons(read):
             parsed = json.loads(split)
             bitmap = parse(parsed, True)
-            cls.count += 1
-            create_grayscale_image(bitmap, cls.folder / f"{cls.count}.png")
+            Pipeline.count += 1
+            create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")
 
 
 if __name__ == "__main__":
-    pipeline = Pipeline()
+    pipeline = Pipeline('basemap')
     pipeline.process("glyph.json")
