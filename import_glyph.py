@@ -3,6 +3,7 @@ from pathlib import Path
 from collections import namedtuple
 import shutil
 from PIL import Image
+from multiprocessing.pool import Pool
 
 
 def parse(data, invert=False):
@@ -43,10 +44,10 @@ def split_jsons(content: str):
             end = -1
 
 
-def do_it(index, jsonData):
-    parsed = json.loads(jsonData)
+def do_it(input):
+    parsed = json.loads(input[0])
     bitmap = parse(parsed, True)
-    create_grayscale_image(bitmap, Path("glyphs", f"{index}.png"))
+    create_grayscale_image(bitmap, Path("glyphs", f"{input[1]}.png"))
 
 
 class Pipeline:
@@ -61,9 +62,10 @@ class Pipeline:
         count = cls.count
         splits = tuple((split, count := count + 1) for split in  split_jsons(read))
         cls.count = count
+        
 
-        for jsonData, index in splits:
-            do_it(count, jsonData)
+        for split in splits:
+            do_it(split)
            
 
 
