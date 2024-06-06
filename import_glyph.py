@@ -62,7 +62,7 @@ class Pipeline:
         read = Path(glyphPath).read_text(encoding="utf-8")
         count = cls.count
         splits = tuple((split, count := count + 1) for split in split_jsons(read))
-        splits = splits[:3]
+        splits = splits[:1]
         pprint(splits)
         cls.count = count
         
