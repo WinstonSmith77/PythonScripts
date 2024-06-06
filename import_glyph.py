@@ -1,10 +1,25 @@
+import functools
 import json
 from pathlib import Path
 from collections import namedtuple
 import shutil
+import time
 from PIL import Image
-from multiprocessing.pool import Pool
+
 from pprint import pprint
+
+
+def benchmark(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = f(*args, **kwargs)
+        stop_time = time.time()
+        delta = stop_time - start_time
+        pprint(f"{f.__name__} Delta {delta}")
+        return result
+
+    return wrapper
 
 
 def parse(data, invert=False):
@@ -20,7 +35,6 @@ def parse(data, invert=False):
 
 def create_grayscale_image(bitmap, filename):
     image = Image.new("L", (bitmap.width, bitmap.height))
-    # image.remap_palette(range(255, 0, -1))
     image.putdata(bitmap.bitmap)
     image.save(filename)
     return image
@@ -45,28 +59,21 @@ def split_jsons(content: str):
             end = -1
 
 
-def do_it(input):
-    parsed = json.loads(input[0])
-    bitmap = parse(parsed, True)
-    create_grayscale_image(bitmap, Path("glyphs", f"{input[1]}.png"))
-
-
 class Pipeline:
     count = -1
     folder = Path("glyphs")
 
     @classmethod
+    @benchmark
     def process(cls, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
-        count = cls.count
-        splits = tuple((split, count := count + 1) for split in split_jsons(read))
-        cls.count = count
 
-        # for split in splits:
-        #     do_it(split)
+        for split in split_jsons(read):
+            parsed = json.loads(split)
+            bitmap = parse(parsed, True)
+            cls.count += 1
+            create_grayscale_image(bitmap, cls.folder / f"{cls.count}.png")
 
-        with Pool() as pool:
-            pool.map(do_it, splits)
 
 if __name__ == "__main__":
     shutil.rmtree(Pipeline.folder)
