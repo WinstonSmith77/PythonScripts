@@ -43,6 +43,12 @@ def split_jsons(content: str):
             end = -1
 
 
+def do_it(index, jsonData):
+    parsed = json.loads(jsonData)
+    bitmap = parse(parsed, True)
+    create_grayscale_image(bitmap, Path("glyphs", f"{index}.png"))
+
+
 class Pipeline:
     count = 0
     folder = Path("glyphs")
@@ -53,10 +59,7 @@ class Pipeline:
     def process(cls, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
         for item in split_jsons(read):
-            # print(item)
-            bitmap = parse(json.loads(item), True)
-            # print(bitmap)
-            create_grayscale_image(bitmap, Path(cls.folder, f"{cls.count}.png"))
+            do_it(cls.count, item)
             cls.count += 1
 
 
