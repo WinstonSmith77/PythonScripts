@@ -58,9 +58,13 @@ class Pipeline:
     @classmethod
     def process(cls, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
-        for item in split_jsons(read):
-            do_it(cls.count, item)
-            cls.count += 1
+        count = cls.count
+        splits = tuple((split, count := count + 1) for split in  split_jsons(read))
+        cls.count = count
+
+        for jsonData, index in splits:
+            do_it(count, jsonData)
+           
 
 
 pipeline = Pipeline()
