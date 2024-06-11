@@ -25,13 +25,17 @@ symbols = (style for style in styles if style[TYPE] == SYMBOL)
 hasFont = (style for style in styles if LAYOUT in style and TEXT_FONT in style[LAYOUT] and 'weg'.lower() in style[ID].lower())
 aubahn = (style for style in styles if 'Nummer_Autobahn' == style[ID])
 
-styles_sorted = sorted(styles, key=lambda x: x['source-layer'])
-styles_by_source_layer = [(g[0], [s['id'] for s in list(g[1])]) for g in groupby(styles_sorted, key=lambda x: x['source-layer'])]
-styles_by_source_layer = sorted(styles_by_source_layer, key=lambda x: x[0])
+grouped_styles = {}
+for style in styles:
+    source_layer = style['source-layer']
+    list_for_styles = grouped_styles.setdefault(source_layer, [])
+    list_for_styles.append(style)
 
-source_layers = [i[0] for i in styles_by_source_layer]
 
-pprint(list(source_layers))
+
+source_layers = [i for i in grouped_styles]
+
+pprint(list(grouped_styles))
 #pprint(list(aubahn))
 
 
