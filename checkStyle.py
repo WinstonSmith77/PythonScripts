@@ -29,13 +29,13 @@ grouped_styles = {}
 for style in styles:
     source_layer = style['source-layer']
     list_for_styles = grouped_styles.setdefault(source_layer, [])
-    list_for_styles.append(style)
+    list_for_styles.append(style['id'])
 
 
 
 source_layers = [i for i in grouped_styles]
 
-pprint(list(grouped_styles))
+pprint((grouped_styles))
 #pprint(list(aubahn))
 
 
