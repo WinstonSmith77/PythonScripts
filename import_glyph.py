@@ -64,4 +64,7 @@ class Pipeline:
 
 if __name__ == "__main__":
     pipeline = Pipeline('basemap')
-    pipeline.process("glyph.json")
+    pipeline.process("basemap_glyphs.json")
+
+    pipeline2 = Pipeline('swiss')
+    pipeline2.process("swiss_glyphs.json")
