@@ -56,7 +56,14 @@ class Pipeline:
         read = Path(glyphPath).read_text(encoding="utf-8")
 
         for split in split_jsons(read):
-            parsed = json.loads(split)
+            #print(split)
+            try:
+                parsed = json.loads(split)
+            except json.JSONDecodeError:
+                continue    
+            if parsed['type'] != 'glyph':
+                continue
+            parsed = parsed["glyph"]
             bitmap = parse(parsed, True)
             Pipeline.count += 1
             create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")
@@ -66,5 +73,5 @@ if __name__ == "__main__":
     pipeline = Pipeline('basemap')
     pipeline.process("basemap_glyphs.json")
 
-    pipeline2 = Pipeline('swiss')
-    pipeline2.process("swiss_glyphs.json")
+    #pipeline2 = Pipeline('swiss')
+    #pipeline2.process("swiss_glyphs.json")

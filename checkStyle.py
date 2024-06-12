@@ -32,10 +32,13 @@ for style in styles:
     list_for_styles.append(style['id'])
 
 
+grouped_styles = dict(sorted(grouped_styles.items(), key=lambda x: x[0]))
+
 
 source_layers = [i for i in grouped_styles]
 
-pprint((grouped_styles))
+#pprint((grouped_styles))
+pprint((source_layers))
 #pprint(list(aubahn))
 
 
