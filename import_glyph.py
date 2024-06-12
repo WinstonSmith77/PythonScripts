@@ -3,6 +3,7 @@ from pathlib import Path
 from collections import namedtuple
 import shutil
 from PIL import Image
+from itertools import groupby
 
 
 def parse(data, invert=False):
@@ -42,6 +43,11 @@ def split_jsons(content: str):
                 start = -1
                 end = -1
 
+def dump_to_file_json(path, jsonData):
+   
+    with open(path, mode="w", encoding='utf8') as file:
+        json.dump(jsonData, file, indent=4)                
+
 
 class Pipeline:
     count = -1
@@ -66,19 +72,29 @@ class Pipeline:
 
             match parsed['type']:    
                 case 'glyph':   
-                    parsed = parsed["glyph"]
-                    bitmap = parse(parsed, True)
-                    Pipeline.count += 1
-                    create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")  
+                    pass
+                    # parsed = parsed["glyph"]
+                    # bitmap = parse(parsed, True)
+                    # Pipeline.count += 1
+                    # create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")  
                 case 'geometry':    
                     parsed = parsed["data"]
-                    keyInner = dict(parsed['tile'].items())
-                    keyInner['text'] = parsed['text']
-                    key= tuple(keyInner.items())
+                    keyInner = list(parsed['tile'].values())
+                    keyInner.append(parsed['text'])
+                    key= str(keyInner).strip('[]')
                     toAdd = parsed['geometry']
                     texts.setdefault(key, []).append(toAdd)
+        def zoom_from_key(key : str):
+            return int(key.split(",")[0])
 
-        print(texts)    
+        texts = {k: v for k, v in texts.items() if len(v) > 1 or len(v[0]) > 1}
+
+        texts = list(texts.items())
+        texts = sorted(texts, key = lambda line: zoom_from_key(line[0]))
+        texts_g = groupby(texts, key = lambda line: zoom_from_key(line[0]))
+
+        for z, g in texts_g:
+            dump_to_file_json(Pipeline.folder / f"{z}_{self.name}_texts.json", list(g))
                 
 
 
