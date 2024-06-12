@@ -57,16 +57,20 @@ class Pipeline:
 
         for split in split_jsons(read):
             #print(split)
+           
             try:
                 parsed = json.loads(split)
             except json.JSONDecodeError:
                 continue    
-            if parsed['type'] != 'glyph':
-                continue
-            parsed = parsed["glyph"]
-            bitmap = parse(parsed, True)
-            Pipeline.count += 1
-            create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")
+
+            match parsed['type']:    
+                case 'glyph':   
+                    parsed = parsed["glyph"]
+                    bitmap = parse(parsed, True)
+                    Pipeline.count += 1
+                    create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")  
+                case _:
+                    continue
 
 
 if __name__ == "__main__":
