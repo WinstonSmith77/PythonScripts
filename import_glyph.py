@@ -56,13 +56,13 @@ class Pipeline:
     def process(self, glyphPath):
         read = Path(glyphPath).read_text(encoding="utf-8")
 
+        texts = {}
         for split in split_jsons(read):
            
             try:
                 parsed = json.loads(split)
             except json.JSONDecodeError:
                 continue    
-          
 
             match parsed['type']:    
                 case 'glyph':   
@@ -72,7 +72,13 @@ class Pipeline:
                     create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")  
                 case 'geometry':    
                     parsed = parsed["data"]
-                    print(parsed)
+                    keyInner = dict(parsed['tile'].items())
+                    keyInner['text'] = parsed['text']
+                    key= tuple(keyInner.items())
+                    toAdd = parsed['geometry']
+                    texts.setdefault(key, []).append(toAdd)
+
+        print(texts)    
                 
 
 
