@@ -24,22 +24,23 @@ def create_grayscale_image(bitmap, filename):
 
 
 def split_jsons(content: str):
-    start = -1
-    end = -1
-    count = 0
-    for i, c in enumerate(content):
-        if c == "{":
-            count += 1
-            if count == 1:
-                start = i
-        elif c == "}":
-            count -= 1
-            if count == 0:
-                end = i
-        if count == 0 and start != -1 and end != -1:
-            yield content[start : end + 1]
-            start = -1
-            end = -1
+    for line in content.splitlines():
+        start = -1
+        end = -1
+        count = 0
+        for i, c in enumerate(line):
+            if c == "{":
+                count += 1
+                if count == 1:
+                    start = i
+            elif c == "}":
+                count -= 1
+                if count == 0:
+                    end = i
+            if count == 0 and start != -1 and end != -1:
+                yield line[start : end + 1]
+                start = -1
+                end = -1
 
 
 class Pipeline:
@@ -56,12 +57,12 @@ class Pipeline:
         read = Path(glyphPath).read_text(encoding="utf-8")
 
         for split in split_jsons(read):
-            #print(split)
            
             try:
                 parsed = json.loads(split)
             except json.JSONDecodeError:
                 continue    
+          
 
             match parsed['type']:    
                 case 'glyph':   
@@ -69,8 +70,10 @@ class Pipeline:
                     bitmap = parse(parsed, True)
                     Pipeline.count += 1
                     create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")  
-                case _:
-                    continue
+                case 'geometry':    
+                    parsed = parsed["data"]
+                    print(parsed)
+                
 
 
 if __name__ == "__main__":
