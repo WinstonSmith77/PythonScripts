@@ -80,6 +80,8 @@ class Pipeline:
                 case 'geometry':    
                     parsed = parsed["data"]
                     keyInner = list(parsed['tile'].values())
+                    if 'text' not in parsed:
+                        continue
                     keyInner.append(parsed['text'])
                     key= str(keyInner).strip('[]')
                     toAdd = parsed['geometry']
