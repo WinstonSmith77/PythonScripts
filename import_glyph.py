@@ -73,10 +73,10 @@ class Pipeline:
             match parsed['type']:    
                 case 'glyph':   
                     pass
-                    # parsed = parsed["glyph"]
-                    # bitmap = parse(parsed, True)
-                    # Pipeline.count += 1
-                    # create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")  
+                    parsed = parsed["glyph"]
+                    bitmap = parse(parsed, True)
+                    Pipeline.count += 1
+                    create_grayscale_image(bitmap, Pipeline.folder / self.name  / f"{Pipeline.count}.png")  
                 case 'geometry':    
                     parsed = parsed["data"]
                     keyInner = list(parsed['tile'].values())
@@ -89,7 +89,9 @@ class Pipeline:
         def zoom_from_key(key : str):
             return int(key.split(",")[0])
 
-        texts = {k: v for k, v in texts.items() if len(v) > 1 or len(v[0]) > 1}
+        name = 'Autobahnzubringer Arsten'
+        texts = {k: v for k, v in texts.items() if (len(v) > 1 or len(v[0]) > 1) and name in k}
+
 
         texts = list(texts.items())
         texts = sorted(texts, key = lambda line: zoom_from_key(line[0]))
