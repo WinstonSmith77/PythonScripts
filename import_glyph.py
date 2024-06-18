@@ -95,11 +95,16 @@ class Pipeline:
 
         texts = list(texts.items())
         texts = sorted(texts, key = lambda line: zoom_from_key(line[0]))
-        texts_g = groupby(texts, key = lambda line: zoom_from_key(line[0]))
+        texts_g = {z:list(g) for z,g in groupby(texts, key = lambda line: zoom_from_key(line[0]))}
 
-        for z, g in texts_g:
-            dump_to_file_json(Pipeline.folder / f"{z}_{self.name}_texts.json", list(g))
-                
+        for z, g in texts_g.items():
+            dump_to_file_json(Pipeline.folder / f"{z}_{self.name}_texts.json", g)
+            coords = []
+            for k in g:
+                x = int(k[0].split(",")[1])       
+                y = int(k[0].split(",")[2])  
+                coords.append((x,y))    
+            print((z, coords))             
 
 
 if __name__ == "__main__":
