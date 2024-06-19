@@ -10,7 +10,7 @@ def format_byte_array(bytes_to_encode, encoding):
             return hex(encoded[0])
         return [hex(c) for c in encoded]
     except UnicodeEncodeError:
-        return "ERROR"
+        return "FAILED"
 
 
 output = [
@@ -19,6 +19,7 @@ output = [
         format_byte_array(c, encoding="cp1252"),
         format_byte_array(c, encoding="utf-8"),
         format_byte_array(c, encoding="utf-16"),
+        format_byte_array(c, encoding="utf-32"),
     )
     for c in text
 ]
