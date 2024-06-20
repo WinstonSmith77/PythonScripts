@@ -1,20 +1,5 @@
-import requests
+from pathlib import Path
 
-import certifi_win32
-
-host='maps.infas-lt.de'
-port=443
-url = '/maps/05CA1656-C77F-4F11-AD88-724AEFBE79ED/prerelease/'
-
-req = f'https://{host}{url}'
-
-
-try:
-    r = requests.get(req)
-except requests.exceptions.RequestException as e:
-    print(e)    
-
-
-print(req)
-
-print(certifi_win32.wincerts.where())
+url_basemap = 'https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/13/4297/2667.pbf'
+p = Path(*Path(url_basemap).parts[-4:])
+print(p)
