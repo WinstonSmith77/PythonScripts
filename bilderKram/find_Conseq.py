@@ -11,15 +11,31 @@ working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
 minLength = 1    
 XMP = '.xmp'
 
+def get_time(doc):
+    paths_to_time = ('x:xmpmeta','rdf:RDF','rdf:Description','@exif:DateTimeOriginal')
+    for path in paths_to_time:
+        if path in doc:
+            doc = doc[path]
+        else:
+            return None
+
+    return doc        
+
+def files_with_time(fs):
+    files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
+   
+    files_with_time = [(file, get_time(parse(Path(file).read_text())) )  for file in files]
+    return files_with_time
+
 
 DIR = 'conseq_dir'
-with CacheGroup(DIR) as caches:
+FILES_WITH_TIME = 'files_with_time'
+with CacheGroup(DIR, FILES_WITH_TIME) as caches:
     fs = caches[DIR].lookup(str(working_dir), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
-    files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
-    #pprint(fs)
+    files_with_time =  caches[FILES_WITH_TIME].lookup(str(working_dir), callIfMissing = lambda: files_with_time(fs))
 
     
 
-    xmp = parse(Path(files[5689]).read_text())
+  
 
-    pprint(xmp['x:xmpmeta']['rdf:RDF']['rdf:Description']['@exif:DateTimeOriginal'])
+   
