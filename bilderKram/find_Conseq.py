@@ -24,7 +24,8 @@ def get_time(doc):
 def files_with_time(fs):
     files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
    
-    files_with_time = [(file, get_time(parse(Path(file).read_text())) )  for file in files]
+    files_with_time = ((file, get_time(parse(Path(file).read_text())) )  for file in files)
+    files_with_time = [(file, time) for file, time in files_with_time if time]
     return files_with_time
 
 
