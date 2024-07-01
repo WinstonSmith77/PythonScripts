@@ -11,7 +11,7 @@ working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
 minLength = 1    
 XMP = '.xmp'
 
-def get_time(doc):
+def get_time_from_xmp(doc):
     paths_to_time = ('x:xmpmeta','rdf:RDF','rdf:Description','@exif:DateTimeOriginal')
     for path in paths_to_time:
         if path in doc:
@@ -24,7 +24,7 @@ def get_time(doc):
 def files_with_time(fs):
     files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
    
-    files_with_time = ((file, get_time(parse(Path(file).read_text())) )  for file in files)
+    files_with_time = ((file, get_time_from_xmp(parse(Path(file).read_text())) )  for file in files)
     files_with_time = [(file, time) for file, time in files_with_time if time]
     return files_with_time
 
