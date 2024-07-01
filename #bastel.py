@@ -1,5 +1,14 @@
-from pathlib import Path
+from math import atan2, pi
 
-url_basemap = 'https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/13/4297/2667.pbf'
-p = Path(*Path(url_basemap).parts[-4:])
-print(p)
+def get_line_angle(a, b):
+    
+    angle = atan2(b[1] - a[1], b[0] - a[0])
+
+    return (angle / pi) * 180 
+
+
+a = (0,0)
+b = (1,1)
+
+print(get_line_angle(a, b)) 
+print(get_line_angle(b, a)) 
