@@ -2,6 +2,7 @@ from pathlib import Path
 from pprint import pprint
 from xmltodict import parse
 from datetime import datetime
+from dateutil import parser
 
 from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files
@@ -20,11 +21,9 @@ def get_time_from_xmp(doc):
         "@exif:DateTimeOriginal",
     )
     for path in paths_to_time:
-        if path in doc:
-            doc = doc[path]
-        else:
+        doc = doc.get(path, None)
+        if not doc:
             return None
-
     return doc
 
 
@@ -35,18 +34,16 @@ def get_time(file):
 def files_with_time(fs):
     files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
 
-    files_with_time = ((file, parse_time(get_time(file))) for file in files)
+    files_with_time = ((file, get_time(file)) for file in files)
     files_with_time = [(file, time) for file, time in files_with_time if time]
     return files_with_time
 
 
-def parse_time(time):
-    formats = ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S")
-    for format in formats:
-        try:
-            return datetime.strptime(time, format)
-        except ValueError:
-            pass
+def parse_time(time_str):
+    try:
+        return parser.parse(time_str)
+    except ValueError:
+        return None
 
 
 DIR = "conseq_dir"
@@ -59,10 +56,12 @@ with CacheGroup(DIR, FILES_WITH_TIME) as caches:
             callIfMissing=lambda: get_all_files(working_dir, "*.*", minLength),
         )
 
-    files_with_time = caches[FILES_WITH_TIME].lookup(
+    files_time = caches[FILES_WITH_TIME].lookup(
         str(working_dir), callIfMissing=lambda: files_with_time(get_fs())
     )
 
-    files_with_time = sorted(files_with_time, key=lambda x: x[1], reverse=True)
-
-    pprint(files_with_time)
+    files_time = [(file, parse_time(time).replace(tzinfo=None)) for file, time in files_time]
+    files_time = sorted(files_time, key=lambda x: x[1])
+   
+    
+    pprint(files_time)
