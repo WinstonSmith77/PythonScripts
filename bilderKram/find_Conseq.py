@@ -8,7 +8,7 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
+working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
 minLength = 1
 XMP = ".xmp"
 
@@ -61,7 +61,7 @@ def group(files_time, max_diff_seconds=10, min_length=2):
             last = time
         else:
             if len(group) >= min_length:
-                yield group
+                yield (group, len(group))
             group = []
             last = None   
            
