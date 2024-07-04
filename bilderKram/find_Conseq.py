@@ -28,11 +28,19 @@ def get_time_from_xmp(doc):
 
 
 def get_time(file):
-    return get_time_from_xmp(parse(Path(file).read_text()))
+    return get_time_from_xmp(parse(Path(file).read_text(encoding="utf8")))
 
 
 def files_with_time(fs):
+    def are_there_other_files(path):
+        stem = Path(path).stem
+        for file, _ in fs:
+            if stem in file and Path(file[0]).suffix.lower() != XMP:
+                return True
+
     files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
+
+    files = [file for file in files if are_there_other_files(file)]
 
     files_with_time = ((file, get_time(file)) for file in files)
     files_with_time = [(file, time) for file, time in files_with_time if time]
@@ -70,7 +78,7 @@ with CacheGroup(DIR, FILES_WITH_TIME) as caches:
 
     def get_fs():
         return caches[DIR].lookup(
-            working_dir,
+            str(working_dir),
             callIfMissing=lambda: get_all_files(working_dir, "*.*", minLength),
         )
 
