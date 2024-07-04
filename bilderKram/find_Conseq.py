@@ -27,7 +27,7 @@ def get_time(file):
 def files_with_time(fs):
     files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
    
-    files_with_time = ((file, get_time(file))  for file in files)
+    files_with_time = ((file, parse_time(get_time(file)))  for file in files)
     files_with_time = [(file, time) for file, time in files_with_time if time]
     return files_with_time
 
@@ -47,7 +47,7 @@ with CacheGroup(DIR, FILES_WITH_TIME) as caches:
     files_with_time =  caches[FILES_WITH_TIME].lookup(str(working_dir), callIfMissing = lambda: files_with_time(get_fs()))
 
     for file, time in files_with_time:
-        print(file, parse_time(time))
+        print(file, time)
 
     
 
