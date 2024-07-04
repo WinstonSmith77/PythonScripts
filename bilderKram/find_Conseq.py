@@ -49,18 +49,18 @@ def parse_time(time_str):
 DIR = "conseq_dir"
 FILES_WITH_TIME = "files_with_time"
 
-def group(files_time):
+def group(files_time, max_diff_seconds=5, min_length=3):
     group = []
     last = None
     for file, time in files_time:
         if last is None:
             last = time
             group.append((file, str(time)))
-        elif (time - last).total_seconds() < 5:
+        elif (time - last).total_seconds() < max_diff_seconds:
             group.append((file, str(time)))
             last = time
         else:
-            if len(group) > 1:
+            if len(group) >= min_length:
                 yield group
             group = []
             last = None   
