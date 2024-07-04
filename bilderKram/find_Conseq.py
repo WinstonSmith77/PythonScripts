@@ -8,7 +8,7 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
+working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
 minLength = 1
 XMP = ".xmp"
 
@@ -46,9 +46,6 @@ def parse_time(time_str):
         return None
 
 
-DIR = "conseq_dir"
-FILES_WITH_TIME = "files_with_time"
-
 def group(files_time, max_diff_seconds=10, min_length=2):
     group = []
     last = None
@@ -63,15 +60,17 @@ def group(files_time, max_diff_seconds=10, min_length=2):
             if len(group) >= min_length:
                 yield (group, len(group))
             group = []
-            last = None   
-           
-           
+            last = None
+
+
+DIR = "conseq_dir"
+FILES_WITH_TIME = "files_with_time"
 
 with CacheGroup(DIR, FILES_WITH_TIME) as caches:
 
     def get_fs():
         return caches[DIR].lookup(
-            str(working_dir),
+            working_dir,
             callIfMissing=lambda: get_all_files(working_dir, "*.*", minLength),
         )
 
@@ -79,13 +78,13 @@ with CacheGroup(DIR, FILES_WITH_TIME) as caches:
         str(working_dir), callIfMissing=lambda: files_with_time(get_fs())
     )
 
-    files_time = [(file, parse_time(time).replace(tzinfo=None)) for file, time in files_time]
+    files_time = [
+        (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time
+    ]
     files_time = sorted(files_time, key=lambda x: x[1])
 
     groups = list(group(files_time))
 
-    dump_it('bursts', groups)
-   
-    
-    
+    dump_it("bursts", groups)
+
     pprint(groups)
