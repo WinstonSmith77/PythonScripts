@@ -5,7 +5,7 @@ from datetime import datetime
 from dateutil import parser
 
 from double_finder.cache import CacheGroup
-from double_finder.find_double_files import get_all_files
+from double_finder.find_double_files import get_all_files, dump_it
 
 
 working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
@@ -48,6 +48,25 @@ def parse_time(time_str):
 
 DIR = "conseq_dir"
 FILES_WITH_TIME = "files_with_time"
+
+def group(files_time):
+    group = []
+    last = None
+    for file, time in files_time:
+        if last is None:
+            last = time
+            group.append((file, str(time)))
+        elif (time - last).total_seconds() < 5:
+            group.append((file, str(time)))
+            last = time
+        else:
+            if len(group) > 1:
+                yield group
+            group = []
+            last = None   
+           
+           
+
 with CacheGroup(DIR, FILES_WITH_TIME) as caches:
 
     def get_fs():
@@ -62,6 +81,11 @@ with CacheGroup(DIR, FILES_WITH_TIME) as caches:
 
     files_time = [(file, parse_time(time).replace(tzinfo=None)) for file, time in files_time]
     files_time = sorted(files_time, key=lambda x: x[1])
+
+    groups = list(group(files_time))
+
+    dump_it('bursts', groups)
    
     
-    pprint(files_time)
+    
+    pprint(groups)
