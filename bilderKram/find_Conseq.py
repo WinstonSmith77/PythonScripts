@@ -8,49 +8,61 @@ from double_finder.find_double_files import get_all_files
 
 
 working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
-minLength = 1    
-XMP = '.xmp'
+minLength = 1
+XMP = ".xmp"
+
 
 def get_time_from_xmp(doc):
-    paths_to_time = ('x:xmpmeta','rdf:RDF','rdf:Description','@exif:DateTimeOriginal')
+    paths_to_time = (
+        "x:xmpmeta",
+        "rdf:RDF",
+        "rdf:Description",
+        "@exif:DateTimeOriginal",
+    )
     for path in paths_to_time:
         if path in doc:
             doc = doc[path]
         else:
             return None
 
-    return doc        
+    return doc
+
 
 def get_time(file):
-    return  get_time_from_xmp(parse(Path(file).read_text()))
-                              
+    return get_time_from_xmp(parse(Path(file).read_text()))
+
+
 def files_with_time(fs):
     files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
-   
-    files_with_time = ((file, parse_time(get_time(file)))  for file in files)
+
+    files_with_time = ((file, parse_time(get_time(file))) for file in files)
     files_with_time = [(file, time) for file, time in files_with_time if time]
     return files_with_time
 
+
 def parse_time(time):
-    formats = ( "%Y-%m-%dT%H:%M:%S.%f",  "%Y-%m-%dT%H:%M:%S")
+    formats = ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S")
     for format in formats:
         try:
             return datetime.strptime(time, format)
         except ValueError:
             pass
 
-DIR = 'conseq_dir'
-FILES_WITH_TIME = 'files_with_time'
+
+DIR = "conseq_dir"
+FILES_WITH_TIME = "files_with_time"
 with CacheGroup(DIR, FILES_WITH_TIME) as caches:
+
     def get_fs():
-        return caches[DIR].lookup(str(working_dir), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
-    files_with_time =  caches[FILES_WITH_TIME].lookup(str(working_dir), callIfMissing = lambda: files_with_time(get_fs()))
+        return caches[DIR].lookup(
+            str(working_dir),
+            callIfMissing=lambda: get_all_files(working_dir, "*.*", minLength),
+        )
 
-    for file, time in files_with_time:
-        print(file, time)
+    files_with_time = caches[FILES_WITH_TIME].lookup(
+        str(working_dir), callIfMissing=lambda: files_with_time(get_fs())
+    )
 
-    
+    files_with_time = sorted(files_with_time, key=lambda x: x[1], reverse=True)
 
-  
-
-   
+    pprint(files_with_time)
