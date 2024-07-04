@@ -60,18 +60,15 @@ def group(files_time, max_diff_seconds=10, min_length=3):
         if not group_and_start:
             group_and_start = ([file], time)
         else:
-           group, start = group_and_start
-           if (time - start).total_seconds() < max_diff_seconds:
+            group, start = group_and_start
+            if (time - start).total_seconds() < max_diff_seconds:
                 group.append(file)
                 group_and_start = (group, time)
-           else:
-               len_group = len(group)
-               if len_group >= min_length:
-                   yield (len_group, group)
-               group_and_start = ([file], time)         
-
-
-        
+            else:
+                len_group = len(group)
+                if len_group >= min_length:
+                    yield (len_group, group)
+                group_and_start = ([file], time)
 
 
 DIR = "conseq_dir"
