@@ -49,7 +49,7 @@ def parse_time(time_str):
 DIR = "conseq_dir"
 FILES_WITH_TIME = "files_with_time"
 
-def group(files_time, max_diff_seconds=5, min_length=3):
+def group(files_time, max_diff_seconds=10, min_length=2):
     group = []
     last = None
     for file, time in files_time:
