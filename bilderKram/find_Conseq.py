@@ -1,17 +1,15 @@
 from pathlib import Path
 from pprint import pprint
 from xmltodict import parse
+from datetime import datetime
 
 from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files
 
 
-
-working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
+working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
 minLength = 1    
 XMP = '.xmp'
-
-
 
 def get_time_from_xmp(doc):
     paths_to_time = ('x:xmpmeta','rdf:RDF','rdf:Description','@exif:DateTimeOriginal')
@@ -33,12 +31,23 @@ def files_with_time(fs):
     files_with_time = [(file, time) for file, time in files_with_time if time]
     return files_with_time
 
+def parse_time(time):
+    formats = ( "%Y-%m-%dT%H:%M:%S.%f",  "%Y-%m-%dT%H:%M:%S")
+    for format in formats:
+        try:
+            return datetime.strptime(time, format)
+        except ValueError:
+            pass
 
 DIR = 'conseq_dir'
 FILES_WITH_TIME = 'files_with_time'
 with CacheGroup(DIR, FILES_WITH_TIME) as caches:
-    fs = caches[DIR].lookup(str(working_dir), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
-    files_with_time =  caches[FILES_WITH_TIME].lookup(str(working_dir), callIfMissing = lambda: files_with_time(fs))
+    def get_fs():
+        return caches[DIR].lookup(str(working_dir), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
+    files_with_time =  caches[FILES_WITH_TIME].lookup(str(working_dir), callIfMissing = lambda: files_with_time(get_fs()))
+
+    for file, time in files_with_time:
+        print(file, parse_time(time))
 
     
 
