@@ -8,7 +8,7 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
+working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
 minLength = 1
 XMP = ".xmp"
 
@@ -54,21 +54,24 @@ def parse_time(time_str):
         return None
 
 
-def group(files_time, max_diff_seconds=10, min_length=2):
-    group = []
-    last = None
+def group(files_time, max_diff_seconds=10, min_length=3):
+    group_and_start = None
     for file, time in files_time:
-        if last is None:
-            last = time
-            group.append((file, str(time)))
-        elif (time - last).total_seconds() < max_diff_seconds:
-            group.append((file, str(time)))
-            last = time
+        if not group_and_start:
+            group_and_start = ([file], time)
         else:
-            if len(group) >= min_length:
-                yield (group, len(group))
-            group = []
-            last = None
+           group, start = group_and_start
+           if (time - start).total_seconds() < max_diff_seconds:
+                group.append(file)
+                group_and_start = (group, time)
+           else:
+               len_group = len(group)
+               if len_group >= min_length:
+                   yield (len_group, group)
+               group_and_start = ([file], time)         
+
+
+        
 
 
 DIR = "conseq_dir"
