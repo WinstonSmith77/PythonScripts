@@ -63,7 +63,7 @@ def group(files_time, max_diff_seconds=10, min_length=3):
             group, start = group_and_start
             if (time - start).total_seconds() < max_diff_seconds:
                 group.append(file)
-                group_and_start = (group, start)
+                group_and_start = (group, time)
             else:
                 len_group = len(group)
                 if len_group >= min_length:
