@@ -3,6 +3,7 @@ from pprint import pprint
 from xmltodict import parse
 from datetime import datetime
 from dateutil import parser
+from itertools import chain
 
 import PIL.Image
 import PIL.ExifTags
@@ -124,15 +125,17 @@ with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
         str(working_dir), callIfMissing=lambda: list(jpg_files_with_time_and_image(get_fs()))
     )
 
-files_time_jpg = [
+files_time_jpg = (
     (file, parse_time(exif[DATETIME]).replace(tzinfo=None)) for file, exif in files_time_jpg
     if DATETIME in exif
-]
+)
 
-files_time_xmp = [
+files_time_xmp = (
     (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time_xmp
-]
-files_time = sorted(files_time_xmp + files_time_jpg, key=lambda x: x[1])
+)
+files_time = sorted(chain(files_time_xmp, files_time_jpg), key=lambda x: x[1])
+
+files_time = ((file, time) for file, time in files_time if not (time.day == 5 and time.month == 7 and time.year == 2024))
 
 groups = list(group(files_time))
 
