@@ -8,7 +8,7 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
+working_dir = Path(r"C:\Users\matze\OneDrive\bilder\_lightroom")
 minLength = 1
 XMP = ".xmp"
 
@@ -72,9 +72,9 @@ def group(files_time, max_diff_seconds=10, min_length=3):
 
 
 DIR = "conseq_dir"
-FILES_WITH_TIME = "files_with_time"
+FILES_WITH_TIME_XMP = "files_with_time_xmp"
 
-with CacheGroup(DIR, FILES_WITH_TIME) as caches:
+with CacheGroup(DIR, FILES_WITH_TIME_XMP) as caches:
 
     def get_fs():
         return caches[DIR].lookup(
@@ -82,16 +82,16 @@ with CacheGroup(DIR, FILES_WITH_TIME) as caches:
             callIfMissing=lambda: get_all_files(working_dir, "*.*", minLength),
         )
 
-    files_time = caches[FILES_WITH_TIME].lookup(
+    files_time_xmp = caches[FILES_WITH_TIME_XMP].lookup(
         str(working_dir), callIfMissing=lambda: list(xmp_files_with_time_and_image(get_fs()))
     )
 
-files_time = [
-    (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time
+files_time_xmp = [
+    (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time_xmp
 ]
-files_time = sorted(files_time, key=lambda x: x[1])
+files_time_xmp = sorted(files_time_xmp, key=lambda x: x[1])
 
-groups = list(group(files_time))
+groups = list(group(files_time_xmp))
 
 dump_it("bursts", groups)
 
