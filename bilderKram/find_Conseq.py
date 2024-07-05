@@ -3,7 +3,7 @@ from pprint import pprint
 from xmltodict import parse
 from datetime import datetime
 from dateutil import parser
-from itertools import chain
+from itertools import chain, groupby
 
 import PIL.Image
 import PIL.ExifTags
@@ -18,10 +18,11 @@ working_dir = Path(r"C:\Users\matze\OneDrive\bilder\_lightroom")
 minLength = 1
 XMP = ".xmp"
 JPG = ".jpg"
-DATETIME = 'DateTime'
+DATETIME = "DateTime"
+
 
 def get_time_from_xmp_file(file):
-    doc =  parse(Path(file).read_text(encoding="utf8"))
+    doc = parse(Path(file).read_text(encoding="utf8"))
     paths_to_time = (
         "x:xmpmeta",
         "rdf:RDF",
@@ -40,7 +41,7 @@ def xmp_files_with_time_and_image(fs):
 
     for file, _ in fs:
         path = Path(file)
-        stem = str(Path(path.parent,  path.stem))
+        stem = str(Path(path.parent, path.stem))
         suffix = path.suffix.lower()
 
         list_suffixes = stem_with_suffix.setdefault(stem, [])
@@ -49,7 +50,7 @@ def xmp_files_with_time_and_image(fs):
         if len(list_suffixes) > 1 and XMP in list_suffixes:
             del stem_with_suffix[stem]
             file = stem + XMP
-            time =  get_time_from_xmp_file(file)
+            time = get_time_from_xmp_file(file)
             if time:
                 yield (file, time)
 
@@ -59,7 +60,7 @@ def parse_time(time_str):
         return parser.parse(time_str)
     except ValueError:
         return None
-    
+
 
 def extract_exif_from_file(file):
     image = PIL.Image.open(file)
@@ -77,15 +78,16 @@ def extract_exif_from_file(file):
         k = PIL.ExifTags.TAGS.get(k, None)
         if k is not None:
             result[k] = v
-    return result    
+    return result
+
 
 def jpg_files_with_time_and_image(fs):
-   files = (file[0] for file in fs)
-   files = (file for file in files if Path(file).suffix.lower() == JPG)
+    files = (file[0] for file in fs)
+    files = (file for file in files if Path(file).suffix.lower() == JPG)
 
-   for file in files:
-       exif = extract_exif_from_file(file)
-       yield (file, exif)
+    for file in files:
+        exif = extract_exif_from_file(file)
+        yield (file, exif)
 
 
 def group(files_time, max_diff_seconds=10, min_length=3):
@@ -118,15 +120,18 @@ with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
         )
 
     files_time_xmp = caches[FILES_WITH_TIME_XMP].lookup(
-        str(working_dir), callIfMissing=lambda: list(xmp_files_with_time_and_image(get_fs()))
+        str(working_dir),
+        callIfMissing=lambda: list(xmp_files_with_time_and_image(get_fs())),
     )
 
     files_time_jpg = caches[FILES_WITH_TIME_JPG].lookup(
-        str(working_dir), callIfMissing=lambda: list(jpg_files_with_time_and_image(get_fs()))
+        str(working_dir),
+        callIfMissing=lambda: list(jpg_files_with_time_and_image(get_fs())),
     )
 
 files_time_jpg = (
-    (file, parse_time(exif[DATETIME]).replace(tzinfo=None)) for file, exif in files_time_jpg
+    (file, parse_time(exif[DATETIME]).replace(tzinfo=None))
+    for file, exif in files_time_jpg
     if DATETIME in exif
 )
 
@@ -135,9 +140,19 @@ files_time_xmp = (
 )
 files_time = sorted(chain(files_time_xmp, files_time_jpg), key=lambda x: x[1])
 
-files_time = ((file, time) for file, time in files_time if not (time.day == 5 and time.month == 7 and time.year == 2024))
+files_time = (
+    (file, time)
+    for file, time in files_time
+    if not (time.day == 5 and time.month == 7 and time.year == 2024)
+)
 
-groups = list(group(files_time))
+
+
+groups = sorted(list(group(files_time)), key=lambda x: x[0], reverse=True)
+
+groups = groupby(groups, key=lambda x: x[0])
+groups = list((key, list(((entry[1], entry[2]) for entry in  entries))) for key, entries in groups)
+
 
 dump_it("bursts", groups)
 
