@@ -8,12 +8,13 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-working_dir = Path(r"C:\Users\matze\OneDrive\bilder")
+working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
 minLength = 1
 XMP = ".xmp"
 
 
-def get_time_from_xmp(doc):
+def get_time_from_xmp_file(file):
+    doc =  parse(Path(file).read_text(encoding="utf8"))
     paths_to_time = (
         "x:xmpmeta",
         "rdf:RDF",
@@ -27,10 +28,6 @@ def get_time_from_xmp(doc):
     return doc
 
 
-def get_time(file):
-    return get_time_from_xmp(parse(Path(file).read_text(encoding="utf8")))
-
-
 def files_with_time(fs):
     def are_there_other_files(path):
         stem = Path(path).stem
@@ -42,7 +39,7 @@ def files_with_time(fs):
 
     files = [file for file in files if are_there_other_files(file)]
 
-    files_with_time = ((file, get_time(file)) for file in files)
+    files_with_time = ((file, get_time_from_xmp_file(file)) for file in files)
     files_with_time = [(file, time) for file, time in files_with_time if time]
     return files_with_time
 
