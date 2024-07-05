@@ -28,20 +28,23 @@ def get_time_from_xmp_file(file):
     return doc
 
 
-def files_with_time(fs):
-    def are_there_other_files(path):
-        stem = Path(path).stem
-        for file, _ in fs:
-            if stem in file and Path(file[0]).suffix.lower() != XMP:
-                return True
+def xmp_files_with_time_and_image(fs):
+    stem_with_suffix = {}
 
-    files = [path[0] for path in fs if Path(path[0]).suffix.lower() == XMP]
+    for file, _ in fs:
+        path = Path(file)
+        stem = str(Path(path.parent,  path.stem))
+        suffix = path.suffix.lower()
 
-    files = [file for file in files if are_there_other_files(file)]
+        list_suffixes = stem_with_suffix.setdefault(stem, [])
+        list_suffixes.append(suffix)
 
-    files_with_time = ((file, get_time_from_xmp_file(file)) for file in files)
-    files_with_time = [(file, time) for file, time in files_with_time if time]
-    return files_with_time
+        if len(list_suffixes) > 1 and XMP in list_suffixes:
+            del stem_with_suffix[stem]
+            file = stem + XMP
+            time =  get_time_from_xmp_file(file)
+            if time:
+                yield (file, time)
 
 
 def parse_time(time_str):
@@ -80,16 +83,16 @@ with CacheGroup(DIR, FILES_WITH_TIME) as caches:
         )
 
     files_time = caches[FILES_WITH_TIME].lookup(
-        str(working_dir), callIfMissing=lambda: files_with_time(get_fs())
+        str(working_dir), callIfMissing=lambda: list(xmp_files_with_time_and_image(get_fs()))
     )
 
-    files_time = [
-        (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time
-    ]
-    files_time = sorted(files_time, key=lambda x: x[1])
+files_time = [
+    (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time
+]
+files_time = sorted(files_time, key=lambda x: x[1])
 
-    groups = list(group(files_time))
+groups = list(group(files_time))
 
-    dump_it("bursts", groups)
+dump_it("bursts", groups)
 
-    pprint(groups)
+pprint(groups)
