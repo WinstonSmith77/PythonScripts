@@ -107,7 +107,7 @@ def group(files_time, max_diff_seconds=10, min_length=3):
                 group_and_start = ([file], time)
 
 
-DIR = r"C:\Users\matze\OneDrive\bilder\_lightroom"
+DIR = r"conseq_files"
 FILES_WITH_TIME_XMP = "files_with_time_xmp"
 FILES_WITH_TIME_JPG = "files_with_time_jpg"
 
@@ -147,11 +147,12 @@ files_time = (
 )
 
 
-
 groups = sorted(list(group(files_time)), key=lambda x: x[0], reverse=True)
 
 groups = groupby(groups, key=lambda x: x[0])
-groups = list((key, list(((entry[1], entry[2]) for entry in  entries))) for key, entries in groups)
+groups = list(
+    (key, list(((entry[1], entry[2]) for entry in entries))) for key, entries in groups
+)
 
 
 dump_it("bursts", groups)
