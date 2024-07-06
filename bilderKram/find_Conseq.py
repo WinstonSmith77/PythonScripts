@@ -55,11 +55,17 @@ def xmp_files_with_time_and_image(fs):
                 yield (file, time)
 
 
-def parse_time(time_str):
-    try:
-        return parser.parse(time_str)
-    except ValueError:
-        return None
+def parse_time(time_str:str):
+    DATE_TIME_FORMATS = ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S", '%Y:%m:%d %H:%M:%S')
+    
+    time_str = time_str.split('+')[0]
+    for format in DATE_TIME_FORMATS:
+        try:
+            return datetime.strptime(time_str, format)
+        except ValueError:
+            pass
+
+    return None    
 
 
 def extract_exif_from_file(file):
@@ -130,21 +136,21 @@ with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
     )
 
 files_time_jpg = (
-    (file, parse_time(exif[DATETIME]).replace(tzinfo=None))
+    (file, parse_time(exif[DATETIME]))
     for file, exif in files_time_jpg
     if DATETIME in exif
+)
+
+files_time_jpg = (
+    (file, time)
+    for file, time in files_time_jpg
+    if time
 )
 
 files_time_xmp = (
     (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time_xmp
 )
 files_time = sorted(chain(files_time_xmp, files_time_jpg), key=lambda x: x[1])
-
-files_time = (
-    (file, time)
-    for file, time in files_time
-    if not (time.day == 5 and time.month == 7 and time.year == 2024)
-)
 
 
 groups = sorted(list(group(files_time)), key=lambda x: x[0], reverse=True)
