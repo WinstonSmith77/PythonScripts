@@ -31,7 +31,7 @@ def get_length(file):
 def get_all_files(path : Path, pattern, minLength = 5 * 1024):
     result = path.rglob(pattern, case_sensitive=False)
     result = filter(os.path.isfile, result)
-    result = list(filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result)))
+    result = filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), result))
 
     return result
 
@@ -133,7 +133,7 @@ def do_it(working_dir, minLength = 10 * 1024, caches : CacheGroup = None):
         needsToDispose = True
 
     try: 
-        fs = caches[DIR].lookup(str(working_dir), str(minLength), callIfMissing = lambda: get_all_files(working_dir, '*.*', minLength))
+        fs = caches[DIR].lookup(str(working_dir), str(minLength), callIfMissing = lambda: list(get_all_files(working_dir, '*.*', minLength)))
         caches.close_and_remove(DIR)
         doubles = find_doubles(fs)
 

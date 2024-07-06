@@ -116,7 +116,7 @@ with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
     def get_fs():
         return caches[DIR].lookup(
             str(working_dir),
-            callIfMissing=lambda: get_all_files(working_dir, "*.*", minLength),
+            callIfMissing=lambda: list(get_all_files(working_dir, "*.*", minLength)),
         )
 
     files_time_xmp = caches[FILES_WITH_TIME_XMP].lookup(
