@@ -107,7 +107,7 @@ def group(files_time, max_diff_seconds=10, min_length=3):
                 group_and_start = ([file], time)
 
 
-DIR = r"conseq_files"
+DIR = "conseq_files"
 FILES_WITH_TIME_XMP = "files_with_time_xmp"
 FILES_WITH_TIME_JPG = "files_with_time_jpg"
 
