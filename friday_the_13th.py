@@ -26,7 +26,7 @@ def calculate_weekday(date : datetime):
     J = year // 100
     h = (day + ((13 * (month + 1)) // 5) + K + (K // 4) + (J // 4) + (5 * J)) % 7
     # Convert Zeller's Congruence to Python's weekday (Monday = 0, Sunday = 6)
-    return (h + 5) % 7
+    return (h + 2) % 7
 
 count_weekdays = {}
 for year in range(first_day_gregorian.year, end.year + 1):
