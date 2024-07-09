@@ -1,8 +1,9 @@
 import datetime
 from pprint import pprint
+from itertools import groupby
 
 first_day_gregorian = datetime.datetime(1582, 10, 15)
-end = datetime.datetime(6000, 1, 1)
+end = datetime.datetime(1700, 1, 1)
 
 WEEKDAY_NAMES_GERMAN = (
     "Montag",
@@ -30,9 +31,11 @@ count_weekdays = sorted(count_weekdays.items(), key=lambda x: x[1], reverse=True
 min_count = min(count_weekdays, key=lambda x: x[1])[1]
 
 count_weekdays = [
-    (name, f"{count} = {min_count} + {count - min_count}")
+    (name, f"{count:_} = {min_count:_} + {count - min_count:_}")
     for name, count in count_weekdays
 ]
+
+count_weekdays = [list(lines) for _, lines  in groupby(count_weekdays, key=lambda x: x[1])]
 
 pprint(f'Start : {first_day_gregorian}')
 pprint(f'End : {end}')
