@@ -2,7 +2,7 @@ import datetime
 from pprint import pprint
 
 first_day_gregorian = datetime.datetime(1582, 10, 15)
-end = datetime.datetime(2025, 1, 1)
+end = datetime.datetime(6000, 1, 1)
 
 WEEKDAY_NAMES_GERMAN = (
     "Montag",
