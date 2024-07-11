@@ -28,4 +28,10 @@ while True:
     else:
         state = newState(state, -stake)
 
-print(state.history)
+import matplotlib.pyplot as plt
+
+plt.plot(state.history)
+plt.xlabel('Step')
+plt.ylabel('Account Balance')
+plt.title('Random Walk')
+plt.show()
