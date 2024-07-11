@@ -1,7 +1,8 @@
 from collections import namedtuple
 from random import Random
+import matplotlib.pyplot as plt
 
-State = namedtuple("State", ["account","history"], defaults=[0, []])
+State = namedtuple("State", ["balance", "history"], defaults=[0, [0]])
 rand = Random()
 
 
@@ -9,29 +10,29 @@ def isSuccess():
     return rand.randint(0, 1) == 1
 
 
-state = State(account= 100)
+startBalance = 100
+state = State(balance=startBalance, history=[startBalance])
+
 
 def newState(state, delta):
-    return State(state.account + delta, state.history + [state.account])
+    newBalance = state.balance + delta
+    return State(newBalance, state.history + [newBalance])
+
 
 while True:
-   
-    if state.account <= 0:
+    if state.balance <= 0:
         break
 
-    if(len(state.history) > 100):
-        break
-
-    stake = max(state.account * .5, 0)
+    stake = max(round(max(state.balance * 0.25, 1)), 0)
     if isSuccess():
         state = newState(state, stake)
     else:
         state = newState(state, -stake)
 
-import matplotlib.pyplot as plt
+print(state)
 
 plt.plot(state.history)
-plt.xlabel('Step')
-plt.ylabel('Account Balance')
-plt.title('Random Walk')
+plt.xlabel("Step")
+plt.ylabel("Account Balance")
+plt.title("Random Walk")
 plt.show()
