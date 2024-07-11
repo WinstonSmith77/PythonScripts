@@ -14,16 +14,16 @@ startBalance = 100
 state = State(balance=startBalance, history=[startBalance])
 
 
-def newState(state, delta):
-    newBalance = state.balance + delta
-    return State(newBalance, state.history + [newBalance])
+def newState(oldState, deltaBalance):
+    newBalance = oldState.balance + deltaBalance
+    return State(newBalance, oldState.history + [newBalance])
 
 
 while True:
     if state.balance <= 0:
         break
 
-    stake = max(round(max(state.balance * 0.25, 1)), 0)
+    stake = max(round(max(state.balance * 0.5, 1)), 0)
     if isSuccess():
         state = newState(state, stake)
     else:
