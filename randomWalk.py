@@ -18,16 +18,18 @@ def newState(oldState, deltaBalance):
     newBalance = oldState.balance + deltaBalance
     return State(newBalance, oldState.history + [newBalance])
 
-
+stake = startBalance
 while True:
-    if state.balance <= 0:
+    if state.balance > 1000:
         break
 
-    stake = max(round(max(state.balance * 0.5, 1)), 0)
+   
     if isSuccess():
         state = newState(state, stake)
     else:
         state = newState(state, -stake)
+
+    stake *= 2   
 
 print(state)
 
