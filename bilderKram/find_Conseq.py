@@ -14,7 +14,7 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-working_dir = Path(r"C:\Users\matze\OneDrive\bilder\_lightroom")
+working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
 minLength = 1
 XMP = ".xmp"
 JPG = ".jpg"
@@ -55,17 +55,21 @@ def xmp_files_with_time_and_image(fs):
                 yield (file, time)
 
 
-def parse_time(time_str:str):
-    DATE_TIME_FORMATS = ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S", '%Y:%m:%d %H:%M:%S')
-    
-    time_str = time_str.split('+')[0]
+def parse_time(time_str: str):
+    DATE_TIME_FORMATS = (
+        "%Y-%m-%dT%H:%M:%S.%f",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y:%m:%d %H:%M:%S",
+    )
+
+    time_str = time_str.split("+")[0]
     for format in DATE_TIME_FORMATS:
         try:
             return datetime.strptime(time_str, format)
         except ValueError:
             pass
 
-    return None    
+    return None
 
 
 def extract_exif_from_file(file):
@@ -74,7 +78,6 @@ def extract_exif_from_file(file):
 
     result = {}
     for k, v in exif_data.items():
-
         if isinstance(v, PIL.TiffImagePlugin.IFDRational):
             v = str(v)
 
@@ -118,21 +121,25 @@ FILES_WITH_TIME_XMP = "files_with_time_xmp"
 FILES_WITH_TIME_JPG = "files_with_time_jpg"
 
 with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
-
-    def get_fs():
-        return caches[DIR].lookup(
-            str(working_dir),
-            callIfMissing=lambda: list(get_all_files(working_dir, "*.*", minLength)),
-        )
+    fs_cache_entry = str(working_dir)
+    fs_in_cache = caches[DIR].is_in_cache(fs_cache_entry)
+    fs = caches[DIR].lookup(
+        fs_cache_entry,
+        callIfMissing=lambda: list(get_all_files(working_dir, "*.*", minLength)),
+    )
 
     files_time_xmp = caches[FILES_WITH_TIME_XMP].lookup(
         str(working_dir),
-        callIfMissing=lambda: list(xmp_files_with_time_and_image(get_fs())),
+        callIfMissing=lambda: list(
+            xmp_files_with_time_and_image(fs)), enforce_reload=not fs_in_cache
+        ,
     )
 
     files_time_jpg = caches[FILES_WITH_TIME_JPG].lookup(
         str(working_dir),
-        callIfMissing=lambda: list(jpg_files_with_time_and_image(get_fs())),
+        callIfMissing=lambda: list(
+            jpg_files_with_time_and_image(fs)), enforce_reload=not fs_in_cache
+        ,
     )
 
 files_time_jpg = (
@@ -141,11 +148,7 @@ files_time_jpg = (
     if DATETIME in exif
 )
 
-files_time_jpg = (
-    (file, time)
-    for file, time in files_time_jpg
-    if time
-)
+files_time_jpg = ((file, time) for file, time in files_time_jpg if time)
 
 files_time_xmp = (
     (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time_xmp

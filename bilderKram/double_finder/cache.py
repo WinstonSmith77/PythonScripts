@@ -39,13 +39,17 @@ class Cache:
         self._isDirty = True
         return value
 
+    def is_in_cache(self, *key_parts):
+        key = self._make_key(*key_parts)
+        return key in self._innerCache
+
     def _make_key(self, *key_parts):
         return ",".join(key_parts)
 
-    def lookup(self, *key_parts, callIfMissing):
+    def lookup(self, *key_parts, callIfMissing, enforce_reload=False):
         key = self._make_key(*key_parts)
 
-        if key in self._innerCache:
+        if key in self._innerCache and not enforce_reload:
             return self._innerCache[key]
         else:
             new_entry = callIfMissing()
