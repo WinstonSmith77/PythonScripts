@@ -2,7 +2,6 @@ from pathlib import Path
 from pprint import pprint
 from xmltodict import parse
 from datetime import datetime
-from dateutil import parser
 from itertools import chain, groupby
 
 import PIL.Image
@@ -14,7 +13,8 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-working_dir = Path(r"C:\Users\henning\OneDrive\bilder\_lightroom")
+root = Path(r"C:\Users\henning\OneDrive\bilder")
+working_dirs = (Path(root, '_lightroom'), Path(root, '#emmaTaufe'))
 minLength = 1
 XMP = ".xmp"
 JPG = ".jpg"
@@ -121,22 +121,22 @@ FILES_WITH_TIME_XMP = "files_with_time_xmp"
 FILES_WITH_TIME_JPG = "files_with_time_jpg"
 
 with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
-    fs_cache_entry = str(working_dir)
+    fs_cache_entry = str(working_dirs)
     fs_in_cache = caches[DIR].is_in_cache(fs_cache_entry)
     fs = caches[DIR].lookup(
         fs_cache_entry,
-        callIfMissing=lambda: list(get_all_files(working_dir, "*.*", minLength)),
+        callIfMissing=lambda: list(get_all_files(working_dirs, "*.*", minLength)),
     )
 
     files_time_xmp = caches[FILES_WITH_TIME_XMP].lookup(
-        str(working_dir),
+        str(working_dirs),
         callIfMissing=lambda: list(
             xmp_files_with_time_and_image(fs)), enforce_reload=not fs_in_cache
         ,
     )
 
     files_time_jpg = caches[FILES_WITH_TIME_JPG].lookup(
-        str(working_dir),
+        str(working_dirs),
         callIfMissing=lambda: list(
             jpg_files_with_time_and_image(fs)), enforce_reload=not fs_in_cache
         ,
