@@ -13,8 +13,8 @@ from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
 
-root = Path(r"C:\Users\henning\OneDrive\bilder")
-working_dirs = (Path(root, '_lightroom'), Path(root, '#emmaTaufe'))
+root = Path(r"C:\Users\henning\OneDrive")
+working_dirs = (Path(root, "bilder", "_lightroom"), Path(root, "#emmaTaufe"))
 minLength = 1
 XMP = ".xmp"
 JPG = ".jpg"
@@ -121,25 +121,23 @@ FILES_WITH_TIME_XMP = "files_with_time_xmp"
 FILES_WITH_TIME_JPG = "files_with_time_jpg"
 
 with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
-    fs_cache_entry = str(working_dirs)
-    fs_in_cache = caches[DIR].is_in_cache(fs_cache_entry)
+    cache_entry = str(working_dirs)
+    fs_in_cache = caches[DIR].is_in_cache(cache_entry)
+    if not fs_in_cache:
+        caches[FILES_WITH_TIME_XMP].purge()
+        caches[FILES_WITH_TIME_JPG].purge()
+
     fs = caches[DIR].lookup(
-        fs_cache_entry,
+        cache_entry,
         callIfMissing=lambda: list(get_all_files(working_dirs, "*.*", minLength)),
     )
 
     files_time_xmp = caches[FILES_WITH_TIME_XMP].lookup(
-        str(working_dirs),
-        callIfMissing=lambda: list(
-            xmp_files_with_time_and_image(fs)), enforce_reload=not fs_in_cache
-        ,
+        cache_entry, callIfMissing=lambda: list(xmp_files_with_time_and_image(fs))
     )
 
     files_time_jpg = caches[FILES_WITH_TIME_JPG].lookup(
-        str(working_dirs),
-        callIfMissing=lambda: list(
-            jpg_files_with_time_and_image(fs)), enforce_reload=not fs_in_cache
-        ,
+        cache_entry, callIfMissing=lambda: list(jpg_files_with_time_and_image(fs))
     )
 
 files_time_jpg = (

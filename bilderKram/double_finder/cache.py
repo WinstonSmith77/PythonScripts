@@ -45,11 +45,16 @@ class Cache:
 
     def _make_key(self, *key_parts):
         return ",".join(key_parts)
+    
+    def purge(self):
+        self._innerCache = {}
+        self._isDirty = True
+        self._path.unlink(True)
 
-    def lookup(self, *key_parts, callIfMissing, enforce_reload=False):
+    def lookup(self, *key_parts, callIfMissing):
         key = self._make_key(*key_parts)
 
-        if key in self._innerCache and not enforce_reload:
+        if key in self._innerCache:
             return self._innerCache[key]
         else:
             new_entry = callIfMissing()
