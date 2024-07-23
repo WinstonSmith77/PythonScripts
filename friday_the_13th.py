@@ -4,16 +4,7 @@ from itertools import groupby
 
 first_day_gregorian = datetime.datetime(1582, 10, 15)
 end = datetime.datetime(first_day_gregorian.year + 400, first_day_gregorian.month, first_day_gregorian.day)
-
-WEEKDAY_NAMES_GERMAN = (
-    "Montag",
-    "Dienstag",
-    "Mittwoch",
-    "Donnerstag",
-    "Freitag",
-    "Samstag",
-    "Sonntag",
-)
+ 
 
 def calculate_weekday(date : datetime):
     month = date.month
@@ -36,7 +27,7 @@ for year in range(first_day_gregorian.year, end.year + 1):
         if date < first_day_gregorian or date > end:
             continue
 
-        weekday = WEEKDAY_NAMES_GERMAN[calculate_weekday(date)]
+        weekday = calculate_weekday(date)
         count_weekdays[weekday] = count_weekdays.get(weekday, 0) + 1
 
 count_weekdays = sorted(count_weekdays.items(), key=lambda x: x[1], reverse=True)
