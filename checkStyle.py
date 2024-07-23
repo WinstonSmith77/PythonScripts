@@ -1,7 +1,10 @@
 import json
 import pathlib
-from pprint import pprint
 from itertools import groupby
+
+
+from pprint import pprint
+
 
 
 path = r"bm_web_col.json"
@@ -13,32 +16,15 @@ SYMBOL = 'symbol'
 LAYOUT = 'layout'
 TEXT_FONT = 'text-font'
 ID = 'id'
+SOURCE_LAYER = 'source-layer'
 
 content = json.loads(pathlib.Path(path).read_text())
 
-styles = content[LAYERS]
+styles = [style for style in content[LAYERS]]
+styles = sorted(styles, key=lambda x: x[SOURCE_LAYER])
+styles = groupby(styles, key=lambda x: x[SOURCE_LAYER])
+styles = {key: list([item[ID] for item in group]) for key, group in styles}
 
-def get_id_set(items):
-    return set(item[ID] for item in items)
-
-symbols = (style for style in styles if style[TYPE] == SYMBOL)
-hasFont = (style for style in styles if LAYOUT in style and TEXT_FONT in style[LAYOUT] and 'weg'.lower() in style[ID].lower())
-aubahn = (style for style in styles if 'Nummer_Autobahn' == style[ID])
-
-grouped_styles = {}
-for style in styles:
-    source_layer = style['source-layer']
-    list_for_styles = grouped_styles.setdefault(source_layer, [])
-    list_for_styles.append(style['id'])
-
-
-grouped_styles = dict(sorted(grouped_styles.items(), key=lambda x: x[0]))
-
-
-source_layers = [i for i in grouped_styles]
-
-#pprint((grouped_styles))
-pprint((source_layers))
-#pprint(list(aubahn))
+pprint((styles))
 
 
