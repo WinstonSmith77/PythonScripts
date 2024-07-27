@@ -18,12 +18,12 @@ TEXT_FONT = 'text-font'
 ID = 'id'
 SOURCE_LAYER = 'source-layer'
 
-content = json.loads(pathlib.Path(path).read_text())
+content = json.loads(pathlib.Path(path).read_text(encoding='utf-8'))
 
 styles = [style for style in content[LAYERS]]
 styles = sorted(styles, key=lambda x: x[SOURCE_LAYER])
 styles = groupby(styles, key=lambda x: x[SOURCE_LAYER])
-styles = {key: list([item[ID] for item in group]) for key, group in styles}
+styles = {key: list(group) for key, group in styles}
 
 pprint((styles))
 

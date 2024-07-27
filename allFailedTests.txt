@@ -1,0 +1,1535 @@
+ Tests (83 tests) Failed: 83 tests failed
+  LutumTappert.GeocoderService.BlackBoxTests (83 tests) Failed: 83 tests failed
+   LutumTappert.GeocoderService.BlackBoxTests (83 tests) Failed: 83 tests failed
+    Geocode (83 tests) Failed: 83 tests failed
+     RequestsReturningResult (83 tests) Failed: Details are not available: 83 tests failed
+Details are not available
+Stacktrace is not available
+
+
+      RequestsReturningResult (1; A1 Lichtendorf Nord /Römerstr.; 28; 44289;D;2909 trademarks_2022_test_20230207.csv; DeleteCity,51,4705007673 7,5959655966) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" A1 Lichtendorf Nord /Römerstr." Housenumber=" 28" Postal=" 44289" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; A1 Lichtendorf Nord /Römerstr.; 28;Dortmund;D;2909 trademarks_2022_test_20230207.csv; DeletePostal,51,4705007673 7,5959655966) Failed: Expected first.Lat to approximate 51.4705007673 +/- 0.03, but 51.42699757701112 differed by 0.043503190288880944.
+Expected first.Lat to approximate 51.4705007673 +/- 0.03, but 51.42699757701112 differed by 0.043503190288880944.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" A1 Lichtendorf Nord /Römerstr." Housenumber=" 28" City="Dortmund" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street="" Housenumber="" Postal="" City="Dortmund" Country="de" District="" Precision="2" Quality="-1,100,0,0,25" Lat="51.42699757701112" Lon="7.488340046949207" Grid_ETRS89-LAEA-100m="100mN31492E41463" ags5="05913" ags8="05913000" ags2="05" ags11="05913000054" ags3="059" pagsId="7833902_de" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Aachener Str.; 19;Köln; de;26577 de,at,ch.csv; DeletePostal,50,88939318 7,06788611) Failed: Expected first.Lat to approximate 50.88939318 +/- 0.03, but 50.93614321916906 differed by 0.04675003916906206.
+Expected first.Lat to approximate 50.88939318 +/- 0.03, but 50.93614321916906 differed by 0.04675003916906206.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Aachener Str." Housenumber=" 19" City="Köln" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Aachener Str." Housenumber=" 19" Postal="" City="Köln" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="50.93614321916906" Lon="6.9354745538811144" Grid_ETRS89-LAEA-100m="100mN30961E41056" ags24="053150000540000001020107" ags22="0531500005400000010201" ags20="05315000054000000102" ags27="053150000540000001020107001" ags5="05315" ags8="05315000" ags2="05" ags13="0531500050674" ags11="05315000054" ags3="053" pagsId="5384908_de" ags16="0531500050674054" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Adelsmannsdorfer Str.; 3; 91639;WolframsEschenbach;D;City [-] [];Unchanged,49,2256045624 10,7307260664) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Adelsmannsdorfer Str." Housenumber=" 3" Postal=" 91639" City="WolframsEschenbach" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Am Main-Taunus-Zentrum; ; 65843;Sulzbach(Taunus);D;City [ ] [];Unchanged,50,1234973803 8,5199485535) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Am Main-Taunus-Zentrum" Housenumber=" " Postal=" 65843" City="Sulzbach(Taunus)" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Am Markt; 14; 99439;D;18494 trademarks_2022_test_20230207.csv; DeleteCity,51,0757852526 11,3452579793) Failed: Expected first.Lat to approximate 51.0757852526 +/- 0.03, but 50.90405682425372 differed by 0.17172842834627744.
+Expected first.Lat to approximate 51.0757852526 +/- 0.03, but 50.90405682425372 differed by 0.17172842834627744.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Am Markt" Housenumber=" 14" Postal=" 99439" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Am Markt" Housenumber=" 14" Postal=" 99439" City="" Country="de" District="" Precision="2" Quality="60,-1,88,100,62" Lat="50.90405682425372" Lon="10.76411699163193" Grid_ETRS89-LAEA-100m="100mN30883E43747" ags24="160670890040000000160104" ags22="1606708900400000001601" ags20="16067089004000000016" ags27="160670890040000000160104001" ags5="16067" ags8="16067089" ags2="16" ags13="1606708999869" ags11="16067089004" ags3="160" pagsId="22596269_de" ags16="1606708999869004" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Am Südtor; 12; 14774; de;7993 de,at,ch.csv; DeleteCity,52,38646568 12,41443982) Failed: Expected first.Lat to approximate 52.38646568 +/- 0.03, but 52.579297360888056 differed by 0.19283168088805525.
+Expected first.Lat to approximate 52.38646568 +/- 0.03, but 52.579297360888056 differed by 0.19283168088805525.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Am Südtor" Housenumber=" 12" Postal=" 14774" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Am Südtor" Housenumber=" 12" Postal=" 14774" City="" Country="de" District="" Precision="2" Quality="40,-1,50,100,48" Lat="52.579297360888056" Lon="12.999230899994084" Grid_ETRS89-LAEA-100m="100mN32786E45242" ags24="120630360030000000280203" ags22="1206303600300000002802" ags20="12063036003000000028" ags27="120630360030000000280203001" ags5="12063" ags8="12063036" ags2="12" ags13="1206303614656" ags11="12063036003" ags3="120" pagsId="19406334_de" ags16="1206303614656003" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; An der Bundesstr.; 1; 14776;BrandenburganderHavel;D;City [ ] [];Unchanged,52,4090035244 12,6096838148) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" An der Bundesstr." Housenumber=" 1" Postal=" 14776" City="BrandenburganderHavel" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Bahnhofplatz; 2; 85521;D;7801 trademarks_2022_test_20230207.csv; DeleteCity,48,071022027 11,6583130101) Failed: Expected first.Lat to approximate 48.071022027 +/- 0.03, but 48.353061191989624 differed by 0.28203916498962656.
+Expected first.Lat to approximate 48.071022027 +/- 0.03, but 48.353061191989624 differed by 0.28203916498962656.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Bahnhofplatz" Housenumber=" 2" Postal=" 85521" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Bahnhofplatz" Housenumber=" 2" Postal=" 85521" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="48.353061191989624" Lon="11.377757337078673" Grid_ETRS89-LAEA-100m="100mN28053E44231" ags24="091741310150000000090300" ags22="0917413101500000000903" ags20="09174131015000000009" ags27="091741310150000000090300001" ags5="09174" ags8="09174131" ags2="09" ags13="0917413185229" ags11="09174131015" ags3="091" pagsId="15000514_de" ags16="0917413185229015" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Bahnhofstraße; 1; 99099; D;122 check_geocoder_20221102.csv; DeleteCity,50,9759795919 11,0347153911) Failed: Expected first.Lat to approximate 50.9759795919 +/- 0.03, but 50.85842916420758 differed by 0.11755042769242152.
+Expected first.Lat to approximate 50.9759795919 +/- 0.03, but 50.85842916420758 differed by 0.11755042769242152.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Bahnhofstraße" Housenumber=" 1" Postal=" 99099" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Bahnhofstraße" Housenumber=" 1" Postal=" 99099" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="50.85842916420758" Lon="10.570213429278343" Grid_ETRS89-LAEA-100m="100mN30831E43611" ags24="160670190040000000840100" ags22="1606701900400000008401" ags20="16067019004000000084" ags27="160670190040000000840100001" ags5="16067" ags8="16067019" ags2="16" ags13="1606701999894" ags11="16067019004" ags3="160" pagsId="22561148_de" ags16="1606701999894004" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Bahnhofstraße; 1-3;Hagen;D;6099 trademarks_2022_test_20230207.csv; DeletePostal,51,3594621721 7,468984765) Failed: Expected first.Lat to approximate 51.3594621721 +/- 0.03, but 52.20773783828313 differed by 0.8482756661831274.
+Expected first.Lat to approximate 51.3594621721 +/- 0.03, but 52.20773783828313 differed by 0.8482756661831274.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Bahnhofstraße" Housenumber=" 1-3" City="Hagen" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Bahnhofstraße" Housenumber=" 1-3" Postal="" City="Hagen" Country="de" District="" Precision="2" Quality="-1,100,100,50,63" Lat="52.20773783828313" Lon="7.917314997224796" Grid_ETRS89-LAEA-100m="100mN32351E41786" ags24="034590200080000000150201" ags22="0345902000800000001502" ags20="03459020008000000015" ags27="034590200080000000150201001" ags5="03459" ags8="03459020" ags2="03" ags13="0345902049170" ags11="03459020008" ags3="034" pagsId="3715333_de" ags16="0345902049170008" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Bahnhofstraße; 66; 03149;D;12251 trademarks_2022_test_20230207.csv; DeleteCity,51,7457511998 14,6395271617) Failed: Expected first.Lon to approximate 14.6395271617 +/- 0.03, but 14.515476836555388 differed by 0.12405032514461212.
+Expected first.Lon to approximate 14.6395271617 +/- 0.03, but 14.515476836555388 differed by 0.12405032514461212.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Bahnhofstraße" Housenumber=" 66" Postal=" 03149" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Bahnhofstraße" Housenumber=" 66" Postal=" 03149" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="51.74386343497112" Lon="14.515476836555388" Grid_ETRS89-LAEA-100m="100mN31911E46326" ags24="120714140020000000510100" ags22="1207141400200000005101" ags20="12071414002000000051" ags27="120714140020000000510100001" ags5="12071" ags8="12071414" ags2="12" ags13="1207141403149" ags11="12071414002" ags3="120" pagsId="19922477_de" ags16="1207141403149002" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Bergstr.; 3; 98617;D;862 trademarks_2022_test_20230207.csv; DeleteCity,50,5578794837 10,3972433104) Failed: Expected first.Lon to approximate 10.3972433104 +/- 0.03, but 10.439327402735328 differed by 0.04208409233532784.
+Expected first.Lon to approximate 10.3972433104 +/- 0.03, but 10.439327402735328 differed by 0.04208409233532784.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Bergstr." Housenumber=" 3" Postal=" 98617" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Bergstr." Housenumber=" 3" Postal=" 98617" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="50.532668250612566" Lon="10.439327402735328" Grid_ETRS89-LAEA-100m="100mN30468E43521" ags24="160660490010000000270302" ags22="1606604900100000002703" ags20="16066049001000000027" ags27="160660490010000000270302001" ags5="16066" ags8="16066049" ags2="16" ags13="1606604998617" ags11="16066049001" ags3="160" pagsId="22527784_de" ags16="1606604998617001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Berliner Allee; 261269; 13088;Berlin;D;Housenumber [-] [];Unchanged,52,561668283 13,4675139853) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Berliner Allee" Housenumber=" 261269" Postal=" 13088" City="Berlin" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Berliner Straße; 1;Sandersdorf-Brehna;D;18606 trademarks_2022_test_20230207.csv; DeletePostal,51,5538966437 12,1928709859) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Berliner Straße" Housenumber=" 1" City="Sandersdorf-Brehna" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Braurereistr.; 42; 52525;WaldfeuchtHaaren;D;City [-] [];Unchanged,51,0884533803 6,0416035161) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Braurereistr." Housenumber=" 42" Postal=" 52525" City="WaldfeuchtHaaren" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Building no; 700; 92655;D;6333 trademarks_2022_test_20230207.csv; DeleteCity,49,7146015571 11,8971139108) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Building no" Housenumber=" 700" Postal=" 92655" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Buxheimerstr. 46; 1/2; 87700; de;30782 de,at,ch.csv; DeleteCity,47,98905833 10,17178916) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Buxheimerstr. 46" Housenumber=" 1/2" Postal=" 87700" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Danziger Str.; 4;Oldenburg; de;36154 de,at,ch.csv; DeletePostal,53,13286845 8,19493476) Failed: Expected first.Lat to approximate 53.13286845 +/- 0.03, but 54.29501534238199 differed by 1.1621468923819904.
+Expected first.Lat to approximate 53.13286845 +/- 0.03, but 54.29501534238199 differed by 1.1621468923819904.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Danziger Str." Housenumber=" 4" City="Oldenburg" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Danziger Str." Housenumber=" 4" Postal="" City="Oldenburg" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="54.29501534238199" Lon="10.897502061483097" Grid_ETRS89-LAEA-100m="100mN34657E43794" ags24="010550330090000000780202" ags22="0105503300900000007802" ags20="01055033009000000078" ags27="010550330090000000780202001" ags5="01055" ags8="01055033" ags2="01" ags13="0105503323758" ags11="01055033009" ags3="010" pagsId="385730_de" ags16="0105503323758009" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Dorfstr.; 11a; 19073; de;43370 de,at,ch.csv; DeleteCity,53,57214027 11,28830308) Failed: Expected first.Lon to approximate 11.28830308 +/- 0.03, but 11.205199071468835 differed by 0.08310400853116562.
+Expected first.Lon to approximate 11.28830308 +/- 0.03, but 11.205199071468835 differed by 0.08310400853116562.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Dorfstr." Housenumber=" 11a" Postal=" 19073" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Dorfstr." Housenumber=" 11a" Postal=" 19073" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="53.569832368541284" Lon="11.205199071468835" Grid_ETRS89-LAEA-100m="100mN33853E44008" ags24="130760360010000000200100" ags22="1307603600100000002001" ags20="13076036001000000020" ags27="130760360010000000200100001" ags5="13076" ags8="13076036" ags2="13" ags13="1307603619073" ags11="13076036001" ags3="130" pagsId="20476623_de" ags16="1307603619073001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Düsseldorfer Str. 8; -10; 40699; de;13626 de,at,ch.csv; DeleteCity,51,2264018 6,897281373) Failed: Expected first.Lat to approximate 51.2264018 +/- 0.03, but 51.295437244227735 differed by 0.06903544422773678.
+Expected first.Lat to approximate 51.2264018 +/- 0.03, but 51.295437244227735 differed by 0.06903544422773678.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Düsseldorfer Str. 8" Housenumber=" -10" Postal=" 40699" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Düsseldorfer Str. 8" Housenumber="" Postal=" 40699" City="" Country="de" District="" Precision="2" Quality="" Lat="51.295437244227735" Lon="6.848394379746815" Grid_ETRS89-LAEA-100m="100mN31363E41012" ags22="01" ags20="000000159" ags5="58" ags8="028" ags2="05" ags13="40878" ags11="011" ags3="1" pagsId="4850736_de" ags16="011" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Elsenstr.; 1;Berlin; de;5324 de,at,ch.csv; DeletePostal,52,49175617 13,45775078) Failed: Expected first.Lon to approximate 13.45775078 +/- 0.03, but 13.584009897129985 differed by 0.12625911712998494.
+Expected first.Lon to approximate 13.45775078 +/- 0.03, but 13.584009897129985 differed by 0.12625911712998494.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Elsenstr." Housenumber=" 1" City="Berlin" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Elsenstr." Housenumber=" 1" Postal="" City="Berlin" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="52.48759907427806" Lon="13.584009897129985" Grid_ETRS89-LAEA-100m="100mN32702E45643" ags24="110000000420000001930304" ags22="1100000004200000019303" ags20="11000000042000000193" ags27="110000000420000001930304001" ags5="11000" ags8="11000000" ags2="11" ags13="1100000012621" ags11="11000000042" ags3="110" pagsId="18884623_de" ags16="1100000012621042" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Ernst-Thälmann-Straße; 13; 15345;D;8000 trademarks_2022_test_20230207.csv; DeleteCity,52,533140986 13,8250625383) Failed: Expected first.Lon to approximate 13.8250625383 +/- 0.03, but 13.920987963106054 differed by 0.0959254248060546.
+Expected first.Lon to approximate 13.8250625383 +/- 0.03, but 13.920987963106054 differed by 0.0959254248060546.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Ernst-Thälmann-Straße" Housenumber=" 13" Postal=" 15345" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Ernst-Thälmann-Straße" Housenumber=" 13" Postal=" 15345" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="52.53006926372292" Lon="13.920987963106054" Grid_ETRS89-LAEA-100m="100mN32761E45869" ags24="120644080030000001020200" ags22="1206440800300000010202" ags20="12064408003000000102" ags27="120644080030000001020200001" ags5="12064" ags8="12064408" ags2="12" ags13="1206440815345" ags11="12064408003" ags3="120" pagsId="19526547_de" ags16="1206440815345003" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Flughafen Frankfurt am Main; 3; 60549;D;8080 trademarks_2022_test_20230207.csv; DeleteCity,50,0247788544 8,5904025932) Failed: Test method LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult threw exception: 
+Test method LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult threw exception: 
+System.FormatException: Input string was not in a correct format.
+    at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, TypeCode type)
+   at System.Int32.Parse(String s)
+   at System.Linq.Enumerable.SelectArrayIterator`2.ToList()
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 159
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Flughafen Frankfurt am Main" Housenumber=" 3" Postal=" 60549" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Flughafen Frankfurt am Main" Housenumber="" Postal=" 60549" City="" Country="de" District="" Precision="2" Quality="" Lat="50.05085948425878" Lon="8.580756484813708" Grid_ETRS89-LAEA-100m="100mN29941E42193" ags22="01" ags20="000000277" ags5="12" ags8="000" ags2="06" ags13="60549" ags11="012" ags3="4" pagsId="8585590_de" ags16="012" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Flughafen Frankfurt am Main; 3; 60549;FrankfurtamMain;D;City [ ] [];Unchanged,50,0247788544 8,5904025932) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Flughafen Frankfurt am Main" Housenumber=" 3" Postal=" 60549" City="FrankfurtamMain" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Flughafenstr.; 634636; 44329;Dortmund; de;Housenumber [-] [];Unchanged,51,56409314 7,536441668) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Flughafenstr." Housenumber=" 634636" Postal=" 44329" City="Dortmund" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Forststr.; 1;Stollberg/Erzgeb.;D;2191 trademarks_2022_test_20230207.csv; DeletePostal,50,7141920498 12,7857384904) Failed: Expected first.Lat to approximate 50.7141920498 +/- 0.03, but 50.67472605211337 differed by 0.03946599768662651.
+Expected first.Lat to approximate 50.7141920498 +/- 0.03, but 50.67472605211337 differed by 0.03946599768662651.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Forststr." Housenumber=" 1" City="Stollberg/Erzgeb." Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street="" Housenumber="" Postal="" City="Stollberg/Erzgeb." Country="de" District="" Precision="2" Quality="-1,100,0,0,25" Lat="50.67472605211337" Lon="12.765634999305375" Grid_ETRS89-LAEA-100m="100mN30662E45164" ags5="14521" ags8="14521590" ags2="14" ags11="14521590002" ags3="145" pagsId="23355453_de" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Friedrich str; 10; 10115; D;13 check_geocoder_20221102.csv; DeleteCity,52,5162962725 13,300364599) Failed: Expected first.Lon to approximate 13.300364599 +/- 0.03, but 13.472591892423 differed by 0.17222729342300092.
+Expected first.Lon to approximate 13.300364599 +/- 0.03, but 13.472591892423 differed by 0.17222729342300092.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Friedrich str" Housenumber=" 10" Postal=" 10115" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Friedrich str" Housenumber=" 10" Postal=" 10115" City="" Country="de" District="" Precision="2" Quality="60,-1,87,100,62" Lat="52.49539687130144" Lon="13.472591892423" Grid_ETRS89-LAEA-100m="100mN32707E45567" ags24="110000000240000000870100" ags22="1100000002400000008701" ags20="11000000024000000087" ags27="110000000240000000870100001" ags5="11000" ags8="11000000" ags2="11" ags13="1100000010245" ags11="11000000024" ags3="110" pagsId="18823873_de" ags16="1100000010245024" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Friedrich str; 10;Berlin; D;13 check_geocoder_20221102.csv; DeletePostal,52,5162962725 13,300364599) Failed: Expected first.Lon to approximate 13.300364599 +/- 0.03, but 13.39196316726602 differed by 0.09159856826602031.
+Expected first.Lon to approximate 13.300364599 +/- 0.03, but 13.39196316726602 differed by 0.09159856826602031.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Friedrich str" Housenumber=" 10" City="Berlin" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Friedrich str" Housenumber=" 10" Postal="" City="Berlin" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="52.50131760851415" Lon="13.39196316726602" Grid_ETRS89-LAEA-100m="100mN32711E45512" ags24="110000000460000003720102" ags22="1100000004600000037201" ags20="11000000046000000372" ags27="110000000460000003720102001" ags5="11000" ags8="11000000" ags2="11" ags13="1100000010969" ags11="11000000046" ags3="110" pagsId="18914610_de" ags16="1100000010969046" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Frühlingsstraße; 14; 73035; D;3 check_geocoder_20221102.csv; DeleteCity,48,7082232826 9,6592590814) Failed: Expected first.Lat to approximate 48.7082232826 +/- 0.03, but 48.860810946764666 differed by 0.1525876641646633.
+Expected first.Lat to approximate 48.7082232826 +/- 0.03, but 48.860810946764666 differed by 0.1525876641646633.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Frühlingsstraße" Housenumber=" 14" Postal=" 73035" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Frühlingsstraße" Housenumber=" 14" Postal=" 73035" City="" Country="de" District="" Precision="2" Quality="80,-1,100,100,70" Lat="48.860810946764666" Lon="9.526554229113136" Grid_ETRS89-LAEA-100m="100mN28609E42862" ags24="081190610010000000050104" ags22="0811906100100000000501" ags20="08119061001000000005" ags27="081190610010000000050104001" ags5="08119" ags8="08119061" ags2="08" ags13="0811906173635" ags11="08119061001" ags3="081" pagsId="12220301_de" ags16="0811906173635001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Fürstenwalder Damm; 435441; 12587;Berlin-Köpenick;D;Housenumber [-] [];Unchanged,52,4563132841 13,6201362269) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Fürstenwalder Damm" Housenumber=" 435441" Postal=" 12587" City="Berlin-Köpenick" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Gewerbegebiet Rurbenden; 44; 52353;D;12825 trademarks_2022_test_20230207.csv; DeleteCity,50,8109307748 6,4797381475) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Gewerbegebiet Rurbenden" Housenumber=" 44" Postal=" 52353" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Gewerbegebiet Rurbenden; 44;Düren;D;12825 trademarks_2022_test_20230207.csv; DeletePostal,50,8109307748 6,4797381475) Failed: Expected first.Lat to approximate 50.8109307748 +/- 0.03, but 50.778241603458945 differed by 0.032689171341054646.
+Expected first.Lat to approximate 50.8109307748 +/- 0.03, but 50.778241603458945 differed by 0.032689171341054646.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Gewerbegebiet Rurbenden" Housenumber=" 44" City="Düren" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street="" Housenumber="" Postal="" City="Düren" Country="de" District="" Precision="2" Quality="-1,100,0,0,25" Lat="50.778241603458945" Lon="6.507254810489927" Grid_ETRS89-LAEA-100m="100mN30799E40747" ags5="05358" ags8="05358008" ags2="05" ags11="05358008006" ags3="053" pagsId="5642162_de" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Golßener Straße; ; 15938;KaselGolzig;D;City [-] [];Unchanged,51,9350566404 13,6911286419) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Golßener Straße" Housenumber=" " Postal=" 15938" City="KaselGolzig" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Harzstr.; 47; 37447; de;47600 de,at,ch.csv; DeleteCity,51,6237856 10,58185639) Failed: Expected first.Lon to approximate 10.58185639 +/- 0.03, but 10.379092283548085 differed by 0.2027641064519159.
+Expected first.Lon to approximate 10.58185639 +/- 0.03, but 10.379092283548085 differed by 0.2027641064519159.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Harzstr." Housenumber=" 47" Postal=" 37447" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Harzstr." Housenumber=" 47" Postal=" 37447" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="51.62864751082328" Lon="10.379092283548085" Grid_ETRS89-LAEA-100m="100mN31687E43472" ags24="031590190050000000550205" ags22="0315901900500000005502" ags20="03159019005000000055" ags27="031590190050000000550205001" ags5="03159" ags8="03159019" ags2="03" ags13="0315901937412" ags11="03159019005" ags3="031" pagsId="1701012_de" ags16="0315901937412005" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr.  20a; 25879;Süderstapel; de;44186 de,at,ch.csv; AppendHousenumberAtStreet,54,34983105 9,217497538) Failed: Expected first.Lon to approximate 9.217497538 +/- 0.03, but 9.250264483745434 differed by 0.032766945745434484.
+Expected first.Lon to approximate 9.217497538 +/- 0.03, but 9.250264483745434 differed by 0.032766945745434484.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr.  20a" Postal=" 25879" City="Süderstapel" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstr.  20a" Housenumber="" Postal=" 25879" City="Süderstapel" Country="de" District="" Precision="2" Quality="100,75,100,0,69" Lat="54.36070297594341" Lon="9.250264483745434" Grid_ETRS89-LAEA-100m="100mN34729E42722" ags22="0105918800100000025401" ags20="01059188001000000254" ags5="01059" ags8="01059188" ags2="01" ags13="0105918825879" ags11="01059188001" ags3="010" pagsId="743226_de" ags16="0105918825879001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr. 2; 1/2; 67149; de;30570 de,at,ch.csv; DeleteCity,49,39898612 8,232675748) Failed: Expected first.Lat to approximate 49.39898612 +/- 0.03, but 49.30844956524805 differed by 0.09053655475195654.
+Expected first.Lat to approximate 49.39898612 +/- 0.03, but 49.30844956524805 differed by 0.09053655475195654.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr. 2" Housenumber=" 1/2" Postal=" 67149" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstr. 2" Housenumber=" 1/2" Postal=" 67149" City="" Country="de" District="" Precision="2" Quality="40,-1,64,50,39" Lat="49.30844956524805" Lon="8.122408764262214" Grid_ETRS89-LAEA-100m="100mN29123E41844" ags24="073370520010000000600101" ags22="0733705200100000006001" ags20="07337052001000000060" ags27="073370520010000000600101001" ags5="07337" ags8="07337052" ags2="07" ags13="0733705267487" ags11="07337052001" ags3="073" pagsId="11423121_de" ags16="0733705267487001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr. 2; 1/2;Meckenheim; de;30570 de,at,ch.csv; DeletePostal,49,39898612 8,232675748) Failed: Expected first.Lat to approximate 49.39898612 +/- 0.03, but 50.61566055901376 differed by 1.216674439013758.
+Expected first.Lat to approximate 49.39898612 +/- 0.03, but 50.61566055901376 differed by 1.216674439013758.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr. 2" Housenumber=" 1/2" City="Meckenheim" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street="" Housenumber="" Postal="" City="Meckenheim" Country="de" District="" Precision="2" Quality="-1,100,0,0,25" Lat="50.61566055901376" Lon="7.02997471917564" Grid_ETRS89-LAEA-100m="100mN30602E41108" ags5="05382" ags8="05382032" ags2="05" ags11="05382032004" ags3="053" pagsId="6264612_de" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr.; 12;Neuenkirchen; de;33865 de,at,ch.csv; DeletePostal,52,24399429 7,371417161) Failed: Expected first.Lat to approximate 52.24399429 +/- 0.03, but 54.23667120188952 differed by 1.992676911889518.
+Expected first.Lat to approximate 52.24399429 +/- 0.03, but 54.23667120188952 differed by 1.992676911889518.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr." Housenumber=" 12" City="Neuenkirchen" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstr." Housenumber=" 12" Postal="" City="Neuenkirchen" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="54.23667120188952" Lon="8.99487861842573" Grid_ETRS89-LAEA-100m="100mN34593E42554" ags24="010510750010000000420200" ags22="0105107500100000004202" ags20="01051075001000000042" ags27="010510750010000000420200001" ags5="01051" ags8="01051075" ags2="01" ags13="0105107525792" ags11="01051075001" ags3="010" pagsId="179058_de" ags16="0105107525792001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr.; 33; 56412;D;4963 trademarks_2022_test_20230207.csv; DeleteCity,50,4501440899 7,9104644531) Failed: Expected first.Lat to approximate 50.4501440899 +/- 0.03, but 50.39042343400293 differed by 0.05972065589706688.
+Expected first.Lat to approximate 50.4501440899 +/- 0.03, but 50.39042343400293 differed by 0.05972065589706688.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr." Housenumber=" 33" Postal=" 56412" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstr." Housenumber=" 33" Postal=" 56412" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="50.39042343400293" Lon="7.815239111005045" Grid_ETRS89-LAEA-100m="100mN30332E41656" ags24="071430570010000000340302" ags22="0714305700100000003403" ags20="07143057001000000034" ags27="071430570010000000340302001" ags5="07143" ags8="07143057" ags2="07" ags13="0714305756412" ags11="07143057001" ags3="071" pagsId="10682248_de" ags16="0714305756412001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr.; 4; 04932;D;3471 trademarks_2022_test_20230207.csv; DeleteCity,51,4262852665 13,4984633652) Failed: Expected first.Lat to approximate 51.4262852665 +/- 0.03, but 51.382662132592884 differed by 0.04362313390711847.
+Expected first.Lat to approximate 51.4262852665 +/- 0.03, but 51.382662132592884 differed by 0.04362313390711847.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr." Housenumber=" 4" Postal=" 04932" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstr." Housenumber=" 4" Postal=" 04932" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="51.382662132592884" Lon="13.675362605766834" Grid_ETRS89-LAEA-100m="100mN31477E45767" ags24="12062208001000000042030M" ags22="1206220800100000004203" ags20="12062208001000000042" ags27="12062208001000000042030M001" ags5="12062" ags8="12062208" ags2="12" ags13="1206220804932" ags11="12062208001" ags3="120" pagsId="19383683_de" ags16="1206220804932001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr.; 4;Röderland OT Wainsdorf;D;3471 trademarks_2022_test_20230207.csv; DeletePostal,51,4262852665 13,4984633652) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr." Housenumber=" 4" City="Röderland OT Wainsdorf" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstr.; 70;Buchholz; de;8911 de,at,ch.csv; DeletePostal,50,68672628 7,394348531) Failed: Expected first.Lat to approximate 50.68672628 +/- 0.03, but 53.98668917360817 differed by 3.2999628936081677.
+Expected first.Lat to approximate 50.68672628 +/- 0.03, but 53.98668917360817 differed by 3.2999628936081677.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstr." Housenumber=" 70" City="Buchholz" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstr." Housenumber=" 70" Postal="" City="Buchholz" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="53.98668917360817" Lon="9.221888435697794" Grid_ETRS89-LAEA-100m="100mN34313E42699" ags24="010510120010000000440202" ags22="0105101200100000004402" ags20="01051012001000000044" ags27="010510120010000000440202001" ags5="01051" ags8="01051012" ags2="01" ags13="0105101225712" ags11="01051012001" ags3="010" pagsId="146003_de" ags16="0105101225712001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstraße; 12; 79110; D;141 check_geocoder_20221102.csv; DeleteCity,48,0073300637 7,8579809056) Failed: Expected first.Lat to approximate 48.0073300637 +/- 0.03, but 47.609592202518 differed by 0.3977378611820015.
+Expected first.Lat to approximate 48.0073300637 +/- 0.03, but 47.609592202518 differed by 0.3977378611820015.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstraße" Housenumber=" 12" Postal=" 79110" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstraße" Housenumber=" 12" Postal=" 79110" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="47.609592202518" Lon="8.296511281130158" Grid_ETRS89-LAEA-100m="100mN27232E41928" ags24="083371250040000000290103" ags22="0833712500400000002901" ags20="08337125004000000029" ags27="083371250040000000290103001" ags5="08337" ags8="08337125" ags2="08" ags13="0833712579790" ags11="08337125004" ags3="083" pagsId="14063575_de" ags16="0833712579790004" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstraße; 15;Stralsund; D;144 check_geocoder_20221102.csv; DeletePostal,54,3302798469 12,972885392) Failed: Expected first.Lat to approximate 54.3302798469 +/- 0.03, but 54.235603199329425 differed by 0.09467664757057292.
+Expected first.Lat to approximate 54.3302798469 +/- 0.03, but 54.235603199329425 differed by 0.09467664757057292.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstraße" Housenumber=" 15" City="Stralsund" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstraße" Housenumber=" 15" Postal="" City="Stralsund" Country="de" District="" Precision="2" Quality="-1,69,100,100,67" Lat="54.235603199329425" Lon="12.931776409315864" Grid_ETRS89-LAEA-100m="100mN34626E45121" ags24="130730410030000000110102" ags22="1307304100300000001101" ags20="13073041003000000011" ags27="130730410030000000110102001" ags5="13073" ags8="13073041" ags2="13" ags13="1307304118442" ags11="13073041003" ags3="130" pagsId="20265386_de" ags16="1307304118442003" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Hauptstraße; 38;Stralsund; D;126 check_geocoder_20221102.csv; DeletePostal,54,3350948443 13,0319346461) Failed: Expected first.Lat to approximate 54.3350948443 +/- 0.03, but 54.256573905735955 differed by 0.07852093856404707.
+Expected first.Lat to approximate 54.3350948443 +/- 0.03, but 54.256573905735955 differed by 0.07852093856404707.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Hauptstraße" Housenumber=" 38" City="Stralsund" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Hauptstraße" Housenumber=" 38" Postal="" City="Stralsund" Country="de" District="" Precision="2" Quality="-1,69,100,100,67" Lat="54.256573905735955" Lon="13.031528782194309" Grid_ETRS89-LAEA-100m="100mN34652E45185" ags24="13073087002000000005020R" ags22="1307308700200000000502" ags20="13073087002000000005" ags27="13073087002000000005020R001" ags5="13073" ags8="13073087" ags2="13" ags13="1307308718442" ags11="13073087002" ags3="130" pagsId="20294615_de" ags16="1307308718442002" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; In der Horst; 10; 26160;BadZwischenahn; de;City [ ] [];Unchanged,53,18319157 8,009030892) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" In der Horst" Housenumber=" 10" Postal=" 26160" City="BadZwischenahn" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Jackerartherstr.; 27; 41812; de;13596 de,at,ch.csv; DeleteCity,51,04224001 6,444400291) Failed: Test method LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult threw exception: 
+Test method LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult threw exception: 
+System.FormatException: Input string was not in a correct format.
+    at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, TypeCode type)
+   at System.Int32.Parse(String s)
+   at System.Linq.Enumerable.SelectArrayIterator`2.ToList()
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 159
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Jackerartherstr." Housenumber=" 27" Postal=" 41812" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Jackerartherstr." Housenumber="" Postal=" 41812" City="" Country="de" District="" Precision="2" Quality="" Lat="51.05147112351199" Lon="6.4381072121702605" Grid_ETRS89-LAEA-100m="100mN31105E40713" ags22="01" ags20="000000076" ags5="70" ags8="004" ags2="05" ags13="41812" ags11="020" ags3="3" pagsId="23016526_de" ags16="020" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Karl-Marx-Straße; 66;Berlin-Neukölln II;D;13596 trademarks_2022_test_20230207.csv; DeletePostal,52,4821026718 13,4321715362) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Karl-Marx-Straße" Housenumber=" 66" City="Berlin-Neukölln II" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Karlstr.; 31;Geislingen; de;16641 de,at,ch.csv; DeletePostal,48,61519584 9,841130206) Failed: Expected first.Lat to approximate 48.61519584 +/- 0.03, but 48.305481738814066 differed by 0.3097141011859321.
+Expected first.Lat to approximate 48.61519584 +/- 0.03, but 48.305481738814066 differed by 0.3097141011859321.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Karlstr." Housenumber=" 31" City="Geislingen" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Karlstr." Housenumber=" 31" Postal="" City="Geislingen" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="48.305481738814066" Lon="8.785257396502292" Grid_ETRS89-LAEA-100m="100mN27998E42308" ags24="08417022002000000026030A" ags22="0841702200200000002603" ags20="08417022002000000026" ags27="08417022002000000026030A001" ags5="08417" ags8="08417022" ags2="08" ags13="0841702272351" ags11="08417022002" ags3="084" pagsId="14254986_de" ags16="0841702272351002" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Königsberger Str.; 264;Münster-Nord;D;6667 trademarks_2022_test_20230207.csv; DeletePostal,51,993325467 7,6649882405) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Königsberger Str." Housenumber=" 264" City="Münster-Nord" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Kurze Str.; 10; 06308; de;42185 de,at,ch.csv; DeleteCity,51,60614286 11,54289178) Failed: Expected first.Lat to approximate 51.60614286 +/- 0.03, but 51.57418033164842 differed by 0.031962528351577646.
+Expected first.Lat to approximate 51.60614286 +/- 0.03, but 51.57418033164842 differed by 0.031962528351577646.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Kurze Str." Housenumber=" 10" Postal=" 06308" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Kurze Str." Housenumber=" 10" Postal=" 06308" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="51.57418033164842" Lon="12.26142048274936" Grid_ETRS89-LAEA-100m="100mN31650E44777" ags24="150823400090000001560303" ags22="1508234000900000015603" ags20="15082340009000000156" ags27="150823400090000001560303001" ags5="15082" ags8="15082340" ags2="15" ags13="1508234006809" ags11="15082340009" ags3="150" pagsId="21718938_de" ags16="1508234006809009" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Leipziger Straße; 19; 34117; D;108 check_geocoder_20221102.csv; DeleteCity,51,3126093916 9,5104919757) Failed: Expected first.Lat to approximate 51.3126093916 +/- 0.03, but 51.11964522185605 differed by 0.19296416974395214.
+Expected first.Lat to approximate 51.3126093916 +/- 0.03, but 51.11964522185605 differed by 0.19296416974395214.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Leipziger Straße" Housenumber=" 19" Postal=" 34117" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Leipziger Straße" Housenumber=" 19" Postal=" 34117" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="51.11964522185605" Lon="9.549397535460518" Grid_ETRS89-LAEA-100m="100mN31121E42894" ags24="066340140050000001140206" ags22="0663401400500000011402" ags20="06634014005000000114" ags27="066340140050000001140206001" ags5="06634" ags8="06634014" ags2="06" ags13="0663401434212" ags11="06634014005" ags3="066" pagsId="10051374_de" ags16="0663401434212005" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Leipziger Straße; 19;Hessen; D;108 check_geocoder_20221102.csv; DeletePostal,51,3126093916 9,5104919757) Failed: Expected first.Lat to approximate 51.3126093916 +/- 0.03, but 52.019434020655076 differed by 0.7068246290550775.
+Expected first.Lat to approximate 51.3126093916 +/- 0.03, but 52.019434020655076 differed by 0.7068246290550775.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Leipziger Straße" Housenumber=" 19" City="Hessen" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Leipziger Straße" Housenumber=" 19" Postal="" City="Hessen" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="52.019434020655076" Lon="10.781537045362322" Grid_ETRS89-LAEA-100m="100mN32124E43746" ags24="150852300060000000680200" ags22="1508523000600000006802" ags20="15085230006000000068" ags27="150852300060000000680200001" ags5="15085" ags8="15085230" ags2="15" ags13="1508523038835" ags11="15085230006" ags3="150" pagsId="21903864_de" ags16="1508523038835006" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Mittelstr.; 12;Köln;D;10155 trademarks_2022_test_20230207.csv; DeletePostal,50,9370663737 6,9436145562) Failed: Expected first.Lat to approximate 50.9370663737 +/- 0.03, but 50.89445483138035 differed by 0.04261154231964781.
+Expected first.Lat to approximate 50.9370663737 +/- 0.03, but 50.89445483138035 differed by 0.04261154231964781.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Mittelstr." Housenumber=" 12" City="Köln" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Mittelstr." Housenumber=" 12" Postal="" City="Köln" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="50.89445483138035" Lon="6.992284202452734" Grid_ETRS89-LAEA-100m="100mN30913E41094" ags24="05315000066000000153030A" ags22="0531500006600000015303" ags20="05315000066000000153" ags27="05315000066000000153030A001" ags5="05315" ags8="05315000" ags2="05" ags13="0531500050996" ags11="05315000066" ags3="053" pagsId="5410507_de" ags16="0531500050996066" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Möllner Landstr. Haus; 28d; 22113; de;36587 de,at,ch.csv; DeleteCity,53,54232548 10,17089841) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Möllner Landstr. Haus" Housenumber=" 28d" Postal=" 22113" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Moritz von Schwindt Str.; 14; 65428;RüsselsheimamMain; D;City [ ] [];Unchanged,49,9920435559 8,4478671763) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Moritz von Schwindt Str." Housenumber=" 14" Postal=" 65428" City="RüsselsheimamMain" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Neustrr.; 16; 52538; de;41962 de,at,ch.csv; DeleteCity,51,01348523 5,89438694) Failed: Expected first.Lon to approximate 5.89438694 +/- 0.03, but 6.045133424854679 differed by 0.1507464848546789.
+Expected first.Lon to approximate 5.89438694 +/- 0.03, but 6.045133424854679 differed by 0.1507464848546789.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Neustrr." Housenumber=" 16" Postal=" 52538" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Neustrr." Housenumber=" 16" Postal=" 52538" City="" Country="de" District="" Precision="2" Quality="100,-1,88,100,72" Lat="51.003629751932394" Lon="6.045133424854679" Grid_ETRS89-LAEA-100m="100mN31066E40435" ags24="053700080010000000150205" ags22="0537000800100000001502" ags20="05370008001000000015" ags27="053700080010000000150205001" ags5="05370" ags8="05370008" ags2="05" ags13="0537000852538" ags11="05370008001" ags3="053" pagsId="5934724_de" ags16="0537000852538001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Olpener Straße; 397399; 51109;Köln;D;Housenumber [-] [];Unchanged,50,9431313701 7,045766945) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Olpener Straße" Housenumber=" 397399" Postal=" 51109" City="Köln" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Osterholzer Heerstraße; 111113; 28307;Bremen;D;Housenumber [-] [];Unchanged,53,058119285 8,9362571796) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Osterholzer Heerstraße" Housenumber=" 111113" Postal=" 28307" City="Bremen" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Parkstr.; 3;Rostock; de;39658 de,at,ch.csv; DeletePostal,54,17634114 12,07770075) Failed: Expected first.Lat to approximate 54.17634114 +/- 0.03, but 54.084220760616326 differed by 0.09212037938367246.
+Expected first.Lat to approximate 54.17634114 +/- 0.03, but 54.084220760616326 differed by 0.09212037938367246.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Parkstr." Housenumber=" 3" City="Rostock" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Parkstr." Housenumber=" 3" Postal="" City="Rostock" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="54.084220760616326" Lon="12.113958177395252" Grid_ETRS89-LAEA-100m="100mN34439E44593" ags24="130030000140000000200303" ags22="1300300001400000002003" ags20="13003000014000000020" ags27="130030000140000000200303001" ags5="13003" ags8="13003000" ags2="13" ags13="1300300018057" ags11="13003000014" ags3="130" pagsId="20035486_de" ags16="1300300018057014" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Parkstr.; 77;Hude (Oldb);D;15423 trademarks_2022_test_20230207.csv; DeletePostal,53,1157802316 8,4534151327) Failed: Expected first.Lat to approximate 53.1157802316 +/- 0.03, but 53.08235887129394 differed by 0.03342136030605758.
+Expected first.Lat to approximate 53.1157802316 +/- 0.03, but 53.08235887129394 differed by 0.03342136030605758.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Parkstr." Housenumber=" 77" City="Hude (Oldb)" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street="" Housenumber="" Postal="" City="Hude (Oldb)" Country="de" District="" Precision="2" Quality="-1,100,0,0,25" Lat="53.08235887129394" Lon="8.380027940723252" Grid_ETRS89-LAEA-100m="100mN33316E42124" ags5="03458" ags8="03458010" ags2="03" ags11="03458010009" ags3="034" pagsId="22972024_de" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Planken P5; 1-4; 68161;D;10156 trademarks_2022_test_20230207.csv; DeleteCity,49,4782482582 8,4729659988) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Planken P5" Housenumber=" 1-4" Postal=" 68161" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Planken P5; 1-4;Mannheim;D;10156 trademarks_2022_test_20230207.csv; DeletePostal,49,4782482582 8,4729659988) Failed: Expected first.Lon to approximate 8.4729659988 +/- 0.03, but 8.521033099919785 differed by 0.04806710111978596.
+Expected first.Lon to approximate 8.4729659988 +/- 0.03, but 8.521033099919785 differed by 0.04806710111978596.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Planken P5" Housenumber=" 1-4" City="Mannheim" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street="" Housenumber="" Postal="" City="Mannheim" Country="de" District="" Precision="2" Quality="-1,100,0,0,25" Lat="49.496991403232656" Lon="8.521033099919785" Grid_ETRS89-LAEA-100m="100mN29326E42138" ags5="08222" ags8="08222000" ags2="08" ags11="08222000002" ags3="082" pagsId="23170173_de" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Pulsnitzer Str.; 31; 01920; de;13076 de,at,ch.csv; DeleteCity,51,22107485 14,12974609) Failed: Expected first.Lon to approximate 14.12974609 +/- 0.03, but 14.053334172194996 differed by 0.07641191780500378.
+Expected first.Lon to approximate 14.12974609 +/- 0.03, but 14.053334172194996 differed by 0.07641191780500378.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Pulsnitzer Str." Housenumber=" 31" Postal=" 01920" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Pulsnitzer Str." Housenumber=" 31" Postal=" 01920" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="51.19913538925745" Lon="14.053334172194996" Grid_ETRS89-LAEA-100m="100mN31287E46041" ags24="146255800010000000070104" ags22="1462558000100000000701" ags20="14625580001000000007" ags27="146255800010000000070104001" ags5="14625" ags8="14625580" ags2="14" ags13="1462558001920" ags11="14625580001" ags3="146" pagsId="21095159_de" ags16="1462558001920001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Raststätte Lonetal Ost A7; ; 89537;D;9202 trademarks_2022_test_20230207.csv; DeleteCity,48,6111378578 10,2322903773) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Raststätte Lonetal Ost A7" Housenumber=" " Postal=" 89537" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Raststätte Lonetal Ost A7; ; 89537;GiengenanderBrenz;D;City [ ] [];Unchanged,48,6111378578 10,2322903773) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Raststätte Lonetal Ost A7" Housenumber=" " Postal=" 89537" City="GiengenanderBrenz" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Rotenburger Str.; 9; 27367; de;42631 de,at,ch.csv; DeleteCity,53,11407588 9,241196649) Failed: Expected first.Lon to approximate 9.241196649 +/- 0.03, but 9.274896284745966 differed by 0.033699635745964684.
+Expected first.Lon to approximate 9.241196649 +/- 0.03, but 9.274896284745966 differed by 0.033699635745964684.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Rotenburger Str." Housenumber=" 9" Postal=" 27367" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Rotenburger Str." Housenumber=" 9" Postal=" 27367" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="53.11891801938942" Lon="9.274896284745966" Grid_ETRS89-LAEA-100m="100mN33347E42724" ags24="033570200010000000350104" ags22="0335702000100000003501" ags20="03357020001000000035" ags27="033570200010000000350104001" ags5="03357" ags8="03357020" ags2="03" ags13="0335702027367" ags11="03357020001" ags3="033" pagsId="2708584_de" ags16="0335702027367001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Schillerstraße; 12; 55118; D;138 check_geocoder_20221102.csv; DeleteCity,50,0178843139 8,175804909) Failed: Expected first.Lat to approximate 50.0178843139 +/- 0.03, but 49.96761508792782 differed by 0.050269225972179754.
+Expected first.Lat to approximate 50.0178843139 +/- 0.03, but 49.96761508792782 differed by 0.050269225972179754.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Schillerstraße" Housenumber=" 12" Postal=" 55118" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Schillerstraße" Housenumber=" 12" Postal=" 55118" City="" Country="de" District="" Precision="2" Quality="80,-1,100,100,70" Lat="49.96761508792782" Lon="8.05903860136477" Grid_ETRS89-LAEA-100m="100mN29857E41817" ags24="073390300070000000540303" ags22="0733903000700000005403" ags20="07339030007000000054" ags27="073390300070000000540303001" ags5="07339" ags8="07339030" ags2="07" ags13="0733903055218" ags11="07339030007" ags3="073" pagsId="11527081_de" ags16="0733903055218007" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Schlüchtalstr.; 24; 79761;WaldshutTiengen; de;City [-] [];Unchanged,47,63676952 8,248979812) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Schlüchtalstr." Housenumber=" 24" Postal=" 79761" City="WaldshutTiengen" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Schulsttasse; 6; 54533; D;4 check_geocoder_20221102.csv; DeleteCity,50,037537267 6,8638131375) Failed: Expected first.Lat to approximate 50.037537267 +/- 0.03, but 50.08460798222205 differed by 0.047070715222055526.
+Expected first.Lat to approximate 50.037537267 +/- 0.03, but 50.08460798222205 differed by 0.047070715222055526.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Schulsttasse" Housenumber=" 6" Postal=" 54533" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Schulsttasse" Housenumber=" 6" Postal=" 54533" City="" Country="de" District="" Precision="2" Quality="100,-1,92,100,73" Lat="50.08460798222205" Lon="6.756832290485248" Grid_ETRS89-LAEA-100m="100mN30020E40889" ags24="072310090010000000220306" ags22="0723100900100000002203" ags20="07231009001000000022" ags27="072310090010000000220306001" ags5="07231" ags8="07231009" ags2="07" ags13="0723100954533" ags11="07231009001" ags3="072" pagsId="10765164_de" ags16="0723100954533001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Sonnenmatte; 13; 77709; de;35799 de,at,ch.csv; DeleteCity,48,31156828 8,217398765) Failed: Expected first.Lon to approximate 8.217398765 +/- 0.03, but 8.272321761587108 differed by 0.05492299658710742.
+Expected first.Lon to approximate 8.217398765 +/- 0.03, but 8.272321761587108 differed by 0.05492299658710742.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Sonnenmatte" Housenumber=" 13" Postal=" 77709" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Sonnenmatte" Housenumber=" 13" Postal=" 77709" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="48.28965619772072" Lon="8.272321761587108" Grid_ETRS89-LAEA-100m="100mN27988E41927" ags24="083171450010000000070205" ags22="0831714500100000000702" ags20="08317145001000000007" ags27="083171450010000000070205001" ags5="08317" ags8="08317145" ags2="08" ags13="0831714577709" ags11="08317145001" ags3="083" pagsId="13720507_de" ags16="0831714577709001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Sophienstr.; 12;Frankfurt; de;15196 de,at,ch.csv; DeletePostal,50,12179937 8,652581874) Failed: Expected first.Lat to approximate 50.12179937 +/- 0.03, but 52.347746579440184 differed by 2.2259472094401858.
+Expected first.Lat to approximate 50.12179937 +/- 0.03, but 52.347746579440184 differed by 2.2259472094401858.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Sophienstr." Housenumber=" 12" City="Frankfurt" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Sophienstr." Housenumber=" 12" Postal="" City="Frankfurt" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="52.347746579440184" Lon="14.542971553642122" Grid_ETRS89-LAEA-100m="100mN32583E46303" ags24="120530000020000001570303" ags22="1205300000200000015703" ags20="12053000002000000157" ags27="120530000020000001570303001" ags5="12053" ags8="12053000" ags2="12" ags13="1205300015230" ags11="12053000002" ags3="120" pagsId="19192751_de" ags16="1205300015230002" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Steinweg; 6;Naumburg; de;33514 de,at,ch.csv; DeletePostal,51,24741319 9,168638477) Failed: Expected first.Lat to approximate 51.24741319 +/- 0.03, but 51.15412953606713 differed by 0.09328365393287186.
+Expected first.Lat to approximate 51.24741319 +/- 0.03, but 51.15412953606713 differed by 0.09328365393287186.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Steinweg" Housenumber=" 6" City="Naumburg" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Steinweg" Housenumber=" 6" Postal="" City="Naumburg" Country="de" District="" Precision="2" Quality="-1,100,100,100,75" Lat="51.15412953606713" Lon="11.80609862774696" Grid_ETRS89-LAEA-100m="100mN31174E44473" ags24="150843550180000003000308" ags22="1508435501800000030003" ags20="15084355018000000300" ags27="150843550180000003000308001" ags5="15084" ags8="15084355" ags2="15" ags13="1508435506618" ags11="15084355018" ags3="150" pagsId="21831713_de" ags16="1508435506618018" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Terminalstraße; ; 85356;MünchenFlughafen;D;City [-] [];Unchanged,48,3572341564 11,7875234728) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Terminalstraße" Housenumber=" " Postal=" 85356" City="MünchenFlughafen" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Unter dem Birkenkopf; 19; 70197;StuttgartWest;D;City [-] [];Unchanged,48,7683601854 9,1412235408) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Unter dem Birkenkopf" Housenumber=" 19" Postal=" 70197" City="StuttgartWest" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Vogelsang; 36; 24351; de;10078 de,at,ch.csv; DeleteCity,54,5707156 9,954657178) Failed: Expected first.Lat to approximate 54.5707156 +/- 0.03, but 54.47699294759502 differed by 0.09372265240497768.
+Expected first.Lat to approximate 54.5707156 +/- 0.03, but 54.47699294759502 differed by 0.09372265240497768.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Vogelsang" Housenumber=" 36" Postal=" 24351" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Vogelsang" Housenumber=" 36" Postal=" 24351" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="54.47699294759502" Lon="9.838838932029244" Grid_ETRS89-LAEA-100m="100mN34856E43105" ags24="010580430010000000200507" ags22="0105804300100000002005" ags20="01058043001000000020" ags27="010580430010000000200507001" ags5="01058" ags8="01058043" ags2="01" ags13="0105804324340" ags11="01058043001" ags3="010" pagsId="586196_de" ags16="0105804324340001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Vogelsang; 36;Damp; de;10078 de,at,ch.csv; DeletePostal,54,5707156 9,954657178) Failed: Expected first.Lat to approximate 54.5707156 +/- 0.03, but 51.705941714039355 differed by 2.864773885960645.
+Expected first.Lat to approximate 54.5707156 +/- 0.03, but 51.705941714039355 differed by 2.864773885960645.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Vogelsang" Housenumber=" 36" City="Damp" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Vogelsang" Housenumber=" 36" Postal="" City="Damp" Country="de" District="" Precision="2" Quality="-1,50,100,100,63" Lat="51.705941714039355" Lon="7.811617352188739" Grid_ETRS89-LAEA-100m="100mN31795E41697" ags24="059150000090000001460108" ags22="0591500000900000014601" ags20="05915000009000000146" ags27="059150000090000001460108002" ags5="05915" ags8="05915000" ags2="05" ags13="0591500059073" ags11="05915000009" ags3="059" pagsId="7903902_de" ags16="0591500059073009" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Waldstr.; 228230; 63071;Offenbach; de;Housenumber [-] [];Unchanged,50,08685525 8,770445291) Failed: Expected results to contain 1 item(s), but found 0: {empty}.
+Expected results to contain 1 item(s), but found 0: {empty}.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.HaveCount(Int32 expected, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 145
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Waldstr." Housenumber=" 228230" Postal=" 63071" City="Offenbach" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="NoResult" /></GeocoderResponse>
+
+      RequestsReturningResult (1; Waldstraße; 6; 04889; D;118 check_geocoder_20221102.csv; DeleteCity,51,4835331429 13,1179801982) Failed: Expected first.Lon to approximate 13.1179801982 +/- 0.03, but 13.009680981498699 differed by 0.10829921670130105.
+Expected first.Lon to approximate 13.1179801982 +/- 0.03, but 13.009680981498699 differed by 0.10829921670130105.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Waldstraße" Housenumber=" 6" Postal=" 04889" Country=" D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Waldstraße" Housenumber=" 6" Postal=" 04889" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="51.472789176684046" Lon="13.009680981498699" Grid_ETRS89-LAEA-100m="100mN31556E45300" ags24="147300450180000000240205" ags22="1473004501800000002402" ags20="14730045018000000024" ags27="147300450180000000240205001" ags5="14730" ags8="14730045" ags2="14" ags13="1473004504889" ags11="14730045018" ags3="147" pagsId="21496112_de" ags16="1473004504889018" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Weimarische Str.; 1; 99438;D;3456 trademarks_2022_test_20230207.csv; DeleteCity,50,9002621872 11,2824940821) Failed: Expected first.Lon to approximate 11.2824940821 +/- 0.03, but 11.331893569805542 differed by 0.04939948770554281.
+Expected first.Lon to approximate 11.2824940821 +/- 0.03, but 11.331893569805542 differed by 0.04939948770554281.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 156
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Weimarische Str." Housenumber=" 1" Postal=" 99438" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Weimarische Str." Housenumber=" 1" Postal=" 99438" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="50.92139017784499" Lon="11.331893569805542" Grid_ETRS89-LAEA-100m="100mN30908E44146" ags24="160710090010000000270105" ags22="1607100900100000002701" ags20="16071009001000000027" ags27="160710090010000000270105001" ags5="16071" ags8="16071009" ags2="16" ags13="1607100999438" ags11="16071009001" ags3="160" pagsId="22696271_de" ags16="1607100999438001" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Wiesengrund; 1; 29568; de;47634 de,at,ch.csv; DeleteCity,52,88949928 10,65397692) Failed: Expected first.Lat to approximate 52.88949928 +/- 0.03, but 52.590099414748444 differed by 0.2993998652515586.
+Expected first.Lat to approximate 52.88949928 +/- 0.03, but 52.590099414748444 differed by 0.2993998652515586.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Wiesengrund" Housenumber=" 1" Postal=" 29568" Country=" de" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Wiesengrund" Housenumber=" 1" Postal=" 29568" City="" Country="de" District="" Precision="2" Quality="60,-1,100,100,65" Lat="52.590099414748444" Lon="10.436017493302824" Grid_ETRS89-LAEA-100m="100mN32757E43505" ags24="031510330020000000590200" ags22="0315103300200000005902" ags20="03151033002000000059" ags27="031510330020000000590200001" ags5="03151" ags8="03151033" ags2="03" ags13="0315103329369" ags11="03151033002" ags3="031" pagsId="1410109_de" ags16="0315103329369002" /></QueryResult></GeocoderResponse>
+
+      RequestsReturningResult (1; Zwickauer Str.; 7; 04639;D;4372 trademarks_2022_test_20230207.csv; DeleteCity,50,8867505908 12,4313366431) Failed: Expected first.Lat to approximate 50.8867505908 +/- 0.03, but 50.850192153872726 differed by 0.03655843692727245.
+Expected first.Lat to approximate 50.8867505908 +/- 0.03, but 50.850192153872726 differed by 0.03655843692727245.
+   at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.NumericAssertionsExtensions.FailIfDifferenceOutsidePrecision[T](Boolean differenceWithinPrecision, NumericAssertions`1 parent, T expectedValue, T precision, T actualDifference, String because, Object[] becauseArgs)
+   at FluentAssertions.NumericAssertionsExtensions.BeApproximately(NumericAssertions`1 parent, Double expectedValue, Double precision, String because, Object[] becauseArgs)
+   at LutumTappert.GeocoderService.BlackBoxTests.Geocode.RequestsReturningResult(WrapperRequestItem given, ExpectedReturns expected) in C:\Users\henning\source\Geocoder-Api\tests\LutumTappert.GeocoderService.BlackBoxTests\Geocode.cs:line 151
+
+
+
+
+Debug Trace:
+ReSharperTestRunner Information: 0 : POST https://geocoder.infas-lt.de/api/geocode: <?xml version="1.0" encoding="utf-8"?>
+<GeocoderRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" License="">
+  <Query ID="1" Street=" Zwickauer Str." Housenumber=" 7" Postal=" 04639" Country="D" Provider="" />
+</GeocoderRequest>
+ReSharperTestRunner Information: 0 : POST Response: <GeocoderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><QueryResult ID="1" Status="Result"><Result Street=" Zwickauer Str." Housenumber=" 7" Postal=" 04639" City="" Country="de" District="" Precision="2" Quality="100,-1,100,100,75" Lat="50.850192153872726" Lon="12.443530858375418" Grid_ETRS89-LAEA-100m="100mN30849E44930" ags24="160770390050000000060100" ags22="1607703900500000000601" ags20="16077039005000000006" ags27="160770390050000000060100001" ags5="16077" ags8="16077039" ags2="16" ags13="1607703904639" ags11="16077039005" ags3="160" pagsId="22878084_de" ags16="1607703904639005" /></QueryResult></GeocoderResponse>
