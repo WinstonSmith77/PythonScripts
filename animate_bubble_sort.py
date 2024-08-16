@@ -12,7 +12,7 @@ def bubble_sort(arr):
         yield tuple(arr)
 
 def get_colors():
-    cmap = plt.get_cmap('tab10')
+    cmap = plt.get_cmap('')
     colors = [cmap(i) for i in range(cmap.N)]   
     return colors
 
