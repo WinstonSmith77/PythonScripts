@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from random import shuffle
+from pathlib import Path
 
 def bubble_sort(arr):
     yield tuple(arr)
@@ -12,12 +13,14 @@ def bubble_sort(arr):
         yield tuple(arr)
 
 def get_colors():
-    cmap = plt.get_cmap('')
+    cmap = plt.get_cmap('hsv')
     colors = [cmap(i) for i in range(cmap.N)]   
     return colors
 
 length = 50
 all_colors = get_colors()
+
+
 
 def plot():
     # Generate random data
@@ -40,6 +43,11 @@ def plot():
 
     # Create the animation
     anim = animation.FuncAnimation(fig, update_fig, frames=range(len(data)), fargs=(bar_rects,), interval=100, repeat=True)
+    
+    # pathFile = Path(__file__).parent
+    # pathFile = Path(pathFile, "bubble_sort.mp4")
+    # print(pathFile) 
+    # anim.save(pathFile, writer='ffmpeg')
 
     # Show the plot
     plt.show()
