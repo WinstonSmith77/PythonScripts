@@ -20,7 +20,11 @@ def get_colors():
 length = 50
 all_colors = get_colors()
 
-
+def export(anim):
+    pathFile = Path(__file__).parent
+    pathFile = Path(pathFile, "bubble_sort.html")
+    print(pathFile) 
+    anim.save(pathFile, writer='html')
 
 def plot():
     # Generate random data
@@ -44,10 +48,8 @@ def plot():
     # Create the animation
     anim = animation.FuncAnimation(fig, update_fig, frames=range(len(data)), fargs=(bar_rects,), interval=100, repeat=True)
     
-    # pathFile = Path(__file__).parent
-    # pathFile = Path(pathFile, "bubble_sort.mp4")
-    # print(pathFile) 
-    # anim.save(pathFile, writer='ffmpeg')
+    export(anim)
+   
 
     # Show the plot
     plt.show()
