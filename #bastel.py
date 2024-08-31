@@ -22,6 +22,8 @@ def get_all_files(paths : Path | list[Path], pattern, minLength = 5 * 1024):
 path = (r'C:\Users\matze\OneDrive\bilder')
 
 
-all_length =  (length for _, length in get_all_files(path, '*.rw2'))
+all_length =  list(length for _, length in get_all_files(path, '*.rw2'))
 
-pprint(list(all_length))
+min  = min(all_length)
+max = max(all_length)
+
