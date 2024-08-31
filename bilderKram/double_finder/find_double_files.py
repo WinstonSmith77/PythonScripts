@@ -30,8 +30,8 @@ def get_length(file):
 
 def get_all_files(paths : Path | list[Path], pattern, minLength = 5 * 1024):
     if not isinstance(paths, (list, tuple)):
-        paths = (paths)
-    results_sources = (path.rglob(pattern, case_sensitive=False) for path in paths)
+        paths = (paths,)
+    results_sources = (Path(path).rglob(pattern, case_sensitive=False) for path in paths)
     results = (result for result in itertools.chain(*results_sources))
     results = filter(os.path.isfile, results)
     results = filter(lambda item : item[1] >= minLength, map(lambda x : (str(x), get_length(x)), results))
