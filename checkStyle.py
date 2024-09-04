@@ -23,7 +23,7 @@ FILL_COLOR = "fill-color";
 content = json.loads(pathlib.Path(path).read_text(encoding='utf-8'))
 
 styles = [style for style in content[LAYERS]]
-paints = [{key:value for key, value in style.items() if key in [PAINT, ID]} for style in content[LAYERS] if PAINT in style and  FILL_COLOR in style[PAINT] ]
+paints = [{key:value for key, value in style.items() if key in [PAINT, ID]} for style in content[LAYERS] if PAINT in style] 
 
 
 pprint((paints))
