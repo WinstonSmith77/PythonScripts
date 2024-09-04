@@ -17,14 +17,15 @@ LAYOUT = 'layout'
 TEXT_FONT = 'text-font'
 ID = 'id'
 SOURCE_LAYER = 'source-layer'
+PAINT = 'paint'
+FILL_COLOR = "fill-color";
 
 content = json.loads(pathlib.Path(path).read_text(encoding='utf-8'))
 
 styles = [style for style in content[LAYERS]]
-styles = sorted(styles, key=lambda x: x[SOURCE_LAYER])
-styles = groupby(styles, key=lambda x: x[SOURCE_LAYER])
-styles = {key: list(group) for key, group in styles}
+paints = [{key:value for key, value in style.items() if key in [PAINT, ID]} for style in content[LAYERS] if PAINT in style and  FILL_COLOR in style[PAINT] ]
 
-pprint((styles))
+
+pprint((paints))
 
 
