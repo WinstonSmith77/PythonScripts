@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # Your existing code
 
-rands = (random() for _ in range(100000))
+rands = (max(random(), random()) for _ in range(100000))
 
 
 def group(numbers, split_in_number_of_parts=25):
