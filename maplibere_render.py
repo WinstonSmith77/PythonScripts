@@ -9,13 +9,16 @@ from pathlib import Path
 from pprint import pprint
 import mapbox_vector_tile
 
+parent = Path(__file__).parent
+path = Path(parent, "##tiles_render.json")
+pathOutput = Path(parent, "##output.txt")
+
 def dump_to_file_json(path, jsonData):
-    with open(path, mode="w", encoding="utf8") as file:
+    with open(path, mode="w", encoding="utf-8") as file:
         json.dump(jsonData, file, indent=4)
 
 def read_tile():
-    parent = Path(__file__).parent
-    path = Path(parent, "##tiles_render.json")
+
 
     if path.exists():
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -27,6 +30,7 @@ def read_tile():
         dump_to_file_json(path, data)
 
     return data
+
 LAYERS = "layers"
 FILTER = "filter"
 TYPE = "type"
@@ -64,16 +68,16 @@ def get_styles():
         return {key : value for key, value in style.items() if key in to_filter}
     
 
-    styles = [style for style in content[LAYERS]]
+    #styles = [style for style in content[LAYERS]]
     #styles = (style for style in styles if PAINT in style and FILL_COLOR not in style[PAINT]  )
     # styles = ((style, get_rgb(str(style[PAINT][FILL_COLOR]))) for style in styles if PAINT in style and FILL_COLOR in style[PAINT])
     # styles = ((style, color) for (style, color) in styles if is_very_blue(color))
     #
     stylesDisplay = [filter_styles_content(style, [SOURCE_LAYER, ID, TYPE, FILTER]) for style in content[LAYERS]]
 
-    types = set(style[TYPE] for style in list(styles))
+    #types = set(style[TYPE] for style in list(styles))
 
-    stylesForType = {type : [style[ID] for style in stylesDisplay if style[TYPE] == type] for type in types}
+    #stylesForType = {type : [style[ID] for style in stylesDisplay if style[TYPE] == type] for type in types}
 
     return stylesDisplay
 
@@ -86,20 +90,23 @@ tile_data = read_tile()
 #pprint(styles)
 #print(tile_data)
 
+with open(pathOutput, mode="w", encoding="utf-8") as file:
 
+    for style in styles:
+        id = style[ID]
+        source_layer = style[SOURCE_LAYER]
+        filter = style[FILTER] if FILTER in style else []
+        print(f'Styles: "{id}" Filter: "{filter}"', file=file)
 
-for style in styles:
-    id = style[ID]
-    source_layer = style[SOURCE_LAYER]
-    filter = style[FILTER] if FILTER in style else []
+        tab = " " * 4
 
-    if source_layer in tile_data:
-        pprint(f'Styles: "{id}" matches SourceLayer "{source_layer}" Filter "{filter}"')
-        layer_data = tile_data[source_layer]
-        features = layer_data["features"]
+        if source_layer in tile_data:
+            print(f'{tab}matches SourceLayer "{source_layer}" ', file=file)
+            layer_data = tile_data[source_layer]
+            features = layer_data["features"]
 
-        pprint(len(features))
-        # for feature in features:
-        #     properties = feature["properties"]
-        #     pprint(properties)
-     
+            for feature in features:
+                properties = feature["properties"]
+                print(f'{tab * 2}{properties}', file=file)
+            
+        
