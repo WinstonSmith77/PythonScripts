@@ -27,27 +27,25 @@ def read_tile():
         dump_to_file_json(path, data)
 
     return data
+LAYERS = "layers"
+FILTER = "filter"
+TYPE = "type"
+SYMBOL = "symbol"
+LAYOUT = "layout"
+TEXT_FONT = "text-font"
+ID = "id"
+SOURCE_LAYER = "source-layer"
+PAINT = "paint"
+FILL_COLOR = "fill-color"
+LINE_COLOR = "line-color"
+LINE_WIDTH = "line-width"
+LINE_OPACITY = "line-opacity"
 
+MINZOOM = "minzoom"
+MAXZOOM = "maxzoom"
 
 def get_styles():
     path = r"bm_web_col.json"
-
-    LAYERS = "layers"
-    FILTER = "filter"
-    TYPE = "type"
-    SYMBOL = "symbol"
-    LAYOUT = "layout"
-    TEXT_FONT = "text-font"
-    ID = "id"
-    SOURCE_LAYER = "source-layer"
-    PAINT = "paint"
-    FILL_COLOR = "fill-color"
-    LINE_COLOR = "line-color"
-    LINE_WIDTH = "line-width"
-    LINE_OPACITY = "line-opacity"
-
-    MINZOOM = "minzoom"
-    MAXZOOM = "maxzoom"
 
     def get_rgb(color: str) :
         if color.startswith('rgb'):
@@ -85,5 +83,23 @@ def get_styles():
 styles = get_styles()
 tile_data = read_tile()
 
-pprint(styles)
-print(tile_data)
+#pprint(styles)
+#print(tile_data)
+
+
+
+for style in styles:
+    id = style[ID]
+    source_layer = style[SOURCE_LAYER]
+    filter = style[FILTER] if FILTER in style else []
+
+    if source_layer in tile_data:
+        pprint(f'Styles: "{id}" matches SourceLayer "{source_layer}" Filter "{filter}"')
+        layer_data = tile_data[source_layer]
+        features = layer_data["features"]
+
+        pprint(len(features))
+        # for feature in features:
+        #     properties = feature["properties"]
+        #     pprint(properties)
+     
