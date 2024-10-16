@@ -102,7 +102,7 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
         return True
 
-    operation, args = filter[0], filter[1:]
+    operation = filter[0]
 
     class Operators:
         ALL = "all"
@@ -124,8 +124,8 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
                 return not (x)
             return x
 
-    match operation:
-        case Operators.EQ | Operators.NEQ | Operators.IN | Operators.NIN:
+    match filter:
+        case [Operators.EQ, *args] |  [Operators.NEQ, *args] |  [Operators.IN, *args]  |  [Operators.NIN, *args] :
             assert len(args) >= 1
             name_prop = args[0]
 
@@ -139,22 +139,18 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
 
             return Operators.invert_or_not(operation, value_prop in must_be_in)
         
-        case Operators.ALL | Operators.ANY:
-            assert len(args) >= 1
+        case [Operators.ALL, *args] |  [Operators.ANY, *args]:
             if operation == Operators.ANY:
                 func = any
             else:
                 func = all
             return func(pass_filter(cond, properties) for cond in args)
 
-        case Operators.NHAS | Operators.HAS:
-            assert len(args) == 1
-            return Operators.invert_or_not(operation, args[0] in properties)
+        case [Operators.NHAS, arg] |[ Operators.HAS, arg]:
+            return Operators.invert_or_not(operation, arg in properties)
         
-        case Operators.LESS | Operators.GREATER | Operators.GREATEROREQ | Operators.LESSOREQ:
-            assert len(args) == 2
-            name_prop, value = args
-
+        case [Operators.LESS, name_prop, value] | [Operators.GREATER, name_prop, value] | [Operators.LESSOREQ, name_prop, value] | [Operators.GREATEROREQ, name_prop, value]:
+           
             if name_prop not in properties:
                 return False
 
@@ -169,22 +165,6 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
                     return stored > value
                 case Operators.GREATEROREQ:
                     return stored >= value
-        
-        case Operators.GREATER:
-            assert len(args) == 2
-            name_prop, value = args
-            return properties[name_prop] > value
-        
-        case Operators.GREATEROREQ:
-            assert len(args) == 2
-            name_prop, value = args
-            return properties[name_prop] >= value
-        
-        case Operators.LESS:
-            assert len(args) == 2
-            name_prop, value = args
-            return properties[name_prop] < value
-
         case _:
             assert False, f"Unknown filter: {operation}"
 
