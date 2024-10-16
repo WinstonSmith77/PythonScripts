@@ -98,7 +98,7 @@ def get_styles():
 # print(tile_data)
 
 
-def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
+def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
         return True
 
@@ -134,7 +134,7 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
                 any_or_all = any
             else:
                 any_or_all = all
-            return any_or_all(pass_filter(sub_filer, properties) for sub_filer in sub_filters)
+            return any_or_all(passes_filter(sub_filter, properties) for sub_filter in sub_filters)
 
         case [Operators.NHAS | Operators.HAS, name_prop]:
             return Operators.invert_or_not(operation, name_prop in properties)
@@ -171,6 +171,8 @@ def benchmark(f):
 
     return wrapper
 
+show_skipped = False
+
 @benchmark
 def main():
     styles = get_styles()
@@ -178,24 +180,48 @@ def main():
 
 
     with open(pathOutput, mode="w", encoding="utf-8") as file:
+        tab = " " * 4
+
         for style in styles:
             id = style[ID]
             source_layer = style[SOURCE_LAYER]
+            if MINZOOM in style:
+                min_zoom = style[MINZOOM]
+            else:
+                min_zoom = ""
+
+            if MAXZOOM in style:
+                max_zoom = style[MAXZOOM]
+            else:
+                max_zoom = ""    
+            
             filter = style[FILTER] if FILTER in style else []
-            print(f'Styles: "{id}" Filter: "{filter}"', file=file)
-
-            tab = " " * 4
-
+        
+            style_outputs = []
             if source_layer in tile_data:
-                print(f'{tab}matches SourceLayer "{source_layer}" ', file=file)
+                layer_outputs = []
                 layer_data = tile_data[source_layer]
                 features = layer_data["features"]
 
                 for feature in features:
                     properties = feature["properties"]
-                    if pass_filter(filter, properties):
-                        print(f"{tab * 2}{properties}", file=file)
-                    else:    
-                        print(f"NOT {tab * 2}{properties}", file=file)
+                    if passes_filter(filter, properties):
+                         layer_outputs.append(f"{tab * 2}{properties}")
+                       
+                    elif show_skipped:
+                        layer_outputs.append(f"NOT {tab * 2}{properties}")
+                           
+                if layer_outputs:
+                    style_outputs.append(f'{tab}matches SourceLayer "{source_layer}" ')
+                    style_outputs += layer_outputs
+           
+            if style_outputs:
+                style_outputs.insert(0, f'Styles: "{id}" Filter: "{filter}" Zoom: {(min_zoom, max_zoom)}')
+
+                for output in style_outputs:
+                    print(output, file=file)    
+
+                  
+                
 
 main()                        
