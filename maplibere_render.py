@@ -178,7 +178,6 @@ def main():
     styles = get_styles()
     tile_data = read_tile()
 
-
     with open(pathOutput, mode="w", encoding="utf-8") as file:
         tab = " " * 4
 
@@ -207,9 +206,11 @@ def main():
                     properties = feature["properties"]
                     if passes_filter(filter, properties):
                          layer_outputs.append(f"{tab * 2}{properties}")
+                         layer_outputs.append(f"{tab * 3}{feature['geometry']}")
                        
                     elif show_skipped:
                         layer_outputs.append(f"NOT {tab * 2}{properties}")
+                        layer_outputs.append(f"{tab * 3}{feature['geometry']}")
                            
                 if layer_outputs:
                     style_outputs.append(f'{tab}matches SourceLayer "{source_layer}" ')
