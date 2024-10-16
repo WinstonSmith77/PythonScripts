@@ -219,7 +219,7 @@ def main():
                          layer_outputs.append(f"{"NOT" if not passed else ""}{tab * 2}{properties}")
                          layer_outputs.append(f"{tab * 3}{feature['geometry']}")
                          if text_name and text_name in properties:
-                                layer_outputs.append(f"{tab * 4}Text: {properties[text_name]}")
+                                layer_outputs.append(f"{tab * 4}Text: '{text_name}' {properties[text_name]}")
                        
                   
                            
