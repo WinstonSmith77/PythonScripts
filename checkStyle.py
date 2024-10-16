@@ -15,6 +15,7 @@ def get_styles():
     SYMBOL = "symbol"
     LAYOUT = "layout"
     TEXT_FONT = "text-font"
+    TEXT_FIELD = "text-field"
     ID = "id"
     SOURCE_LAYER = "source-layer"
     PAINT = "paint"
@@ -44,6 +45,7 @@ def get_styles():
     
 
     styles = [style for style in content[LAYERS]]
+    stylesWithText = [style for style in content[LAYERS] if LAYOUT in style and TEXT_FIELD in style[LAYOUT]]
     #styles = (style for style in styles if PAINT in style and FILL_COLOR not in style[PAINT]  )
     # styles = ((style, get_rgb(str(style[PAINT][FILL_COLOR]))) for style in styles if PAINT in style and FILL_COLOR in style[PAINT])
     # styles = ((style, color) for (style, color) in styles if is_very_blue(color))
@@ -54,7 +56,7 @@ def get_styles():
 
     stylesForType = {type : [style[ID] for style in stylesDisplay if style[TYPE] == type] for type in types}
 
-    return stylesDisplay
+    return stylesWithText
 
     #
     # pprint(stylesForType)

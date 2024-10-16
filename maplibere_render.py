@@ -9,7 +9,7 @@ import urllib.request
 
 from pathlib import Path
 from pprint import pprint
-import mapbox_vector_tile
+#import mapbox_vector_tile
 
 parent = Path(__file__).parent
 path = Path(parent, "##tiles_render.json")
@@ -28,7 +28,8 @@ def read_tile():
     else:
         url = "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/13/4297/2667.pbf"
         read_data = urllib.request.urlopen(url).read()
-        data = mapbox_vector_tile.decode(read_data)
+        #data = mapbox_vector_tile.decode(read_data)
+        data = None
         dump_to_file_json(path, data)
 
     return data
@@ -204,13 +205,12 @@ def main():
 
                 for feature in features:
                     properties = feature["properties"]
-                    if passes_filter(filter, properties):
-                         layer_outputs.append(f"{tab * 2}{properties}")
+                    passed = passes_filter(filter, properties)
+                    if passed or show_skipped:
+                         layer_outputs.append(f"{"NOT" if not passed else ""}{tab * 2}{properties}")
                          layer_outputs.append(f"{tab * 3}{feature['geometry']}")
                        
-                    elif show_skipped:
-                        layer_outputs.append(f"NOT {tab * 2}{properties}")
-                        layer_outputs.append(f"{tab * 3}{feature['geometry']}")
+                  
                            
                 if layer_outputs:
                     style_outputs.append(f'{tab}matches SourceLayer "{source_layer}" ')
