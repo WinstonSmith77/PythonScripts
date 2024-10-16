@@ -154,22 +154,22 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
         case Operators.LESSOREQ:
             assert len(args) == 2
             name_prop, value = args
-            return properties.get(name_prop, 0) <= value
+            return properties[name_prop] <= value
         
         case Operators.GREATER:
             assert len(args) == 2
             name_prop, value = args
-            return properties.get(name_prop, 0) > value
+            return properties[name_prop] > value
         
         case Operators.GREATEROREQ:
             assert len(args) == 2
             name_prop, value = args
-            return properties.get(name_prop, 0) >= value
+            return properties[name_prop] >= value
         
         case Operators.LESS:
             assert len(args) == 2
             name_prop, value = args
-            return properties.get(name_prop, 0) < value
+            return properties[name_prop] < value
 
         case _:
             assert False, f"Unknown filter: {operation}"
@@ -192,6 +192,8 @@ with open(pathOutput, mode="w", encoding="utf-8") as file:
             features = layer_data["features"]
 
             for feature in features:
-                if pass_filter(filter, feature["properties"]):
-                    properties = feature["properties"]
+                properties = feature["properties"]
+                if pass_filter(filter, properties):
                     print(f"{tab * 2}{properties}", file=file)
+                else:    
+                    print(f"NOT {tab * 2}{properties}", file=file)
