@@ -151,10 +151,24 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
             assert len(args) == 1
             return Operators.invert_or_not(operation, args[0] in properties)
         
-        case Operators.LESSOREQ:
+        case Operators.LESS | Operators.GREATER | Operators.GREATEROREQ | Operators.LESSOREQ:
             assert len(args) == 2
             name_prop, value = args
-            return properties[name_prop] <= value
+
+            if name_prop not in properties:
+                return False
+
+            stored = properties[name_prop]
+
+            match operation:
+                case Operators.LESSOREQ:
+                    return stored <= value
+                case Operators.LESS:
+                    return stored < value
+                case Operators.GREATER:
+                    return stored > value
+                case Operators.GREATEROREQ:
+                    return stored >= value
         
         case Operators.GREATER:
             assert len(args) == 2
