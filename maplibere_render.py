@@ -201,8 +201,6 @@ def main():
           
             if LAYOUT in style and TEXT_FIELD in style[LAYOUT]:
                 text_name  = style[LAYOUT][TEXT_FIELD]
-                if isinstance(text_name, str):
-                    text_name = text_name.replace("{", "").replace("}", "")
             else:
                 text_name = None       
         
@@ -218,8 +216,17 @@ def main():
                     if passed or show_skipped:
                          layer_outputs.append(f"{"NOT" if not passed else ""}{tab * 2}{properties}")
                          layer_outputs.append(f"{tab * 3}{feature['geometry']}")
-                         if text_name and text_name in properties:
-                                layer_outputs.append(f"{tab * 4}Text: '{text_name}' {properties[text_name]}")
+                         if text_name:
+                            if '{' not in text_name:
+                                text = text_name
+                            else:
+                                text_name_stripped = text_name.strip('{}')      
+                                if text_name_stripped in properties:
+                                    text = properties[text_name_stripped]
+                                else:
+                                    text = None        
+                            if text:
+                                layer_outputs.append(f"{tab * 4}Text: '{text_name}' {text}")
                        
                   
                            
