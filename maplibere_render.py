@@ -90,6 +90,26 @@ tile_data = read_tile()
 #pprint(styles)
 #print(tile_data)
 
+def pass_filter(filter: list[str], properties: dict[str, Any]) -> bool:
+    if not filter:
+        return True
+    
+    head, tail = filter[0], filter[1:]  
+    match head: 
+        case "==" | "in":
+            assert len(tail) >= 1
+            name_prop = tail[0]
+            value_prop = properties[name_prop]
+            
+            compare_to_values = tail[1:]
+            must_be_in = [compare_to_value for compare_to_value in compare_to_values] 
+          
+            return value_prop in must_be_in
+        case _:
+            assert False, f"Unknown filter: {head}"
+
+    return False
+
 with open(pathOutput, mode="w", encoding="utf-8") as file:
 
     for style in styles:
@@ -106,7 +126,8 @@ with open(pathOutput, mode="w", encoding="utf-8") as file:
             features = layer_data["features"]
 
             for feature in features:
-                properties = feature["properties"]
-                print(f'{tab * 2}{properties}', file=file)
+                if pass_filter(filter, feature["properties"]):
+                    properties = feature["properties"]
+                    print(f'{tab * 2}{properties}', file=file)
             
         
