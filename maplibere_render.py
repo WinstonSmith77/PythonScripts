@@ -102,8 +102,6 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
         return True
 
-    operation = filter[0]
-
     class Operators:
         ALL = "all"
         ANY = "any"
@@ -123,7 +121,7 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
             if operation in [Operators.NEQ, Operators.NHAS, Operators.NIN]:
                 return not (x)
             return x
-
+    operation = filter[0]
     match filter:
         case [Operators.EQ, name_prop, *args] |  [Operators.NEQ, name_prop, *args] |  [Operators.IN,name_prop,  *args]  |  [Operators.NIN, name_prop, *args] :
             assert len(args) >= 1
