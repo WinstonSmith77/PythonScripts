@@ -104,7 +104,7 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
 
     operation, args = filter[0], filter[1:]
 
-    class Operator:
+    class Operators:
         ALL = "all"
         ANY = "any"
         EQ = "=="
@@ -116,66 +116,60 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
         LESSOREQ = "<="
         GREATER = ">"
         GREATEROREQ = ">="
+        LESS = "<"
 
         @staticmethod
         def invert_or_not(operation: str, x: bool) -> bool:
-            if operation in [Operator.NEQ, Operator.NHAS, Operator.NIN]:
+            if operation in [Operators.NEQ, Operators.NHAS, Operators.NIN]:
                 return not (x)
             return x
 
     match operation:
-        case Operator.EQ | Operator.IN | Operator.NIN:
+        case Operators.EQ | Operators.NEQ | Operators.IN | Operators.NIN:
             assert len(args) >= 1
             name_prop = args[0]
 
             if name_prop not in properties:
-                return Operator.invert_or_not(operation, False)
+                return Operators.invert_or_not(operation, False)
 
             value_prop = properties[name_prop]
 
             compare_to_values = args[1:]
             must_be_in = [compare_to_value for compare_to_value in compare_to_values]
 
-            return Operator.invert_or_not(operation, value_prop in must_be_in)
+            return Operators.invert_or_not(operation, value_prop in must_be_in)
         
-        case Operator.ALL | Operator.ANY:
+        case Operators.ALL | Operators.ANY:
             assert len(args) >= 1
-            if operation == Operator.ANY:
+            if operation == Operators.ANY:
                 func = any
             else:
                 func = all
             return func(pass_filter(cond, properties) for cond in args)
 
-        case Operator.NEQ:
-            assert len(args) >= 2
-            name_prop = args[0]
-
-            if name_prop not in properties:
-                return True
-
-            value_prop = properties[name_prop]
-
-            must_be = args[1]
-            return must_be == value_prop
-       
-        case Operator.NHAS | Operator.HAS:
+        case Operators.NHAS | Operators.HAS:
             assert len(args) == 1
-            return Operator.invert_or_not(operation, args[0] in properties)
+            return Operators.invert_or_not(operation, args[0] in properties)
         
-        case Operator.LESSOREQ:
+        case Operators.LESSOREQ:
             assert len(args) == 2
             name_prop, value = args
             return properties.get(name_prop, 0) <= value
         
-        case Operator.GREATER:
+        case Operators.GREATER:
             assert len(args) == 2
             name_prop, value = args
             return properties.get(name_prop, 0) > value
         
-        case Operator.GREATEROREQ:
+        case Operators.GREATEROREQ:
             assert len(args) == 2
             name_prop, value = args
             return properties.get(name_prop, 0) >= value
+        
+        case Operators.LESS:
+            assert len(args) == 2
+            name_prop, value = args
+            return properties.get(name_prop, 0) < value
 
         case _:
             assert False, f"Unknown filter: {operation}"
