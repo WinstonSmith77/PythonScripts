@@ -2,6 +2,8 @@ import json
 import pathlib
 from itertools import groupby
 from typing import Any, Tuple
+import functools
+import time
 
 import urllib.request
 
@@ -91,8 +93,6 @@ def get_styles():
     # pprint(stylesForType)
 
 
-styles = get_styles()
-tile_data = read_tile()
 
 # pprint(styles)
 # print(tile_data)
@@ -121,67 +121,81 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
             if operation in [Operators.NEQ, Operators.NHAS, Operators.NIN]:
                 return not (x)
             return x
+   
     operation = filter[0]
     match filter:
-        case [Operators.EQ, name_prop, *args] |  [Operators.NEQ, name_prop, *args] |  [Operators.IN,name_prop,  *args]  |  [Operators.NIN, name_prop, *args] :
-            assert len(args) >= 1
+        case [Operators.EQ | Operators.NEQ | Operators.IN | Operators.NIN, name_prop, *set_to_test]:  
+            value_prop = properties.get(name_prop, None)
 
-            if name_prop not in properties:
-                return Operators.invert_or_not(operation, False)
-
-            value_prop = properties[name_prop]
-
-            return Operators.invert_or_not(operation, value_prop in args)
+            return Operators.invert_or_not(operation, value_prop in set_to_test)
         
-        case [Operators.ALL, *args] |  [Operators.ANY, *args]:
+        case [Operators.ALL | Operators.ANY, *sub_filters]:
             if operation == Operators.ANY:
-                func = any
+                any_or_all = any
             else:
-                func = all
-            return func(pass_filter(cond, properties) for cond in args)
+                any_or_all = all
+            return any_or_all(pass_filter(sub_filer, properties) for sub_filer in sub_filters)
 
-        case [Operators.NHAS, arg] |[ Operators.HAS, arg]:
-            return Operators.invert_or_not(operation, arg in properties)
+        case [Operators.NHAS | Operators.HAS, name_prop]:
+            return Operators.invert_or_not(operation, name_prop in properties)
         
-        case [Operators.LESS, name_prop, value] | [Operators.GREATER, name_prop, value] | [Operators.LESSOREQ, name_prop, value] | [Operators.GREATEROREQ, name_prop, value]:
-           
+        case [Operators.LESSOREQ | Operators.LESS | Operators.GREATER | Operators.GREATEROREQ, name_prop, value]:
             if name_prop not in properties:
                 return False
 
-            stored = properties[name_prop]
+            stored_value = properties[name_prop]
 
             match operation:
                 case Operators.LESSOREQ:
-                    return stored <= value
+                    return stored_value <= value
                 case Operators.LESS:
-                    return stored < value
+                    return stored_value < value
                 case Operators.GREATER:
-                    return stored > value
+                    return stored_value > value
                 case Operators.GREATEROREQ:
-                    return stored >= value
+                    return stored_value >= value
         case _:
             assert False, f"Unknown filter: {operation}"
 
     return False
 
+def benchmark(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = f(*args, **kwargs)
+        stop_time = time.time()
+        delta = stop_time - start_time
+        print(f"{f.__name__} Delta {delta}")
+        return result
 
-with open(pathOutput, mode="w", encoding="utf-8") as file:
-    for style in styles:
-        id = style[ID]
-        source_layer = style[SOURCE_LAYER]
-        filter = style[FILTER] if FILTER in style else []
-        print(f'Styles: "{id}" Filter: "{filter}"', file=file)
+    return wrapper
 
-        tab = " " * 4
+@benchmark
+def main():
+    styles = get_styles()
+    tile_data = read_tile()
 
-        if source_layer in tile_data:
-            print(f'{tab}matches SourceLayer "{source_layer}" ', file=file)
-            layer_data = tile_data[source_layer]
-            features = layer_data["features"]
 
-            for feature in features:
-                properties = feature["properties"]
-                if pass_filter(filter, properties):
-                    print(f"{tab * 2}{properties}", file=file)
-                else:    
-                    print(f"NOT {tab * 2}{properties}", file=file)
+    with open(pathOutput, mode="w", encoding="utf-8") as file:
+        for style in styles:
+            id = style[ID]
+            source_layer = style[SOURCE_LAYER]
+            filter = style[FILTER] if FILTER in style else []
+            print(f'Styles: "{id}" Filter: "{filter}"', file=file)
+
+            tab = " " * 4
+
+            if source_layer in tile_data:
+                print(f'{tab}matches SourceLayer "{source_layer}" ', file=file)
+                layer_data = tile_data[source_layer]
+                features = layer_data["features"]
+
+                for feature in features:
+                    properties = feature["properties"]
+                    if pass_filter(filter, properties):
+                        print(f"{tab * 2}{properties}", file=file)
+                    else:    
+                        print(f"NOT {tab * 2}{properties}", file=file)
+
+main()                        

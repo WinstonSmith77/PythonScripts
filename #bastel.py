@@ -1,1 +1,1 @@
-print("5" > 2)
+print(None in [3,1])
