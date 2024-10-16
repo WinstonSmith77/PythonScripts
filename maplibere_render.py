@@ -41,6 +41,7 @@ TYPE = "type"
 SYMBOL = "symbol"
 LAYOUT = "layout"
 TEXT_FONT = "text-font"
+TEXT_FIELD = "text-field"
 ID = "id"
 SOURCE_LAYER = "source-layer"
 PAINT = "paint"
@@ -74,21 +75,21 @@ def get_styles():
     ) -> dict[str, Any]:
         return {key: value for key, value in style.items() if key in to_filter}
 
-    # styles = [style for style in content[LAYERS]]
+    styles  = [style for style in content[LAYERS]]
     # styles = (style for style in styles if PAINT in style and FILL_COLOR not in style[PAINT]  )
     # styles = ((style, get_rgb(str(style[PAINT][FILL_COLOR]))) for style in styles if PAINT in style and FILL_COLOR in style[PAINT])
     # styles = ((style, color) for (style, color) in styles if is_very_blue(color))
     #
     stylesDisplay = [
-        filter_styles_content(style, [SOURCE_LAYER, ID, TYPE, FILTER])
-        for style in content[LAYERS]
+        filter_styles_content(style, [SOURCE_LAYER, ID, TYPE, FILTER, LAYOUT])
+        for style in styles
     ]
 
     # types = set(style[TYPE] for style in list(styles))
 
     # stylesForType = {type : [style[ID] for style in stylesDisplay if style[TYPE] == type] for type in types}
 
-    return stylesDisplay
+    return styles
 
     #
     # pprint(stylesForType)
@@ -196,6 +197,14 @@ def main():
                 max_zoom = ""    
             
             filter = style[FILTER] if FILTER in style else []
+            
+          
+            if LAYOUT in style and TEXT_FIELD in style[LAYOUT]:
+                text_name  = style[LAYOUT][TEXT_FIELD]
+                if isinstance(text_name, str):
+                    text_name = text_name.replace("{", "").replace("}", "")
+            else:
+                text_name = None       
         
             style_outputs = []
             if source_layer in tile_data:
@@ -209,6 +218,8 @@ def main():
                     if passed or show_skipped:
                          layer_outputs.append(f"{"NOT" if not passed else ""}{tab * 2}{properties}")
                          layer_outputs.append(f"{tab * 3}{feature['geometry']}")
+                         if text_name and text_name in properties:
+                                layer_outputs.append(f"{tab * 4}Text: {properties[text_name]}")
                        
                   
                            
