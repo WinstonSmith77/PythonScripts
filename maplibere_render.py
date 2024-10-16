@@ -125,19 +125,15 @@ def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
             return x
 
     match filter:
-        case [Operators.EQ, *args] |  [Operators.NEQ, *args] |  [Operators.IN, *args]  |  [Operators.NIN, *args] :
+        case [Operators.EQ, name_prop, *args] |  [Operators.NEQ, name_prop, *args] |  [Operators.IN,name_prop,  *args]  |  [Operators.NIN, name_prop, *args] :
             assert len(args) >= 1
-            name_prop = args[0]
 
             if name_prop not in properties:
                 return Operators.invert_or_not(operation, False)
 
             value_prop = properties[name_prop]
 
-            compare_to_values = args[1:]
-            must_be_in = [compare_to_value for compare_to_value in compare_to_values]
-
-            return Operators.invert_or_not(operation, value_prop in must_be_in)
+            return Operators.invert_or_not(operation, value_prop in args)
         
         case [Operators.ALL, *args] |  [Operators.ANY, *args]:
             if operation == Operators.ANY:
