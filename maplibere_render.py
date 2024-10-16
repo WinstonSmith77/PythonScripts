@@ -90,23 +90,65 @@ tile_data = read_tile()
 #pprint(styles)
 #print(tile_data)
 
-def pass_filter(filter: list[str], properties: dict[str, Any]) -> bool:
+def pass_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
         return True
     
-    head, tail = filter[0], filter[1:]  
-    match head: 
-        case "==" | "in":
-            assert len(tail) >= 1
-            name_prop = tail[0]
+    operation, args = filter[0], filter[1:]  
+
+    class Operator:
+        ALL = "all"
+        ANY = "any"
+        EQ = "=="
+        IN = "in"
+        NIN = "!in"
+        NEQ = "!="
+        NHAS = "!has"
+        HAS = "has"
+
+    match operation: 
+        case Operator.EQ | Operator.IN | Operator.NIN:
+            assert len(args) >= 1
+            def invert_or_not(x : bool):
+                if operation == Operator.NEQ:
+                    return not(x)
+                return
+            
+            name_prop = args[0]
+
+            if name_prop not in properties:
+                return invert_or_not(False)
+
             value_prop = properties[name_prop]
             
-            compare_to_values = tail[1:]
+            compare_to_values = args[1:]
             must_be_in = [compare_to_value for compare_to_value in compare_to_values] 
           
-            return value_prop in must_be_in
+            return invert_or_not(value_prop in must_be_in)
+        case Operator.ALL | Operator.ANY:
+            assert len(args) >= 1
+            if operation == Operator.ANY:
+                func = any
+            else: 
+                func = all   
+            return func(pass_filter(cond, properties) for cond in args)
+        
+        case Operator.NEQ:
+            assert len(args) >= 2
+            name_prop = args[0]
+            
+            if name_prop not in properties:
+                return True
+
+            value_prop = properties[name_prop]
+            
+            must_be = args[1]
+            return must_be == value_prop
+        case Operator.NHAS:
+            assert len(args) == 1
+            return args[0] not in properties
         case _:
-            assert False, f"Unknown filter: {head}"
+            assert False, f"Unknown filter: {operation}"
 
     return False
 
