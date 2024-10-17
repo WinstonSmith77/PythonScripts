@@ -37,7 +37,6 @@ def read_tile():
 
     return data
 
-
 LAYERS = "layers"
 FILTER = "filter"
 TYPE = "type"
@@ -96,10 +95,6 @@ def get_styles():
 
     #
     # pprint(stylesForType)
-
-
-# pprint(styles)
-# print(tile_data)
 
 def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
@@ -208,7 +203,6 @@ def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
 
     return False
 
-
 def benchmark(f):
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
@@ -290,10 +284,9 @@ def main():
                 f'Styles: "{id}" Filter: "{filter}" {zoom_text if zoom_text else ""}',
             )
 
-        output += style_outputs    
+        output.append(style_outputs)  
 
     dump_to_file_json(pathOutput, output)    
-
 
 main()
 
