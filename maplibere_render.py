@@ -251,7 +251,6 @@ def main():
         else:
             text_name = None
 
-
         def process_text(text_name, properties, feature_output):
              if text_name:
                 if "{" not in text_name:
