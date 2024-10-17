@@ -275,10 +275,10 @@ def main():
 
             if features_output:
                 style_outputs['matches'] = source_layer
+                if filter:
+                    style_outputs['filter'] = str(filter)
                 style_outputs['features'] = features_output
 
-        if style_outputs:
-            style_outputs['filter'] = filter
         if style_outputs:
             output[id] = style_outputs  
 
