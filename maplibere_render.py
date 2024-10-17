@@ -270,7 +270,9 @@ def main():
                             else:
                                 text = None
                         if text:
-                            feature_output['text'] = str((text_name, text))
+                            if text_name_stripped != text_name:
+                                feature_output['text_field'] = text_name
+                            feature_output['text'] = text
                     features_output.append(feature_output)        
 
             if features_output:
