@@ -128,16 +128,35 @@ def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
             return x
    
     operation = filter[0]
+
+    def expand_item(item):
+            if isinstance(item, str) and ',' in item:
+                return item.split(',')
+            return [item]
+    
+    def expand_test_to_set(set_to_test):    
+        return [to_test for to_test in set_to_test for to_test in expand_item(to_test)]
+    
+    def tuple_to_str_seperated_by_semikolon(t):
+        t = map(str, t)
+        return f"({';;'.join(t)})"
    
     match filter:
         case [Operators.EQ | Operators.NEQ | Operators.IN | Operators.NIN, name_prop, *set_to_test]:  
-            value_prop = properties.get(name_prop, None)
-            
-            if lines_oi is not None and any(map(lambda x: isinstance(x, str) and ',' in x, set_to_test)):
-                if value_prop and ',' in value_prop:
-                    lines_oi.add((value_prop, tuple(set_to_test)))
+            value = properties.get(name_prop, None)
                     
-            return Operators.invert_or_not(operation, value_prop in set_to_test)
+            result =  Operators.invert_or_not(operation, value in set_to_test)
+
+            if lines_oi is not None and any(map(lambda x: isinstance(x, str) and ',' in x, set_to_test)):
+                if value and ',' in value:
+                    expanded_set = expand_test_to_set(set_to_test)
+                    expanded_value = expand_item(value)
+                    result2 =  Operators.invert_or_not(operation, any(map(lambda x : x in expanded_set, expanded_value)))
+                    to_add = "!!" if result != result2 else ""
+                    line_to_print = f"{to_add}{value} <> {tuple_to_str_seperated_by_semikolon(tuple(set_to_test))}"
+                    lines_oi.add(line_to_print)
+
+            return result
         
         case [Operators.ALL | Operators.ANY, *sub_filters]:
             if operation == Operators.ANY:
@@ -256,13 +275,10 @@ def main():
 
 main()        
 
-def tuple_to_str_seperated_by_semikolon(t):
-    t = map(str, t)
-    return f"({';;'.join(t)})"
 
 if lines_oi is not None:
     with open(pathOfI, mode="w", encoding="utf-8") as file:     
-        for line in lines_oi:
-            line_to_print = f"{line[0]} <> {tuple_to_str_seperated_by_semikolon(line[1])}"
+        for line_to_print in lines_oi:
+            
             print(line_to_print, file = file)           
         
