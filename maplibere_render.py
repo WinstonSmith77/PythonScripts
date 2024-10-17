@@ -270,7 +270,7 @@ def main():
                             else:
                                 text = None
                         if text:
-                            feature_output['text'] = (text_name, text)
+                            feature_output['text'] = str((text_name, text))
                     features_output.append(feature_output)        
 
             if features_output:
