@@ -293,7 +293,7 @@ def main():
             style_outputs["matches"] = source_layer
             style_outputs["zoom"] = zoom_text
             if filter:
-                style_outputs["filter"] = str(filter)
+                style_outputs["filter"] = filter
             for features_output in [features_output_passed, features_output_skipped]:
                 if features_output:
                     style_outputs[
