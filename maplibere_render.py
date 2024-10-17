@@ -29,8 +29,8 @@ def read_tile():
     else:
         url = "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/13/4297/2667.pbf"
         read_data = urllib.request.urlopen(url).read()
-        #data = mapbox_vector_tile.decode(read_data)
-        data = None
+        data = mapbox_vector_tile.decode(read_data)
+        #data = None
         dump_to_file_json(path, data)
 
     return data
@@ -100,7 +100,9 @@ def get_styles():
 # pprint(styles)
 # print(tile_data)
 
-lines_oi = set()
+
+#lines_oi = None
+lines_oi : set | None = set()
 def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
         return True
@@ -131,7 +133,7 @@ def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
         case [Operators.EQ | Operators.NEQ | Operators.IN | Operators.NIN, name_prop, *set_to_test]:  
             value_prop = properties.get(name_prop, None)
             
-            if any(map(lambda x: isinstance(x, str) and ',' in x, set_to_test)):
+            if lines_oi is not None and any(map(lambda x: isinstance(x, str) and ',' in x, set_to_test)):
                 if value_prop and ',' in value_prop:
                     lines_oi.add((value_prop, tuple(set_to_test)))
                     
@@ -258,9 +260,9 @@ def tuple_to_str_seperated_by_semikolon(t):
     t = map(str, t)
     return f"({';;'.join(t)})"
 
-
-with open(pathOfI, mode="w", encoding="utf-8") as file:     
-    for line in lines_oi:
-        line_to_print = f"{line[0]} <> {tuple_to_str_seperated_by_semikolon(line[1])}"
-        print(line_to_print, file = file)           
-    
+if lines_oi is not None:
+    with open(pathOfI, mode="w", encoding="utf-8") as file:     
+        for line in lines_oi:
+            line_to_print = f"{line[0]} <> {tuple_to_str_seperated_by_semikolon(line[1])}"
+            print(line_to_print, file = file)           
+        
