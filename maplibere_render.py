@@ -14,6 +14,7 @@ from pprint import pprint
 parent = Path(__file__).parent
 path = Path(parent, "##tiles_render.json")
 pathOutput = Path(parent, "##output.txt")
+pathOfI = Path(parent, "##poi.txt")
 
 
 def dump_to_file_json(path, jsonData):
@@ -99,7 +100,7 @@ def get_styles():
 # pprint(styles)
 # print(tile_data)
 
-
+lines_oi = set()
 def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
         return True
@@ -125,10 +126,15 @@ def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
             return x
    
     operation = filter[0]
+   
     match filter:
         case [Operators.EQ | Operators.NEQ | Operators.IN | Operators.NIN, name_prop, *set_to_test]:  
             value_prop = properties.get(name_prop, None)
-
+            
+            if any(map(lambda x: isinstance(x, str) and ',' in x, set_to_test)):
+                if value_prop and ',' in value_prop:
+                    lines_oi.add((value_prop, tuple(set_to_test)))
+                    
             return Operators.invert_or_not(operation, value_prop in set_to_test)
         
         case [Operators.ALL | Operators.ANY, *sub_filters]:
@@ -173,7 +179,7 @@ def benchmark(f):
 
     return wrapper
 
-show_skipped = False
+show_skipped = True
 
 @benchmark
 def main():
@@ -195,6 +201,11 @@ def main():
                 max_zoom = style[MAXZOOM]
             else:
                 max_zoom = ""    
+
+            if min_zoom != "" and max_zoom != "":
+                zoom_text = f" Zoom: {(min_zoom, max_zoom)}"  
+            else:
+                zoom_text = None   
             
             filter = style[FILTER] if FILTER in style else []
             
@@ -227,15 +238,13 @@ def main():
                                     text = None        
                             if text:
                                 layer_outputs.append(f"{tab * 4}Text: '{text_name}' {text}")
-                       
-                  
                            
                 if layer_outputs:
                     style_outputs.append(f'{tab}matches SourceLayer "{source_layer}" ')
                     style_outputs += layer_outputs
            
             if style_outputs:
-                style_outputs.insert(0, f'Styles: "{id}" Filter: "{filter}" Zoom: {(min_zoom, max_zoom)}')
+                style_outputs.insert(0, f'Styles: "{id}" Filter: "{filter}" {zoom_text if zoom_text else ""}')
 
                 for output in style_outputs:
                     print(output, file=file)    
@@ -243,4 +252,15 @@ def main():
                   
                 
 
-main()                        
+main()        
+
+def tuple_to_str_seperated_by_semikolon(t):
+    t = map(str, t)
+    return f"({';;'.join(t)})"
+
+
+with open(pathOfI, mode="w", encoding="utf-8") as file:     
+    for line in lines_oi:
+        line_to_print = f"{line[0]} <> {tuple_to_str_seperated_by_semikolon(line[1])}"
+        print(line_to_print, file = file)           
+    
