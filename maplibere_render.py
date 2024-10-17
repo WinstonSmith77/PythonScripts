@@ -232,17 +232,12 @@ def main():
         if MINZOOM in style:
             min_zoom = style[MINZOOM]
         else:
-            min_zoom = ""
+            min_zoom = None
 
         if MAXZOOM in style:
             max_zoom = style[MAXZOOM]
         else:
-            max_zoom = ""
-
-        if min_zoom != "" and max_zoom != "":
-            zoom_text = f" Zoom: {(min_zoom, max_zoom)}"
-        else:
-            zoom_text = None
+            max_zoom = None
 
         filter = style[FILTER] if FILTER in style else []
 
@@ -291,7 +286,8 @@ def main():
             if show_skipped and len(features_output_skipped) > 0:
                 style_outputs["haspassed"] = len(features_output_passed) > 0
             style_outputs["matches"] = source_layer
-            style_outputs["zoom"] = zoom_text
+            if min_zoom or max_zoom:
+                style_outputs["zoom"] = (min_zoom, max_zoom)
             if filter:
                 style_outputs["filter"] = filter
             for features_output in [features_output_passed, features_output_skipped]:
