@@ -252,13 +252,14 @@ def main():
             layer_data = tile_data[source_layer]
             features = layer_data["features"]
 
-            features_output = []
+            features_output_passed = []
+            features_output_skipped = []
             for feature in features:
                 feature_output = {}
                 properties = feature["properties"]
                 passed = passes_filter(filter, properties)
                 if passed or show_skipped:
-                    feature_output['passed'] = passed
+                    
                     feature_output['geometry'] = str(feature['geometry'])
                     if text_name:
                         if "{" not in text_name:
@@ -273,13 +274,13 @@ def main():
                             if text_name_stripped != text_name:
                                 feature_output['text_field'] = text_name
                             feature_output['text'] = text
-                    features_output.append(feature_output)        
-
-            if features_output:
-                style_outputs['matches'] = source_layer
-                if filter:
-                    style_outputs['filter'] = str(filter)
-                style_outputs['features'] = features_output
+                    (features_output_passed if passed else features_output_skipped).append(feature_output)        
+            for features_output in [features_output_passed, features_output_skipped]:
+                if features_output:
+                    style_outputs['matches'] = source_layer
+                    if filter:
+                        style_outputs['filter'] = str(filter)
+                    style_outputs['features' + ('failed' if not passed else '')] = features_output
 
         if style_outputs:
             output[id] = style_outputs  
