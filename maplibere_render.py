@@ -248,18 +248,20 @@ def main():
 
         style_outputs = []
         if source_layer in tile_data:
-            layer_outputs = []
+           
             layer_data = tile_data[source_layer]
             features = layer_data["features"]
 
+            features_output = []
             for feature in features:
+                feature_output = []
                 properties = feature["properties"]
                 passed = passes_filter(filter, properties)
                 if passed or show_skipped:
-                    layer_outputs.append(
+                    feature_output.append(
                         f"{"NOT" if not passed else ""}{properties}"
                     )
-                    layer_outputs.append(f"{feature['geometry']}")
+                    feature_output.append(f"{feature['geometry']}")
                     if text_name:
                         if "{" not in text_name:
                             text = text_name
@@ -270,13 +272,14 @@ def main():
                             else:
                                 text = None
                         if text:
-                            layer_outputs.append(
+                            feature_output.append(
                                 f"Text: '{text_name}' {text}"
                             )
+                    features_output.append(feature_output)        
 
-            if layer_outputs:
+            if features_output:
                 style_outputs.append(f'matches SourceLayer "{source_layer}" ')
-                style_outputs += layer_outputs
+                style_outputs.append(features_output)
 
         if style_outputs:
             style_outputs.insert(
@@ -284,7 +287,8 @@ def main():
                 f'Styles: "{id}" Filter: "{filter}" {zoom_text if zoom_text else ""}',
             )
 
-        output.append(style_outputs)  
+        if style_outputs:
+            output.append(style_outputs)  
 
     dump_to_file_json(pathOutput, output)    
 
