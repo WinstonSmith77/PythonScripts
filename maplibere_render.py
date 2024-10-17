@@ -246,7 +246,7 @@ def main():
         else:
             text_name = None
 
-        style_outputs = []
+        style_outputs = {}
         if source_layer in tile_data:
            
             layer_data = tile_data[source_layer]
@@ -274,15 +274,11 @@ def main():
                     features_output.append(feature_output)        
 
             if features_output:
-                style_outputs.append(f'matches SourceLayer "{source_layer}" ')
-                style_outputs.append(features_output)
+                style_outputs['matches'] = source_layer
+                style_outputs['features'] = features_output
 
         if style_outputs:
-            style_outputs.insert(
-                0,
-                f'Styles: "{id}" Filter: "{filter}" {zoom_text if zoom_text else ""}',
-            )
-
+            style_outputs['filter'] = filter
         if style_outputs:
             output[id] = style_outputs  
 
