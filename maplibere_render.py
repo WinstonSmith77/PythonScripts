@@ -16,6 +16,8 @@ path = Path(parent, "##tiles_render.json")
 pathOutput = Path(parent, "##output.txt")
 pathOfI = Path(parent, "##poi.txt")
 
+lines_oi: set | None = set()
+show_skipped = False
 
 def dump_to_file_json(path, jsonData):
     with open(path, mode="w", encoding="utf-8") as file:
@@ -98,11 +100,6 @@ def get_styles():
 
 # pprint(styles)
 # print(tile_data)
-
-
-# lines_oi = None
-lines_oi: set | None = set()
-
 
 def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
@@ -224,10 +221,6 @@ def benchmark(f):
 
     return wrapper
 
-
-show_skipped = True
-
-
 @benchmark
 def main():
     styles = get_styles()
@@ -307,6 +300,5 @@ main()
 
 
 if lines_oi is not None:
-    with open(pathOfI, mode="w", encoding="utf-8") as file:
-        for line_to_print in lines_oi:
-            print(line_to_print, file=file)
+    dump_to_file_json(pathOfI, list(lines_oi))
+    
