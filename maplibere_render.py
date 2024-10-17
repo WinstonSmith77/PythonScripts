@@ -261,15 +261,18 @@ def main():
                         feature_output["text_field"] = text_name
                     feature_output["text"] = text
 
+        GEOMETRY = "geometry"
+        PROPERTIES = "properties"
+
         def process_features(features, features_output_passed, features_output_skipped):
             for feature in features:
                 feature_output = {}
-                properties = feature["properties"]
+                properties = feature[PROPERTIES]
                 passed = passes_filter(filter, properties)
 
                 if passed or show_skipped:
-                    feature_output["properties"] = properties
-                    feature_output["geometry"] = str(feature["geometry"])
+                    feature_output[PROPERTIES] = properties
+                    feature_output[GEOMETRY] = str(feature[GEOMETRY])
                     process_text(text_name, properties, feature_output)
                     (
                         features_output_passed if passed else features_output_skipped
