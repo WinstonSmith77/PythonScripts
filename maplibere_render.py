@@ -13,8 +13,8 @@ import mapbox_vector_tile
 
 parent = Path(__file__).parent
 path = Path(parent, "##tiles_render.json")
-pathOutput = Path(parent, "##output.txt")
-pathOfI = Path(parent, "##poi.txt")
+pathOutput = Path(parent, "##output.json")
+pathOfI = Path(parent, "##poi.json")
 
 lines_oi: set | None = set()
 show_skipped = False
@@ -225,75 +225,74 @@ def benchmark(f):
 def main():
     styles = get_styles()
     tile_data = read_tile()
+   
+    output = []
+    for style in styles:
+        id = style[ID]
+        source_layer = style[SOURCE_LAYER]
+        if MINZOOM in style:
+            min_zoom = style[MINZOOM]
+        else:
+            min_zoom = ""
 
-    with open(pathOutput, mode="w", encoding="utf-8") as file:
-        tab = " " * 4
+        if MAXZOOM in style:
+            max_zoom = style[MAXZOOM]
+        else:
+            max_zoom = ""
 
-        for style in styles:
-            id = style[ID]
-            source_layer = style[SOURCE_LAYER]
-            if MINZOOM in style:
-                min_zoom = style[MINZOOM]
-            else:
-                min_zoom = ""
+        if min_zoom != "" and max_zoom != "":
+            zoom_text = f" Zoom: {(min_zoom, max_zoom)}"
+        else:
+            zoom_text = None
 
-            if MAXZOOM in style:
-                max_zoom = style[MAXZOOM]
-            else:
-                max_zoom = ""
+        filter = style[FILTER] if FILTER in style else []
 
-            if min_zoom != "" and max_zoom != "":
-                zoom_text = f" Zoom: {(min_zoom, max_zoom)}"
-            else:
-                zoom_text = None
+        if LAYOUT in style and TEXT_FIELD in style[LAYOUT]:
+            text_name = style[LAYOUT][TEXT_FIELD]
+        else:
+            text_name = None
 
-            filter = style[FILTER] if FILTER in style else []
+        style_outputs = []
+        if source_layer in tile_data:
+            layer_outputs = []
+            layer_data = tile_data[source_layer]
+            features = layer_data["features"]
 
-            if LAYOUT in style and TEXT_FIELD in style[LAYOUT]:
-                text_name = style[LAYOUT][TEXT_FIELD]
-            else:
-                text_name = None
-
-            style_outputs = []
-            if source_layer in tile_data:
-                layer_outputs = []
-                layer_data = tile_data[source_layer]
-                features = layer_data["features"]
-
-                for feature in features:
-                    properties = feature["properties"]
-                    passed = passes_filter(filter, properties)
-                    if passed or show_skipped:
-                        layer_outputs.append(
-                            f"{"NOT" if not passed else ""}{tab * 2}{properties}"
-                        )
-                        layer_outputs.append(f"{tab * 3}{feature['geometry']}")
-                        if text_name:
-                            if "{" not in text_name:
-                                text = text_name
+            for feature in features:
+                properties = feature["properties"]
+                passed = passes_filter(filter, properties)
+                if passed or show_skipped:
+                    layer_outputs.append(
+                        f"{"NOT" if not passed else ""}{properties}"
+                    )
+                    layer_outputs.append(f"{feature['geometry']}")
+                    if text_name:
+                        if "{" not in text_name:
+                            text = text_name
+                        else:
+                            text_name_stripped = text_name.strip("{}")
+                            if text_name_stripped in properties:
+                                text = properties[text_name_stripped]
                             else:
-                                text_name_stripped = text_name.strip("{}")
-                                if text_name_stripped in properties:
-                                    text = properties[text_name_stripped]
-                                else:
-                                    text = None
-                            if text:
-                                layer_outputs.append(
-                                    f"{tab * 4}Text: '{text_name}' {text}"
-                                )
+                                text = None
+                        if text:
+                            layer_outputs.append(
+                                f"Text: '{text_name}' {text}"
+                            )
 
-                if layer_outputs:
-                    style_outputs.append(f'{tab}matches SourceLayer "{source_layer}" ')
-                    style_outputs += layer_outputs
+            if layer_outputs:
+                style_outputs.append(f'matches SourceLayer "{source_layer}" ')
+                style_outputs += layer_outputs
 
-            if style_outputs:
-                style_outputs.insert(
-                    0,
-                    f'Styles: "{id}" Filter: "{filter}" {zoom_text if zoom_text else ""}',
-                )
+        if style_outputs:
+            style_outputs.insert(
+                0,
+                f'Styles: "{id}" Filter: "{filter}" {zoom_text if zoom_text else ""}',
+            )
 
-                for output in style_outputs:
-                    print(output, file=file)
+        output += style_outputs    
+
+    dump_to_file_json(pathOutput, output)    
 
 
 main()
