@@ -9,7 +9,7 @@ import urllib.request
 
 from pathlib import Path
 from pprint import pprint
-#import mapbox_vector_tile
+import mapbox_vector_tile
 
 parent = Path(__file__).parent
 path = Path(parent, "##tiles_render.json")
