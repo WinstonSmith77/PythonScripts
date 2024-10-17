@@ -17,7 +17,7 @@ pathOutput = Path(parent, "##output.json")
 pathOfI = Path(parent, "##poi.json")
 
 lines_oi: set | None = set()
-show_skipped = False
+show_skipped = True
 
 
 def dump_to_file_json(path, jsonData):
@@ -282,7 +282,7 @@ def main():
             features_output_passed = []
             features_output_skipped = []
             process_features(features, features_output_passed, features_output_skipped)
-            
+
             if show_skipped and len(features_output_skipped) > 0:
                 style_outputs["haspassed"] = len(features_output_passed) > 0
             style_outputs["matches"] = source_layer
