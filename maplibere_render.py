@@ -220,7 +220,7 @@ def main():
     styles = get_styles()
     tile_data = read_tile()
    
-    output = []
+    output = {}
     for style in styles:
         id = style[ID]
         source_layer = style[SOURCE_LAYER]
@@ -284,7 +284,7 @@ def main():
             )
 
         if style_outputs:
-            output.append(style_outputs)  
+            output[id] = style_outputs  
 
     dump_to_file_json(pathOutput, output)    
 
