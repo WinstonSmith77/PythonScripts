@@ -19,6 +19,7 @@ pathOfI = Path(parent, "##poi.json")
 lines_oi: set | None = set()
 show_skipped = False
 
+
 def dump_to_file_json(path, jsonData):
     with open(path, mode="w", encoding="utf-8") as file:
         json.dump(jsonData, file, indent=4)
@@ -36,6 +37,7 @@ def read_tile():
         dump_to_file_json(path, data)
 
     return data
+
 
 LAYERS = "layers"
 FILTER = "filter"
@@ -95,6 +97,7 @@ def get_styles():
 
     #
     # pprint(stylesForType)
+
 
 def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
     if not filter:
@@ -203,6 +206,7 @@ def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
 
     return False
 
+
 def benchmark(f):
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
@@ -215,11 +219,12 @@ def benchmark(f):
 
     return wrapper
 
+
 @benchmark
 def main():
     styles = get_styles()
     tile_data = read_tile()
-   
+
     output = {}
     for style in styles:
         id = style[ID]
@@ -246,9 +251,24 @@ def main():
         else:
             text_name = None
 
+
+        def process_text(text_name, properties, feature_output):
+             if text_name:
+                if "{" not in text_name:
+                    text = text_name
+                else:
+                    text_name = text_name.strip("{}")
+                    if text_name in properties:
+                        text = properties[text_name]
+                    else:
+                        text = None
+                if text:
+                    if text_name != text:
+                        feature_output["text_field"] = text_name
+                    feature_output["text"] = text
+
         style_outputs = {}
         if source_layer in tile_data:
-           
             layer_data = tile_data[source_layer]
             features = layer_data["features"]
 
@@ -258,38 +278,38 @@ def main():
                 feature_output = {}
                 properties = feature["properties"]
                 passed = passes_filter(filter, properties)
+
                 if passed or show_skipped:
-                    
-                    feature_output['geometry'] = str(feature['geometry'])
-                    if text_name:
-                        if "{" not in text_name:
-                            text = text_name
-                        else:
-                            text_name_stripped = text_name.strip("{}")
-                            if text_name_stripped in properties:
-                                text = properties[text_name_stripped]
-                            else:
-                                text = None
-                        if text:
-                            if text_name_stripped != text_name:
-                                feature_output['text_field'] = text_name
-                            feature_output['text'] = text
-                    (features_output_passed if passed else features_output_skipped).append(feature_output)        
+                    feature_output["geometry"] = str(feature["geometry"])
+                    process_text(text_name, properties, feature_output)
+                    (
+                        features_output_passed if passed else features_output_skipped
+                    ).append(feature_output)
+            if show_skipped and len(features_output_skipped) > 0:
+                style_outputs["haspassed"] = len(features_output_passed) > 0
+            style_outputs["matches"] = source_layer
+            style_outputs["zoom"] = zoom_text
+            if filter:
+                style_outputs["filter"] = str(filter)
             for features_output in [features_output_passed, features_output_skipped]:
                 if features_output:
-                    style_outputs['matches'] = source_layer
-                    if filter:
-                        style_outputs['filter'] = str(filter)
-                    style_outputs['features' + ('failed' if not passed else '')] = features_output
+                    style_outputs[
+                        "features"
+                        + (
+                            " failed"
+                            if features_output == features_output_skipped
+                            else ""
+                        )
+                    ] = features_output
 
-        if style_outputs:
-            output[id] = style_outputs  
+        if style_outputs and ((not show_skipped and features_output_passed) or show_skipped):
+            output[id] = style_outputs
 
-    dump_to_file_json(pathOutput, output)    
+    dump_to_file_json(pathOutput, output)
+
 
 main()
 
 
 if lines_oi is not None:
     dump_to_file_json(pathOfI, list(lines_oi))
-    
