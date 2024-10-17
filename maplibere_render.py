@@ -254,14 +254,12 @@ def main():
 
             features_output = []
             for feature in features:
-                feature_output = []
+                feature_output = {}
                 properties = feature["properties"]
                 passed = passes_filter(filter, properties)
                 if passed or show_skipped:
-                    feature_output.append(
-                        f"{"NOT" if not passed else ""}{properties}"
-                    )
-                    feature_output.append(f"{feature['geometry']}")
+                    feature_output['passed'] = passed
+                    feature_output['geometry'] = str(feature['geometry'])
                     if text_name:
                         if "{" not in text_name:
                             text = text_name
@@ -272,9 +270,7 @@ def main():
                             else:
                                 text = None
                         if text:
-                            feature_output.append(
-                                f"Text: '{text_name}' {text}"
-                            )
+                            feature_output['text'] = (text_name, text)
                     features_output.append(feature_output)        
 
             if features_output:
