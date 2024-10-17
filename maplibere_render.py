@@ -268,6 +268,7 @@ def main():
                 passed = passes_filter(filter, properties)
 
                 if passed or show_skipped:
+                    feature_output["properties"] = properties
                     feature_output["geometry"] = str(feature["geometry"])
                     process_text(text_name, properties, feature_output)
                     (
