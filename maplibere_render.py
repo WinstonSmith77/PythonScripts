@@ -266,13 +266,7 @@ def main():
                         feature_output["text_field"] = text_name
                     feature_output["text"] = text
 
-        style_outputs = {}
-        if source_layer in tile_data:
-            layer_data = tile_data[source_layer]
-            features = layer_data["features"]
-
-            features_output_passed = []
-            features_output_skipped = []
+        def process_features(features, features_output_passed, features_output_skipped):
             for feature in features:
                 feature_output = {}
                 properties = feature["properties"]
@@ -284,6 +278,16 @@ def main():
                     (
                         features_output_passed if passed else features_output_skipped
                     ).append(feature_output)
+
+        style_outputs = {}
+        if source_layer in tile_data:
+            layer_data = tile_data[source_layer]
+            features = layer_data["features"]
+
+            features_output_passed = []
+            features_output_skipped = []
+            
+            process_features(features, features_output_passed, features_output_skipped)
             if show_skipped and len(features_output_skipped) > 0:
                 style_outputs["haspassed"] = len(features_output_passed) > 0
             style_outputs["matches"] = source_layer
