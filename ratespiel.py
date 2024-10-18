@@ -1,7 +1,18 @@
 from random import randint
+from argparse import ArgumentParser
 
 MINNUMBER = 1
 MAXNUMBER = 100
+
+def get_hint():
+    args = ArgumentParser()
+    args.add_argument('--hint', action='store_true', help='Provide hints if the guess is too high or too low')
+    args = args.parse_args()
+
+    return args.hint
+
+use_hint = get_hint()
+print(use_hint)
 
 def enter_number(info_text) -> int:
     valid_input = False
