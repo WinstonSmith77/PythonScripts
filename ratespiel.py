@@ -60,5 +60,4 @@ while not game.get_state() == Game.FOUND:
     elif game.get_state() == Game.TOO_LOW:
         print("You guessed too low!")
 
-
 print(f"Congratulations! You guessed the number {game.get_random_number()} correctly! You took {game.get_random_number()} tries.")
