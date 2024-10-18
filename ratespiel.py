@@ -2,16 +2,16 @@ from random import randint
 from argparse import ArgumentParser
 
 MINNUMBER = 1
-MAXNUMBER = 1000
 
-def get_hint():
-    args = ArgumentParser()
-    args.add_argument('--hint', action='store_true', help='Provide hints if the guess is too high or too low')
-    args = args.parse_args()
+def get_hint_and_max():
+    parser = ArgumentParser()
+    parser.add_argument('--max', type=int, default=1000, help='Maximum number for the guessing range')
+    parser.add_argument('--hint', action='store_true', help='Provide hints')
+    args = parser.parse_args()
 
-    return args.hint
+    return args.hint, args.max
 
-use_hint = get_hint()
+use_hint, max_number = get_hint_and_max()
 
 if use_hint:
     print("You have chosen to use hints.")
@@ -20,7 +20,7 @@ def enter_number(info_text) -> int:
     valid_input = False
     while not valid_input:
         try:
-            number = int(input(f"Guess number beween {MINNUMBER} and  {MAXNUMBER} {info_text}: "))
+            number = int(input(f"Guess number beween {MINNUMBER} and  {max_number} {info_text}: "))
             valid_input = True
         except ValueError:  # if not a number
             print("Please enter a number!")
@@ -36,16 +36,16 @@ class Game:
     
     def __init__(self):
         self.__number_of_tries = 0
-        self.__random_number = randint(MINNUMBER, MAXNUMBER)
+        self.__random_number = randint(MINNUMBER, max_number)
         self.__state = Game.NEW
         self.__above =MINNUMBER
-        self.__below = MAXNUMBER
+        self.__below = max_number
 
     def enter_try(self, number):
         self.__number_of_tries += 1
         if number == self.__random_number:
             self.__state = Game.FOUND
-        elif number < MINNUMBER or number > MAXNUMBER:
+        elif number < MINNUMBER or number > max_number:
             self.__state = Game.OUT_OF_RANGE
         elif number > self.__random_number:
             self.__state = Game.TOO_HIGH	
@@ -74,7 +74,7 @@ while not game.get_state() == Game.FOUND:
     if game.get_state() == Game.FOUND:
         found_solution = True
     elif game.get_state() == Game.OUT_OF_RANGE:
-        print(f"Input out of range! Please enter a number between {MINNUMBER} and {MAXNUMBER}!")
+        print(f"Input out of range! Please enter a number between {MINNUMBER} and {max_number}!")
     elif game.get_state() == Game.TOO_HIGH:
         print("You guessed too high!")
     elif game.get_state() == Game.TOO_LOW:
