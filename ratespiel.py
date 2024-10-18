@@ -5,7 +5,7 @@ MAXNUMBER = 100
 
 random_number = randint(MINNUMBER, MAXNUMBER)
 
-def enter_number(info_text : str) -> int:
+def enter_number(info_text) -> int:
     valid_input = False
     while not valid_input:
         try:
@@ -15,6 +15,37 @@ def enter_number(info_text : str) -> int:
             print("Please enter a number!")
 
     return number        
+
+
+
+class GameState:
+    NEW = 1
+    FOUND = 0
+    TOO_LOW = 2
+    TOO_LOW = 3
+    OUT_OF_RANGE = 4 
+    
+    def __init__(self, random_number):
+        self.number_of_tries = 0
+        self.random_number = random_number
+        self.state = GameState.NEW
+
+    def enter_try(self, number):
+        if number == random_number:
+            self.found_solution = True
+            self.state = GameState.FOUND
+        elif number > random_number:
+            self.state = GameState.TOO_HIGH	
+            self.number_of_tries += 1
+        elif number < random_number:
+            self.state = GameState.TOO_LOW
+            self.number_of_tries += 1
+
+    def get_state(self):
+        return self.state
+
+    def get_number_of_tries(self):
+        return self.number_of_tries           
 
 found_solution = False
 number_of_tries = 0
