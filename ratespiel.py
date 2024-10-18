@@ -5,11 +5,11 @@ MAXNUMBER = 100
 
 random_number = randint(MINNUMBER, MAXNUMBER)
 
-def enter_number(number_of_tries) -> int:
+def enter_number(info_text : str) -> int:
     valid_input = False
     while not valid_input:
         try:
-            number = int(input(f"Guess number beween {MINNUMBER} and  {MAXNUMBER} (try number {number_of_tries}): "))
+            number = int(input(f"Guess number beween {MINNUMBER} and  {MAXNUMBER} {info_text}: "))
             valid_input = True
         except ValueError:  # if not a number
             print("Please enter a number!")
@@ -21,7 +21,7 @@ number_of_tries = 0
 
 
 while not found_solution:
-    number = enter_number(number_of_tries)
+    number = enter_number(f'(try number {number_of_tries + 1})')
     number_of_tries += 1
     if number == random_number:
         found_solution = True
