@@ -34,10 +34,12 @@ class Game:
     TOO_HIGH = 3
     OUT_OF_RANGE = 4 
     
-    def __init__(self, random_number):
+    def __init__(self):
         self.__number_of_tries = 0
-        self.__random_number = random_number
+        self.__random_number = randint(MINNUMBER, MAXNUMBER)
         self.__state = Game.NEW
+        self.__above =MINNUMBER
+        self.__below = MAXNUMBER
 
     def enter_try(self, number):
         self.__number_of_tries += 1
@@ -47,11 +49,16 @@ class Game:
             self.__state = Game.OUT_OF_RANGE
         elif number > self.__random_number:
             self.__state = Game.TOO_HIGH	
+            self.__below= min(self.__below, number)
         elif number < self.__random_number:
             self.__state = Game.TOO_LOW
+            self.__above= max(self.__above, number)
 
     def get_state(self):
         return self.__state
+    
+    def get_hint(self): 
+        return round((self.__above + self.__below)/2)
 
     def get_number_of_tries(self):
         return self.__number_of_tries
@@ -59,10 +66,10 @@ class Game:
     def get_random_number(self):
         return self.__random_number           
 
-game = Game(randint(MINNUMBER, MAXNUMBER))
+game = Game()
 
 while not game.get_state() == Game.FOUND:
-    number = enter_number(f'(try number {game.get_number_of_tries() + 1})')
+    number = enter_number(f'(try number {game.get_number_of_tries() + 1} {('hint ' + str(game.get_hint())) if use_hint else ''})')   
     game.enter_try(number)
     if game.get_state() == Game.FOUND:
         found_solution = True
@@ -73,4 +80,4 @@ while not game.get_state() == Game.FOUND:
     elif game.get_state() == Game.TOO_LOW:
         print("You guessed too low!")
 
-print(f"Congratulations! You guessed the number {game.get_random_number()} correctly! You took {game.get_random_number()} tries.")
+print(f"Congratulations! You guessed the number {game.get_random_number()} correctly! You took {game.get_number_of_tries()} tries.")
