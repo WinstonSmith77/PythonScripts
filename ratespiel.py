@@ -14,7 +14,7 @@ def enter_number(info_text) -> int:
 
     return number        
 
-class GameState:
+class Game:
     NEW = 1
     FOUND = 0
     TOO_LOW = 2
@@ -24,22 +24,21 @@ class GameState:
     def __init__(self, random_number):
         self.__number_of_tries = 0
         self.__random_number = random_number
-        self.__ = GameState.NEW
+        self.__state = Game.NEW
 
     def enter_try(self, number):
         self.__number_of_tries += 1
         if number == self.__random_number:
-            self.found_solution = True
-            self.__ = GameState.FOUND
+            self.__state = Game.FOUND
         elif number < MINNUMBER or number > MAXNUMBER:
-            self.__ = GameState.OUT_OF_RANGE
+            self.__state = Game.OUT_OF_RANGE
         elif number > self.__random_number:
-            self.__ = GameState.TOO_HIGH	
+            self.__state = Game.TOO_HIGH	
         elif number < self.__random_number:
-            self.__ = GameState.TOO_LOW
+            self.__state = Game.TOO_LOW
 
     def get_state(self):
-        return self.__
+        return self.__state
 
     def get_number_of_tries(self):
         return self.__number_of_tries
@@ -47,19 +46,19 @@ class GameState:
     def get_random_number(self):
         return self.__random_number           
 
-game = GameState(randint(MINNUMBER, MAXNUMBER))
+game = Game(randint(MINNUMBER, MAXNUMBER))
 
-while not game.get_state() == GameState.FOUND:
+while not game.get_state() == Game.FOUND:
     number = enter_number(f'(try number {game.get_number_of_tries() + 1})')
     game.enter_try(number)
-    if game.get_state() == GameState.FOUND:
+    if game.get_state() == Game.FOUND:
         found_solution = True
-    elif game.get_state() == GameState.OUT_OF_RANGE:
+    elif game.get_state() == Game.OUT_OF_RANGE:
         print(f"Input out of range! Please enter a number between {MINNUMBER} and {MAXNUMBER}!")
-    elif game.get_state() == GameState.TOO_HIGH:
+    elif game.get_state() == Game.TOO_HIGH:
         print("You guessed too high!")
-    elif game.get_state() == GameState.TOO_LOW:
+    elif game.get_state() == Game.TOO_LOW:
         print("You guessed too low!")
 
 
-print(f"Congratulations! You guessed the number {game.get_random_number} correctly! You took {game.get_random_number} tries.")
+print(f"Congratulations! You guessed the number {game.get_random_number()} correctly! You took {game.get_random_number()} tries.")
