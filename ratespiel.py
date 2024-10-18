@@ -3,8 +3,6 @@ from random import randint
 MINNUMBER = 1
 MAXNUMBER = 100
 
-
-
 def enter_number(info_text) -> int:
     valid_input = False
     while not valid_input:
@@ -15,8 +13,6 @@ def enter_number(info_text) -> int:
             print("Please enter a number!")
 
     return number        
-
-
 
 class GameState:
     NEW = 1
@@ -50,8 +46,6 @@ class GameState:
 
     def get_random_number(self):
         return self.__random_number           
-
-
 
 game = GameState(randint(MINNUMBER, MAXNUMBER))
 
