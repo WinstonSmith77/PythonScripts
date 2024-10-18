@@ -162,7 +162,7 @@ def passes_filter(filter: list, properties: dict[str, Any]) -> bool:
                         operation, any(map(lambda x: x in expanded_set, expanded_value))
                     )
                     to_add = "!!!!!" if result != result2 else ""
-                    line_to_print = f"{to_add}{value} <> {tuple_to_str_seperated_by_semikolon(tuple(set_to_test))}{to_add}{"\n"}"
+                    line_to_print = f"{to_add}{value} <> {tuple_to_str_seperated_by_semikolon(tuple(set_to_test))}{to_add}\n"
                     lines_oi.add(line_to_print)
 
             return result
