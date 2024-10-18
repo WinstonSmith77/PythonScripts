@@ -2,7 +2,7 @@ from random import randint
 from argparse import ArgumentParser
 
 MINNUMBER = 1
-MAXNUMBER = 100
+MAXNUMBER = 1000
 
 def get_hint():
     args = ArgumentParser()
