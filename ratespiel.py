@@ -12,7 +12,9 @@ def get_hint():
     return args.hint
 
 use_hint = get_hint()
-print(use_hint)
+
+if use_hint:
+    print("You have chosen to use hints.")
 
 def enter_number(info_text) -> int:
     valid_input = False
