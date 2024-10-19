@@ -209,7 +209,7 @@ class HandUtils:
     
 
     @classmethod
-    def get_hand_types(cls, hand, highest_only=False):
+    def get_hand_types(cls, hand, highpythinest_only=False):
         results = {HandType.HIGH} if hand else set()
 
         hand_by_rank = sorted(hand, key=lambda c: c.rank)

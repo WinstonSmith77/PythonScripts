@@ -13,6 +13,8 @@ def get_hint_and_max():
 
 use_hint, max_number = get_hint_and_max()
 
+assert max_number > MINNUMBER, f"Maximum number must be greater than {MINNUMBER}!"
+
 if use_hint:
     print("You have chosen to use hints.")
 
