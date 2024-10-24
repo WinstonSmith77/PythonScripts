@@ -16,7 +16,7 @@ use_hint, max_number = get_hint_and_max()
 if use_hint:
     print("You have chosen to use hints.")
 
-def enter_number(info_text) -> int:
+def enter_number(info_text: str) -> int:
     valid_input = False
     while not valid_input:
         try:
