@@ -16,6 +16,9 @@ path = Path(parent, "##tiles_render.json")
 pathOutput = Path(parent, "##output.json")
 pathOfI = Path(parent, "##poi.txt")
 
+url_tile = "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/14/8591/5332.pbf"
+path_style = r"bm_web_col.json"
+
 lines_oi: set | None = set()
 show_skipped = True
 
@@ -30,8 +33,7 @@ def read_tile():
         data = json.loads(path.read_text(encoding="utf-8"))
 
     else:
-        url = "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/13/4297/2667.pbf"
-        read_data = urllib.request.urlopen(url).read()
+        read_data = urllib.request.urlopen(url_tile).read()
         data = mapbox_vector_tile.decode(read_data)
         # data = None
         dump_to_file_json(path, data)
@@ -59,8 +61,6 @@ MAXZOOM = "maxzoom"
 
 
 def get_styles():
-    path = r"bm_web_col.json"
-
     def get_rgb(color: str):
         if color.startswith("rgb"):
             return tuple(map(int, color[4:-1].split(",")))
@@ -72,7 +72,7 @@ def get_styles():
             return False
         return color[2] > (color[0] + 20) and color[2] > (color[1] + 20)
 
-    content: dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+    content: dict[str, Any] = json.loads(pathlib.Path(path_style).read_text(encoding="utf-8"))
 
     def filter_styles_content(
         style: dict[str, Any], to_filter: list[str]
@@ -219,6 +219,8 @@ def benchmark(f):
 
     return wrapper
 
+def filter_styles(style):
+    return style[ID] == "SiedlungF_Siedlung"
 
 @benchmark
 def main():
@@ -226,7 +228,12 @@ def main():
     tile_data = read_tile()
 
     output = {}
+
+    output["styles_file"] = str(Path(Path(__file__).parent, path_style))
+    output["tile_data"] = url_tile
     for style in styles:
+        if not filter_styles(style):
+            continue
         id = style[ID]
         source_layer = style[SOURCE_LAYER]
         if MINZOOM in style:
