@@ -62,6 +62,19 @@ def get_styles():
     # pprint(stylesForType)
 styles = get_styles()
 
+source_layers = list(style[SOURCE_LAYER] for style in styles)
+
+i = 0
+while True:
+    if i + 1 >= len(source_layers):
+       break
+    if source_layers[i] == source_layers[i + 1]:
+        del source_layers[i + 1]
+    else: 
+        i+=1    
+
+
+
 tree = {}
 for style in styles:
     source_layer = style['source-layer']
@@ -80,6 +93,15 @@ csharp_list += ",\n".join(f'    "{style["id"]}"' for style in first_ten_entries)
 csharp_list += "\n};"
 
 print(csharp_list)
+
+
+
+csharp_array = "var sourceLayers = new string[] {\n"
+csharp_array += ",\n".join(f'    "{layer}"' for layer in source_layers)
+csharp_array += "\n};"
+
+print(csharp_array)
+
 
 content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
 

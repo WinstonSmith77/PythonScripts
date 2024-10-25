@@ -220,7 +220,7 @@ def benchmark(f):
     return wrapper
 
 def filter_styles(style):
-    return style[ID] == "SiedlungF_Siedlung"
+    return True
 
 @benchmark
 def main():
