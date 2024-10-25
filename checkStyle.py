@@ -83,7 +83,9 @@ print(csharp_list)
 
 content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
 
-content[LAYERS] = [style for style in styles if style[ID] in ['Hintergrund', 'SiedlungF_Siedlung']]
+content[LAYERS] = [style for style in styles if style[SOURCE_LAYER] in ['Hintergrund',
+                                                                        'Siedlungsflaeche'
+                                                                         ]]
 
 pathlib.Path(path.replace('.', '_.')).write_text(json.dumps(content, indent=4), encoding="utf-8")
 
