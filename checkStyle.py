@@ -33,26 +33,25 @@ def get_rgb(color: str) :
             return color
 
 
-def is_color_check(color: tuple[int, int, int], check) -> bool:
-    if not isinstance(color, tuple):
-        return False
-    return check
+def is_color_check(color, check) -> bool:
+    if isinstance(color, str):
+       return check(get_rgb(color))
+    
+    colors = [c[1] for c in color['stops']]
+    return any(map(check, map(get_rgb,colors)))
 
-def is_very_blue(color: tuple[int, int, int]) :
-    return is_color_check(color, lambda color : color[2] > (color[0] + 20)  and color[2] > (color[1] + 20))
+
 
 def is_very_red(color: tuple[int, int, int]) :
-    return is_color_check(color, lambda color : color[0] > (color[1] + 20)  and color[0] > (color[2] + 20))
+    return is_color_check(color, lambda color : color[0] >  230 and color[1] < 150 and color[2] < 150)
 
+def  filter_styles_content(style: dict[str, Any], to_filter : list[str]) -> dict[str, Any]:
+        return {key : value for key, value in style.items() if key in to_filter}
 
 def get_styles():
     
 
     content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
-
-    def  filter_styles_content(style: dict[str, Any], to_filter : list[str]) -> dict[str, Any]:
-        return {key : value for key, value in style.items() if key in to_filter}
-    
 
     styles = [style for style in content[LAYERS]]
     stylesWithText = [style for style in content[LAYERS] if LAYOUT in style and TEXT_FIELD in style[LAYOUT]]
@@ -72,7 +71,7 @@ def get_styles():
     # pprint(stylesForType)
 
 
-def make_tree(styles):
+
     source_layers = list(style[SOURCE_LAYER] for style in styles)
 
     i = 0
@@ -95,36 +94,9 @@ def make_tree(styles):
 
     pathlib.Path("export.json").write_text(json.dumps(tree, indent=4), encoding="utf-8")
 
-
-def print_csharp_list_and_array():
-    first_ten_entries = list(styles)[:20]
-
-    csharp_list = "var stylesListToShow = new List<string> {\n"
-    csharp_list += ",\n".join(f'    "{style["id"]}"' for style in first_ten_entries)
-    csharp_list += "\n};"
-
-    print(csharp_list)
-
-
-
-    csharp_array = "var sourceLayers = new string[] {\n"
-    csharp_array += ",\n".join(f'    "{layer}"' for layer in source_layers)
-    csharp_array += "\n};"
-
-    print(csharp_array)
-
-def filter_source_layers():
-
-    content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
-
-    content[LAYERS] = [style for style in styles if style[SOURCE_LAYER] in ['Hintergrund',
-                                                                            'Siedlungsflaeche'
-                                                                            ]]
-
-    pathlib.Path(path.replace('.', '_.')).write_text(json.dumps(content, indent=4), encoding="utf-8")
-
 styles = get_styles()
 
-styles = [style for style in styles if PAINT in style and FILL_COLOR in style[PAINT] and is_very_red(get_rgb(str(style[PAINT][FILL_COLOR])))]
+styles = [style for style in styles if PAINT in style and LINE_COLOR in style[PAINT] and is_very_red(style[PAINT][LINE_COLOR])]
+styles = [filter_styles_content(style, [ID, SOURCE_LAYER, TYPE, PAINT]) for style in styles]   
 
 pprint(styles)
