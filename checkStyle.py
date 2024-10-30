@@ -62,53 +62,54 @@ def get_styles():
     # pprint(stylesForType)
 styles = get_styles()
 
-source_layers = list(style[SOURCE_LAYER] for style in styles)
+def make_tree(stlyes):
+    source_layers = list(style[SOURCE_LAYER] for style in styles)
 
-i = 0
-while True:
-    if i + 1 >= len(source_layers):
-       break
-    if source_layers[i] == source_layers[i + 1]:
-        del source_layers[i + 1]
-    else: 
-        i+=1    
-
-
-
-tree = {}
-for style in styles:
-    source_layer = style['source-layer']
-    list_styles = tree.setdefault(source_layer, [])
-    list_styles.append(style['id'])
-
-
-pathlib.Path("export.json").write_text(json.dumps(tree, indent=4), encoding="utf-8")
+    i = 0
+    while True:
+        if i + 1 >= len(source_layers):
+            break
+        if source_layers[i] == source_layers[i + 1]:
+            del source_layers[i + 1]
+        else: 
+            i+=1    
 
 
 
-first_ten_entries = list(styles)[:20]
-
-csharp_list = "var stylesListToShow = new List<string> {\n"
-csharp_list += ",\n".join(f'    "{style["id"]}"' for style in first_ten_entries)
-csharp_list += "\n};"
-
-print(csharp_list)
+    tree = {}
+    for style in styles:
+        source_layer = style['source-layer']
+        list_styles = tree.setdefault(source_layer, [])
+        list_styles.append(style['id'])
 
 
-
-csharp_array = "var sourceLayers = new string[] {\n"
-csharp_array += ",\n".join(f'    "{layer}"' for layer in source_layers)
-csharp_array += "\n};"
-
-print(csharp_array)
+    pathlib.Path("export.json").write_text(json.dumps(tree, indent=4), encoding="utf-8")
 
 
-content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+def print_csharp_list_and_array():
+    first_ten_entries = list(styles)[:20]
 
-content[LAYERS] = [style for style in styles if style[SOURCE_LAYER] in ['Hintergrund',
-                                                                        'Siedlungsflaeche'
-                                                                         ]]
+    csharp_list = "var stylesListToShow = new List<string> {\n"
+    csharp_list += ",\n".join(f'    "{style["id"]}"' for style in first_ten_entries)
+    csharp_list += "\n};"
 
-pathlib.Path(path.replace('.', '_.')).write_text(json.dumps(content, indent=4), encoding="utf-8")
+    print(csharp_list)
+
+
+
+    csharp_array = "var sourceLayers = new string[] {\n"
+    csharp_array += ",\n".join(f'    "{layer}"' for layer in source_layers)
+    csharp_array += "\n};"
+
+    print(csharp_array)
+
+def filter_source_layers():
+    content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+
+    content[LAYERS] = [style for style in styles if style[SOURCE_LAYER] in ['Hintergrund',
+                                                                            'Siedlungsflaeche'
+                                                                            ]]
+
+    pathlib.Path(path.replace('.', '_.')).write_text(json.dumps(content, indent=4), encoding="utf-8")
 
 
