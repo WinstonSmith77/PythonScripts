@@ -26,17 +26,27 @@ LINE_OPACITY = "line-opacity"
 MINZOOM = "minzoom"
 MAXZOOM = "maxzoom"
 
-def get_styles():
-    def get_rgb(color: str) :
+def get_rgb(color: str) :
         if color.startswith('rgb'):
             return tuple(map(int, color[4:-1].split(',')))
         else:
             return color
 
-    def is_very_blue(color: tuple[int, int, int]) :
-        if not isinstance(color, tuple):
-            return False
-        return color[2] > (color[0] + 20)  and color[2] > (color[1] + 20)
+
+def is_color_check(color: tuple[int, int, int], check) -> bool:
+    if not isinstance(color, tuple):
+        return False
+    return check
+
+def is_very_blue(color: tuple[int, int, int]) :
+    return is_color_check(color, lambda color : color[2] > (color[0] + 20)  and color[2] > (color[1] + 20))
+
+def is_very_red(color: tuple[int, int, int]) :
+    return is_color_check(color, lambda color : color[0] > (color[1] + 20)  and color[0] > (color[2] + 20))
+
+
+def get_styles():
+    
 
     content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
 
@@ -60,9 +70,9 @@ def get_styles():
 
     #
     # pprint(stylesForType)
-styles = get_styles()
 
-def make_tree(stlyes):
+
+def make_tree(styles):
     source_layers = list(style[SOURCE_LAYER] for style in styles)
 
     i = 0
@@ -104,6 +114,7 @@ def print_csharp_list_and_array():
     print(csharp_array)
 
 def filter_source_layers():
+
     content : dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
 
     content[LAYERS] = [style for style in styles if style[SOURCE_LAYER] in ['Hintergrund',
@@ -112,4 +123,8 @@ def filter_source_layers():
 
     pathlib.Path(path.replace('.', '_.')).write_text(json.dumps(content, indent=4), encoding="utf-8")
 
+styles = get_styles()
 
+styles = [style for style in styles if PAINT in style and FILL_COLOR in style[PAINT] and is_very_red(get_rgb(str(style[PAINT][FILL_COLOR])))]
+
+pprint(styles)
