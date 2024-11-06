@@ -12,13 +12,21 @@ import base64
 from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
+user = 'matze'
+root = Path(rf"C:\Users\{user}\OneDrive")
 
-root = Path(r"C:\Users\henning\OneDrive")
 working_dirs = (Path(root, "bilder", "_lightroom"), Path(root, "#emmaTaufe"))
 minLength = 1
 XMP = ".xmp"
 JPG = ".jpg"
 DATETIME = "DateTime"
+
+DIR = "conseq_files"
+FILES_WITH_TIME_XMP = "files_with_time_xmp"
+FILES_WITH_TIME_JPG = "files_with_time_jpg"
+
+def filter_date(date: datetime):
+    return date.year == 2024
 
 
 def get_time_from_xmp_file(file):
@@ -116,12 +124,7 @@ def group_by_time(files_time, max_diff_seconds=10, min_length=3):
                 group_and_start = ([file], time)
 
 
-DIR = "conseq_files"
-FILES_WITH_TIME_XMP = "files_with_time_xmp"
-FILES_WITH_TIME_JPG = "files_with_time_jpg"
 
-def filter_date(date: datetime):
-    return date.year > 2022 and date.year < 2025
 
 
 with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
