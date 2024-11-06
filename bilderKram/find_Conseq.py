@@ -99,7 +99,7 @@ def jpg_files_with_time_and_image(fs):
         yield (file, exif)
 
 
-def group(files_time, max_diff_seconds=10, min_length=3):
+def group_by_time(files_time, max_diff_seconds=10, min_length=3):
     group_and_start = None
     for file, time in files_time:
         if not group_and_start:
@@ -119,6 +119,10 @@ def group(files_time, max_diff_seconds=10, min_length=3):
 DIR = "conseq_files"
 FILES_WITH_TIME_XMP = "files_with_time_xmp"
 FILES_WITH_TIME_JPG = "files_with_time_jpg"
+
+def filter_date(date: datetime):
+    return date.year > 2022 and date.year < 2025
+
 
 with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
     cache_entry = str(working_dirs)
@@ -151,10 +155,15 @@ files_time_jpg = ((file, time) for file, time in files_time_jpg if time)
 files_time_xmp = (
     (file, parse_time(time).replace(tzinfo=None)) for file, time in files_time_xmp
 )
-files_time = sorted(chain(files_time_xmp, files_time_jpg), key=lambda x: x[1])
 
 
-groups = sorted(list(group(files_time)), key=lambda x: x[0], reverse=True)
+files_time = sorted(filter(lambda x: filter_date(x[1]),  chain(files_time_xmp, files_time_jpg)), key=lambda x: x[1])
+
+
+#pprint(files_time[5])
+
+groups = sorted(list(group_by_time(files_time)), key=lambda x: x[0], reverse=True)
+#pprint(groups[0])
 
 groups = groupby(groups, key=lambda x: x[0])
 groups = list(
@@ -164,4 +173,4 @@ groups = list(
 
 dump_it("bursts", groups)
 
-pprint(groups)
+#pprint(groups)

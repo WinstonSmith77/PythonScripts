@@ -40,7 +40,8 @@ def is_color_check(color, check) -> bool:
     colors = [c[1] for c in color['stops']]
     return any(map(check, map(get_rgb,colors)))
 
-
+def is_very_given_color(color: tuple[int, int, int], color_to_check: tuple[int, int, int], max_diff) -> bool:
+    return is_color_check(color, lambda color : abs(color[0] - color_to_check[0]) < max_diff and abs(color[1] - color_to_check[1]) < max_diff and abs(color[2] - color_to_check[2]) < max_diff)
 
 def is_very_red(color: tuple[int, int, int]) :
     return is_color_check(color, lambda color : color[0] >  230 and color[1] < 150 and color[2] < 150)
@@ -96,7 +97,7 @@ def get_styles():
 
 styles = get_styles()
 
-styles = [style for style in styles if PAINT in style and LINE_COLOR in style[PAINT] and is_very_red(style[PAINT][LINE_COLOR])]
+styles = [style for style in styles if PAINT in style and LINE_COLOR in style[PAINT] and is_very_given_color(style[PAINT][LINE_COLOR], (153, 153, 153), 1)]
 styles = [filter_styles_content(style, [ID, SOURCE_LAYER, TYPE, PAINT]) for style in styles]   
 
 pprint(styles)
