@@ -21,4 +21,4 @@ def start_Exe():
 
 if __name__ == "__main__":
     delete_old_backups()
-    start_Exe()  
+    #start_Exe()  
