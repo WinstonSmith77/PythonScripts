@@ -34,4 +34,4 @@ def ausgleich(bezahlt, average):
 result =(ausgleich(bezahlt, average))   
 
 for x in result:
-    print(x[0], "soll an", x[1], x[2], "Euro zahlen")   
+    print(x[0], "muss an", x[1], round(x[2], 2), "Euro zahlen")   
