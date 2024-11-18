@@ -2,13 +2,10 @@ bezahlt = (("Sven", 0), ("Gunnar", 10),  ("Kevin", 70),  ("Danny", 25), ("Matze"
 summe= sum([x[1] for x in bezahlt])
 schnitt = summe / len(bezahlt)
 
-print("Hat bezahlt", bezahlt)
-print("Schnitt", schnitt)
-print("Summe", summe)
-print("")
 
-def ausgleich(bezahlt, average):
-    bezahlt_korrigiert = dict((x[0], x[1] - average) for x in bezahlt)
+def ausgleich(bezahlt):
+    schnitt = sum([x[1] for x in bezahlt]) / len(bezahlt)
+    bezahlt_korrigiert = dict((x[0], x[1] - schnitt) for x in bezahlt)
 
     ausgleiche = []
 
@@ -31,7 +28,7 @@ def ausgleich(bezahlt, average):
    
     return ausgleiche
 
-result =(ausgleich(bezahlt, schnitt))   
+result =(ausgleich(bezahlt))   
 
 for b in bezahlt:
     print(b[0], "hat", round(b[1], 2), "Euro bezahlt")
