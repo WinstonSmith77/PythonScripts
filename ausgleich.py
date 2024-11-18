@@ -10,7 +10,7 @@ def ausgleich(bezahlt):
 
    # pprint(bezahlt_korrigiert)
     while(True):
-        bezahlt_korrigiert = {k: v for k, v in bezahlt_korrigiert.items() if abs(v) >=  0.001}
+        bezahlt_korrigiert = {k: v for k, v in bezahlt_korrigiert.items() if abs(v) >=  0.01}
 
         if not bezahlt_korrigiert:
             break
