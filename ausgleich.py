@@ -18,7 +18,7 @@ def ausgleich(bezahlt):
         max_bezahlt = max(bezahlt_korrigiert.items(), key=lambda x: x[1])
         min_bezahlt = min(bezahlt_korrigiert.items(), key=lambda x: x[1])
 
-        betrag_ausgleich = min(max_bezahlt[1], abs(min_bezahlt[1]))
+        betrag_ausgleich = min(abs(max_bezahlt[1]), abs(min_bezahlt[1]))
 
         ausgleiche.append((min_bezahlt[0], max_bezahlt[0], betrag_ausgleich))
         bezahlt_korrigiert[max_bezahlt[0]] -= betrag_ausgleich
