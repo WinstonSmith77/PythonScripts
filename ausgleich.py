@@ -10,12 +10,13 @@ def ausgleich(bezahlt, average):
     bezahlt_korrigiert = dict((x[0], x[1] - average) for x in bezahlt)
 
    # pprint(bezahlt_korrigiert)
-    
-    max_bezahlt = max(bezahlt_korrigiert.values())
-    min_bezahlt = min(bezahlt_korrigiert.values())
-    
-    pprint(max_bezahlt)
-    pprint(min_bezahlt)
+    while(True):
+        max_bezahlt = max(bezahlt_korrigiert.values())
+        min_bezahlt = min(bezahlt_korrigiert.values())
+        
+        pprint(max_bezahlt)
+        pprint(min_bezahlt)
+        break
    
     return bezahlt_korrigiert
 
