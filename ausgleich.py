@@ -1,10 +1,12 @@
 from pprint import pprint
 
 bezahlt = (("Sven", 0), ("Gunnar", 10),  ("Kevin", 70),  ("Danny", 25), ("Matze", 20), ("Torsten", 0))
-average = average = sum([x[1] for x in bezahlt]) / len(bezahlt)
+summe= sum([x[1] for x in bezahlt])
+schnitt = sum([x[1] for x in bezahlt]) / len(bezahlt)
 
 print("Hat bezahlt", bezahlt)
-print("Schnitt", average)
+print("Schnitt", schnitt)
+print("Summe", summe)
 print("")
 
 def ausgleich(bezahlt, average):
@@ -31,7 +33,17 @@ def ausgleich(bezahlt, average):
    
     return ausgleiche
 
-result =(ausgleich(bezahlt, average))   
+result =(ausgleich(bezahlt, schnitt))   
 
-for x in result:
-    print(x[0], "muss an", x[1], round(x[2], 2), "Euro zahlen")   
+for b in bezahlt:
+    print(b[0], "hat", round(b[1], 2), "Euro bezahlt")
+
+print("")   
+print("Schnitt:", round(schnitt, 2))
+print("Summe:", round(summe, 2))
+print("")
+print("Ausgleich:")
+print("")
+
+for ausgleich in result:
+    print(ausgleich[0], "muss an", ausgleich[1], round(ausgleich[2], 2), "Euro zahlen")   
