@@ -1,8 +1,6 @@
-from pprint import pprint
-
 bezahlt = (("Sven", 0), ("Gunnar", 10),  ("Kevin", 70),  ("Danny", 25), ("Matze", 20), ("Torsten", 0))
 summe= sum([x[1] for x in bezahlt])
-schnitt = sum([x[1] for x in bezahlt]) / len(bezahlt)
+schnitt = summe / len(bezahlt)
 
 print("Hat bezahlt", bezahlt)
 print("Schnitt", schnitt)
