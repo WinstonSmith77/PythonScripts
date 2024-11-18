@@ -1,23 +1,37 @@
 from pprint import pprint
 
-bezahlt = (("M", 0), ("G", 10),  ("K", 70),  ("D", 25), ("MH", 20), ("T", 0))
+bezahlt = (("Sven", 0), ("Gunnar", 10),  ("Kevin", 70),  ("Danny", 25), ("Matze", 20), ("Torsten", 0))
 average = average = sum([x[1] for x in bezahlt]) / len(bezahlt)
 
-pprint(bezahlt)
-pprint(average)
+print("Hat bezahlt", bezahlt)
+print("Schnitt", average)
+print("")
 
 def ausgleich(bezahlt, average):
     bezahlt_korrigiert = dict((x[0], x[1] - average) for x in bezahlt)
 
+    ausgleiche = []
+
    # pprint(bezahlt_korrigiert)
     while(True):
-        max_bezahlt = max(bezahlt_korrigiert.values())
-        min_bezahlt = min(bezahlt_korrigiert.values())
-        
-        pprint(max_bezahlt)
-        pprint(min_bezahlt)
-        break
-   
-    return bezahlt_korrigiert
+        bezahlt_korrigiert = {k: v for k, v in bezahlt_korrigiert.items() if abs(v) >=  0.001}
 
-pprint(ausgleich(bezahlt, average))
+        if not bezahlt_korrigiert:
+            break
+
+        max_bezahlt = max(bezahlt_korrigiert.items(), key=lambda x: x[1])
+        min_bezahlt = min(bezahlt_korrigiert.items(), key=lambda x: x[1])
+
+        betrag_ausgleich = min(max_bezahlt[1], abs(min_bezahlt[1]))
+
+        ausgleiche.append((min_bezahlt[0], max_bezahlt[0], betrag_ausgleich))
+        bezahlt_korrigiert[max_bezahlt[0]] -= betrag_ausgleich
+        bezahlt_korrigiert[min_bezahlt[0]] += betrag_ausgleich
+
+   
+    return ausgleiche
+
+result =(ausgleich(bezahlt, average))   
+
+for x in result:
+    print(x[0], "soll an", x[1], x[2], "Euro zahlen")   
