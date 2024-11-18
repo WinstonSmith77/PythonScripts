@@ -1,6 +1,5 @@
-bezahlt = (("Sven", 0), ("Gunnar", 10),  ("Kevin", 70),  ("Danny", 25), ("Matze", 20), ("Torsten", 0))
-summe= sum([x[1] for x in bezahlt])
-schnitt = summe / len(bezahlt)
+hat_bezahlt = (("Sven", 0), ("Gunnar", 10),  ("Kevin", 70),  ("Danny", 25), ("Matze", 20), ("Torsten", 0))
+
 
 
 def ausgleich(bezahlt):
@@ -28,17 +27,15 @@ def ausgleich(bezahlt):
    
     return ausgleiche
 
-result =(ausgleich(bezahlt))   
+ausgleiche =(ausgleich(hat_bezahlt))   
 
-for b in bezahlt:
-    print(b[0], "hat", round(b[1], 2), "Euro bezahlt")
+for bezahlt in hat_bezahlt:
+    print(bezahlt[0], "hat", round(bezahlt[1], 2), "Euro bezahlt")
 
 print("")   
-print("Schnitt:", round(schnitt, 2))
-print("Summe:", round(summe, 2))
-print("")
+
 print("Ausgleich:")
 print("")
 
-for ausgleich in result:
+for ausgleich in ausgleiche:
     print(ausgleich[0], "muss an", ausgleich[1], round(ausgleich[2], 2), "Euro zahlen")   
