@@ -1,6 +1,12 @@
-def tuple_to_str_seperated_by_semikolon(t):
-    t = map(str, t)
-    return f"{';'.join(t)}"
+from PIL import Image
+import glob
 
+# File paths
+jpeg_files = sorted(glob.glob("path/to/jpegs/*.jpg"))
+output_gif = "output.gif"
 
-print(tuple_to_str_seperated_by_semikolon((1, 2, 3)))
+# Create a list of images
+images = [Image.open(jpeg) for jpeg in jpeg_files]
+
+# Save as GIF
+images[0].save(output_gif, save_all=True, append_images=images[1:], duration=500, loop=0)
