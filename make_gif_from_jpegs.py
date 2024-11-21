@@ -6,8 +6,12 @@ import pathlib
 
 path = pathlib.Path("C:/Users/matze/Desktop/export/Kinder/hannes_spukt_feuer")
 
+print(path.exists())
 
-jpeg_files = list(path.rglob("*.jpg"))
+
+jpeg_files = list(path.rglob("*.JPG"))
+
+#print(jpeg_files)
 
 
 
