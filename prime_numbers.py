@@ -27,8 +27,8 @@ def get_primes():
 def format(number):
     return f'{number:.3f}'
 
-repeats = 10
-length = 100_000
+repeats = 10 * 2
+length = 100_000 * 3
 
 def benchmark(index):
    
