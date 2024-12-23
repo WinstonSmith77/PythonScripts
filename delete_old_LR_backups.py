@@ -1,7 +1,11 @@
 import os
 import shutil
+from pathlib import Path
 
-backupFolders = ["/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/lightroom_backup_mac", '/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/lightroom backup']
+
+macBasePath = Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal')
+
+backupFolders = [macBasePath  /"lightroom_backup_mac", macBasePath / 'lightroom backup']
 keepNumberOfBackups = 10
 
 def delete_old_backups(path):
