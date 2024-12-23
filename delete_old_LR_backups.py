@@ -15,7 +15,7 @@ def delete_old_backups(path):
     for item in toDelete:
         pathToDelete = item[0]
         print(f"Deleting {pathToDelete}")
-        shutil.rmtree(str(pathToDelete))
+        shutil.rmtree(pathToDelete)
         
 if __name__ == "__main__":
     for backupFolder in backupFolders:
