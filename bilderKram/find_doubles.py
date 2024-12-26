@@ -19,7 +19,7 @@ def move_files(files, replacePath, withPath, dryRun = True):
         pass       
 
 
-working_dir = [Path(r"C:\Users\matze\OneDrive\bilder")]
+working_dir = [Path(r"/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/bilder")]
 
 start = timer()
 all_doubles, group_length_without_doubles, possible_doubles = do_it(working_dir)
