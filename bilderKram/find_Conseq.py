@@ -25,7 +25,7 @@ FILES_WITH_TIME_XMP = "files_with_time_xmp"
 FILES_WITH_TIME_JPG = "files_with_time_jpg"
 
 def filter_date(date: datetime):
-    return date.year == 2024
+    return True
 
 
 def get_time_from_xmp_file(file):
