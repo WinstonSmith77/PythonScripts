@@ -12,8 +12,7 @@ import base64
 from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
 
-user = 'matze'
-root = Path(rf"C:\Users\{user}\OneDrive")
+root = Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal')
 
 working_dirs = (Path(root, "bilder", "_lightroom"), Path(root, "#emmaTaufe"))
 minLength = 1
@@ -99,13 +98,11 @@ def extract_exif_from_file(file):
 
 
 def jpg_files_with_time_and_image(fs):
-    files = (file[0] for file in fs)
-    files = (file for file in files if Path(file).suffix.lower() == JPG)
+    files = (file[0] for file in fs if Path(file[0]).suffix.lower() == JPG)
 
     for file in files:
         exif = extract_exif_from_file(file)
         yield (file, exif)
-
 
 def group_by_time(files_time, max_diff_seconds=10, min_length=3):
     group_and_start = None
@@ -122,10 +119,6 @@ def group_by_time(files_time, max_diff_seconds=10, min_length=3):
                 if len_group >= min_length:
                     yield (len_group, group, str(start))
                 group_and_start = ([file], time)
-
-
-
-
 
 with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
     cache_entry = str(working_dirs)
