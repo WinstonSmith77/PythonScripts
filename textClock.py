@@ -16,15 +16,21 @@ def bigOut(text ):
     result = pyfiglet.figlet_format(text)
     print(result)
 
-def toWords(number):
-    result =  i.number_to_words (str(number))
-    return result    
+def toWords(value):
+    if isinstance(value, int):
+        number = value
+        result =  i.number_to_words (str(number))
+        return result    
+    elif isinstance(value, datetime):
+        minute = value.minute
+        hour = value.hour
+        result = f"{toWords(hour)}    {toWords(minute)}"
+        return result
 
 while(True):
     cls()
     now = datetime.now()
-    minute = now.minute
-    hour = now.hour
-    result = f"{toWords(hour)}    {toWords(minute)}"
-    bigOut(result)  
+   
+  
+    bigOut(toWords(now))  
     sleep(5)
