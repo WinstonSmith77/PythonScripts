@@ -1,18 +1,21 @@
 from PIL import Image
 import pathlib
+import pprint
 
 
 # File paths
 
-path = pathlib.Path("C:/Users/matze/Desktop/export/kegeln/mW")
+path = pathlib.Path("/Volumes/Matze/matze/Desktop/rutsche/")
 
 
 
 
-jpeg_files = list(path.rglob("*.JPG"))
-first = jpeg_files[0]
-second = jpeg_files[1]
-jpeg_files = jpeg_files[2:] + [first, second, first, second,first, second, first, second, ]
+jpeg_files = list(path.rglob("*.jpg"))
+jpeg_files = sorted(jpeg_files, key=lambda item: item.name)
+pprint.pprint(jpeg_files)
+#first = jpeg_files[0]
+#second = jpeg_files[1]
+#jpeg_files = jpeg_files[2:] + [first, second, first, second,first, second, first, second, ]
 
 
 
