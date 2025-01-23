@@ -18,8 +18,7 @@ def bigOut(text ):
 
 def toWords(value):
     if isinstance(value, int):
-        number = value
-        result =  i.number_to_words (str(number))
+        result =  i.number_to_words(value)
         return result    
     elif isinstance(value, datetime):
         minute = value.minute
