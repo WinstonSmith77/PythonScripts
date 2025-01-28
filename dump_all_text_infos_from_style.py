@@ -32,9 +32,6 @@ def get_styles():
 
 styles = get_styles()
 
-styles = [style for style in styles if PAINT in style]
-
-
 def filter_texts(items_of_interest: dict[str, Any], add_to: dict[str, Any]):
     for key, value in items_of_interest.items():
         if not key.startswith("text-"):
