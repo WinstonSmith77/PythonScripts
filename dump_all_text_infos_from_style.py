@@ -32,7 +32,7 @@ def get_styles():
 
 styles = get_styles()
 
-def filter_texts(items_of_interest: dict[str, Any], add_to: dict[str, Any]):
+def filter_texts_and_add_to(items_of_interest: dict[str, Any], add_to: dict[str, Any]):
     for key, value in items_of_interest.items():
         if  key.startswith("text-"):
             if key not in add_to:
@@ -47,11 +47,11 @@ for group in groups:
 
     for style in styles:
         if group in style:
-            filter_texts(style[group], groups_text_attribs[group])
+            filter_texts_and_add_to(style[group], groups_text_attribs[group])
 
 for group in groups:
     for key, value in groups_text_attribs[group].items():
-     groups_text_attribs[group][key] =  [(k, list(map(lambda x: x[0], g))) for k, g in groupby(value, key=lambda x: x[1])]
+     groups_text_attribs[group][key] =  [(group_key, list(map(lambda x: x[0], group_items))) for group_key, group_items in groupby(value, key=lambda x: x[1])]
 
 info_text = pathlib.Path("info_text.json")
 
