@@ -1,5 +1,3 @@
-
-
 import pyfiglet
 import inflect
 from datetime import datetime

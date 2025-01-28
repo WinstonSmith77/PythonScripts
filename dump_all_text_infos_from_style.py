@@ -102,22 +102,27 @@ styles = [filter_styles_content(style, [PAINT, LAYOUT, ID]) for style in styles]
 
 #styles = [filter_styles_content(style, [PAINT, LAYOUT, ID]) for style in styles]   
 
-text_attribs : dict[str, Any] = {}
 
-for style in styles:
-    
-     layout = style[LAYOUT] if LAYOUT in style else {}
-     paint = style[PAINT] if PAINT in style else {}
-     items_of_interest = {**paint, **layout}
-     for key, value in items_of_interest.items():
+
+
+def filter_texts(items_of_interest : dict[str, Any], add_to :  dict[str, Any] ):
+      for key, value in items_of_interest.items():
          if not key.startswith('text-'):
              continue
-         info_key = f"{LAYOUT if key in layout else PAINT}->{key}"
-         if info_key not in text_attribs:
-             text_attribs[info_key] = []
-         text_attribs[info_key].append((style[ID], value))
+        
+         if key not in add_to:
+             add_to[key] = []
+         add_to[key].append((style[ID], value))
 
-pprint(styles)
+text_attribs : dict[str, Any] = {}
+for group in  (LAYOUT, PAINT):
+    text_attribs[group] = {}
+
+    for style in styles:
+        if group  in style:
+            filter_texts(style[group], text_attribs[group])
+
+#pprint(styles)
 #pprint(text_attribs)
 
 info_text = pathlib.Path("info_text.json")
