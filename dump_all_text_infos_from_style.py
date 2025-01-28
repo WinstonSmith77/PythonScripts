@@ -41,6 +41,7 @@ def filter_texts_and_add_to(items_of_interest: dict[str, Any], add_to: dict[str,
 
 
 groups_text_attribs: dict[str, Any] = {}
+groups_text_attribs['style'] = path
 groups = (LAYOUT, PAINT)
 for group in groups:
     groups_text_attribs[group] = {}
@@ -52,6 +53,9 @@ for group in groups:
 for group in groups:
     for key, value in groups_text_attribs[group].items():
      groups_text_attribs[group][key] =  [(group_key, list(map(lambda x: x[0], group_items))) for group_key, group_items in groupby(value, key=lambda x: x[1])]
+
+
+
 
 info_text = pathlib.Path("info_text.json")
 
