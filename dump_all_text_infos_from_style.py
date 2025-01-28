@@ -1,10 +1,7 @@
 import json
 import pathlib
 from itertools import groupby
-from typing import Any, Tuple
-
-
-from pprint import pprint
+from typing import Any
 
 path = r"bm_web_col.json"
 
