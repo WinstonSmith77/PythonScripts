@@ -34,12 +34,10 @@ styles = get_styles()
 
 def filter_texts(items_of_interest: dict[str, Any], add_to: dict[str, Any]):
     for key, value in items_of_interest.items():
-        if not key.startswith("text-"):
-            continue
-
-        if key not in add_to:
-            add_to[key] = []
-        add_to[key].append((style[ID], value))
+        if  key.startswith("text-"):
+            if key not in add_to:
+                add_to[key] = []
+            add_to[key].append((style[ID], value))
 
 
 groups_text_attribs: dict[str, Any] = {}
