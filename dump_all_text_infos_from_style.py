@@ -49,13 +49,17 @@ def filter_texts(items_of_interest: dict[str, Any], add_to: dict[str, Any]):
 
 
 groups_text_attribs: dict[str, Any] = {}
-for group in (LAYOUT, PAINT):
+groups = (LAYOUT, PAINT)
+for group in groups:
     groups_text_attribs[group] = {}
 
     for style in styles:
         if group in style:
             filter_texts(style[group], groups_text_attribs[group])
 
+for group in groups:
+    for key, value in groups_text_attribs[group].items():
+     groups_text_attribs[group][key] =  [(k, list(map(lambda x: x[0], g))) for k, g in groupby(value, key=lambda x: x[1])]
 
 info_text = pathlib.Path("info_text.json")
 
