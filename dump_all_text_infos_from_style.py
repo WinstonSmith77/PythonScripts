@@ -63,9 +63,9 @@ for group in groups:
     for key, value in groups_text_attribs[group].items():
         groups_text_attribs[group][key] =  [(group_key, list(map(lambda x : x[0], list(group_items)))) for group_key, group_items in order_and_groupBy(value, key=take_second)]
 
-# for group in groups:
-#     for key in groups_text_attribs[group]:
-#         groups_text_attribs[group][key] =   sorted(groups_text_attribs[group][key], key=lambda x: len(x[1]), reverse=True) 
+for group in groups:
+    for key in groups_text_attribs[group]:
+        groups_text_attribs[group][key] =   sorted(groups_text_attribs[group][key], key=lambda x: len(x[1]), reverse=True) 
 
 
 
