@@ -3,7 +3,10 @@ import pathlib
 from itertools import groupby
 from typing import Any
 
-path = r"merged_styles.json"
+
+
+# path = r"merged_styles.json"
+path = r"bm_web_col_.json"
 
 LAYERS = "layers"
 FILTER = "filter"
@@ -58,9 +61,11 @@ def order_and_groupBy(items, key):
 
 for group in groups:
     for key, value in groups_text_attribs[group].items():
-        groups_text_attribs[group][key] =  sorted( [(group_key, list(map(lambda x: x[0], group_items))) for group_key, group_items in order_and_groupBy(value, key=take_second)],
-                                                 key=lambda x : len(x[1][0]))
+        groups_text_attribs[group][key] =  [(group_key, list(map(lambda x : x[0], list(group_items)))) for group_key, group_items in order_and_groupBy(value, key=take_second)]
 
+# for group in groups:
+#     for key in groups_text_attribs[group]:
+#         groups_text_attribs[group][key] =   sorted(groups_text_attribs[group][key], key=lambda x: len(x[1]), reverse=True) 
 
 
 
