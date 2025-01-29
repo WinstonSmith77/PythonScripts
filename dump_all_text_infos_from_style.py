@@ -32,12 +32,12 @@ def get_styles():
 
 styles = get_styles()
 
-def filter_texts_and_add_to(items_of_interest: dict[str, Any], add_to: dict[str, Any]):
+def filter_texts_and_add_to(items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any]):
     for key, value in items_of_interest.items():
         if  key.startswith("text-"):
             if key not in add_to:
                 add_to[key] = []
-            add_to[key].append((style[ID], value))
+            add_to[key].append((style[ID], str(value)))
 
 
 groups_text_attribs: dict[str, Any] = {}
@@ -48,11 +48,14 @@ for group in groups:
 
     for style in styles:
         if group in style:
-            filter_texts_and_add_to(style[group], groups_text_attribs[group])
+            filter_texts_and_add_to(style[group], groups_text_attribs[group], style)
+
+def take_second(x):
+    return x[1]
 
 for group in groups:
     for key, value in groups_text_attribs[group].items():
-     groups_text_attribs[group][key] =  [(group_key, list(map(lambda x: x[0], group_items))) for group_key, group_items in groupby(value, key=lambda x: x[1])]
+        groups_text_attribs[group][key] =  [(group_key, list(map(lambda x: x[0], group_items))) for group_key, group_items in groupby(sorted(value, key=take_second), key=take_second)]
 
 
 
