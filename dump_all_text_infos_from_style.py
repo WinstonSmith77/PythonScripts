@@ -53,9 +53,12 @@ for group in groups:
 def take_second(x):
     return x[1]
 
+def order_and_groupBy(items, key):
+    return groupby(sorted(items, key=key), key=key)   
+
 for group in groups:
     for key, value in groups_text_attribs[group].items():
-        groups_text_attribs[group][key] =  [(group_key, list(map(lambda x: x[0], group_items))) for group_key, group_items in groupby(sorted(value, key=take_second), key=take_second)]
+        groups_text_attribs[group][key] =  [(group_key, list(map(lambda x: x[0], group_items))) for group_key, group_items in order_and_groupBy(value, key=take_second)]
 
 
 
