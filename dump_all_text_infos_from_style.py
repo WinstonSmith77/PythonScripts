@@ -3,7 +3,7 @@ import pathlib
 from itertools import groupby
 from typing import Any
 
-path = r"bm_web_col.json"
+path = r"merged_styles.json"
 
 LAYERS = "layers"
 FILTER = "filter"
