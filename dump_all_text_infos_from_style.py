@@ -57,6 +57,6 @@ for group in groups:
 
 
 
-info_text = pathlib.Path("info_text.json")
+info_text = pathlib.Path(f"info_text_{pathlib.Path(path).stem}.json")
 
 json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
