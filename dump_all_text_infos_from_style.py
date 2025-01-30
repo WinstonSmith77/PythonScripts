@@ -1,12 +1,12 @@
 import json
-import pathlib
+from pathlib import Path
 from itertools import groupby
 from typing import Any
 
 
-
-# path = r"merged_styles.json"
-path = r"bm_web_col_.json"
+#path = r"merged_styles.json"
+#path = r"bm_web_col_.json"
+path = r'C:\Users\henning\source\LinqScripts\stylesToTest\swiss_light_basemap.json'
 
 LAYERS = "layers"
 FILTER = "filter"
@@ -28,23 +28,26 @@ MAXZOOM = "maxzoom"
 
 
 def get_styles():
-    content: dict[str, Any] = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+    content: dict[str, Any] = json.loads(Path(path).read_text(encoding="utf-8"))
 
     return content[LAYERS]
 
 
 styles = get_styles()
 
-def filter_texts_and_add_to(items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any]):
+
+def filter_texts_and_add_to(
+    items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any]
+):
     for key, value in items_of_interest.items():
-        if  key.startswith("text-"):
+        if key.startswith("text-"):
             if key not in add_to:
                 add_to[key] = []
             add_to[key].append((style[ID], str(value)))
 
 
 groups_text_attribs: dict[str, Any] = {}
-groups_text_attribs['style'] = path
+groups_text_attribs["style"] = path
 groups = (LAYOUT, PAINT)
 for group in groups:
     groups_text_attribs[group] = {}
@@ -53,23 +56,29 @@ for group in groups:
         if group in style:
             filter_texts_and_add_to(style[group], groups_text_attribs[group], style)
 
+
 def take_second(x):
     return x[1]
 
+
 def order_and_groupBy(items, key):
-    return groupby(sorted(items, key=key), key=key)   
+    return groupby(sorted(items, key=key), key=key)
+
 
 for group in groups:
     for key, value in groups_text_attribs[group].items():
-        groups_text_attribs[group][key] =  [(group_key, list(map(lambda x : x[0], list(group_items)))) for group_key, group_items in order_and_groupBy(value, key=take_second)]
+        items = [
+            (group_key, list(map(lambda x: x[0], list(group_items))))
+            for group_key, group_items in order_and_groupBy(value, key=take_second)
+        ]
 
-for group in groups:
-    for key in groups_text_attribs[group]:
-        groups_text_attribs[group][key] =   sorted(groups_text_attribs[group][key], key=lambda x: len(x[1]), reverse=True) 
+        items = sorted(items, key=lambda x: len(x[1]), reverse=True)
+
+        groups_text_attribs[group][key] = items
 
 
 
 
-info_text = pathlib.Path(f"info_text_{pathlib.Path(path).stem}.json")
+info_text = Path(f"info_text_{Path(path).stem}.json")
 
 json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
