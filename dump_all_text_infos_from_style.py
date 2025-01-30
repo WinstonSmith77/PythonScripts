@@ -2,11 +2,12 @@ import json
 from pathlib import Path
 from itertools import groupby
 from typing import Any
+import time
 
 
-#path = r"merged_styles.json"
+path = r"merged_styles.json"
 #path = r"bm_web_col_.json"
-path = r'stylesToTest\swiss_light_basemap.json'
+#path = r'stylesToTest\swiss_light_basemap.json'
 
 LAYERS = "layers"
 FILTER = "filter"
@@ -46,17 +47,6 @@ def filter_texts_and_add_to(
             add_to[key].append((style[ID], str(value)))
 
 
-groups_text_attribs: dict[str, Any] = {}
-groups_text_attribs["style"] = path
-groups = (LAYOUT, PAINT)
-for group in groups:
-    groups_text_attribs[group] = {}
-
-    for style in styles:
-        if group in style:
-            filter_texts_and_add_to(style[group], groups_text_attribs[group], style)
-
-
 def take_second(x):
     return x[1]
 
@@ -65,20 +55,40 @@ def order_and_groupBy(items, key):
     return groupby(sorted(items, key=key), key=key)
 
 
-for group in groups:
-    for key, value in groups_text_attribs[group].items():
-        items = [
-            (group_key, list(map(lambda x: x[0], list(group_items))))
-            for group_key, group_items in order_and_groupBy(value, key=take_second)
-        ]
 
-        items = sorted(items, key=lambda x: len(x[1]), reverse=True)
+def do_it():
+    groups_text_attribs: dict[str, Any] = {}
+    groups_text_attribs["style"] = path
+    groups = (LAYOUT, PAINT)
+    for group in groups:
+        groups_text_attribs[group] = {}
 
-        groups_text_attribs[group][key] = items
+        for style in styles:
+            if group in style:
+                filter_texts_and_add_to(style[group], groups_text_attribs[group], style)
 
 
 
 
-info_text = Path(f"info_text_{Path(path).stem}.json")
+    for group in groups:
+        for key, value in groups_text_attribs[group].items():
+            items = [
+                (group_key, list(map(lambda x: x[0], list(group_items))))
+                for group_key, group_items in order_and_groupBy(value, key=take_second)
+            ]
 
-json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
+            items = sorted(items, key=lambda x: len(x[1]), reverse=True)
+
+            groups_text_attribs[group][key] = items
+
+    info_text = Path(f"info_text_{Path(path).stem}.json")
+
+    json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
+
+
+if __name__ == "__main__":
+    start_time = time.time()
+    do_it()
+    end_time = time.time()
+
+    print(f"Execution time: {(end_time - start_time) * 1000} milliseconds")
