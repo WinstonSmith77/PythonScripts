@@ -6,7 +6,7 @@ from typing import Any
 
 #path = r"merged_styles.json"
 #path = r"bm_web_col_.json"
-path = r'C:\Users\henning\source\LinqScripts\stylesToTest\swiss_light_basemap.json'
+path = r'stylesToTest\swiss_light_basemap.json'
 
 LAYERS = "layers"
 FILTER = "filter"
