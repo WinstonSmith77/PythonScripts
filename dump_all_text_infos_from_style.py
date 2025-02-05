@@ -26,9 +26,12 @@ MAXZOOM = "maxzoom"
 def parse_args():
     parser = argparse.ArgumentParser(description="Process a JSON style file.")
     parser.add_argument("path", type=str, help="Path to the JSON style file")
+    parser.add_argument(
+        "--contains", type=str, default="text-", help='Filter keys that contain this string (default: "text-")'
+    )
     args = parser.parse_args()
 
-    return args.path
+    return args.path, args.contains
 
 def get_styles(path):
     content: dict[str, Any] = json.loads(Path(path).read_text(encoding="utf-8"))
@@ -37,10 +40,10 @@ def get_styles(path):
 
 
 def filter_texts_and_add_to(
-    items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any]
+    items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any], must_contain: str 
 ):
     for key, value in items_of_interest.items():
-        if key.startswith("text-"):
+        if key.startswith(must_contain):
             if key not in add_to:
                 add_to[key] = []
             add_to[key].append((style[ID], str(value)))
@@ -54,7 +57,7 @@ def order_and_groupBy(items, key):
     return groupby(sorted(items, key=key), key=key)
 
 
-def do_it(styles, path):
+def do_it(styles, path, must_contain: str):
     groups_text_attribs: dict[str, Any] = {}
     groups_text_attribs["style"] = path
     groups = (LAYOUT, PAINT)
@@ -63,7 +66,7 @@ def do_it(styles, path):
 
         for style in styles:
             if group in style:
-                filter_texts_and_add_to(style[group], groups_text_attribs[group], style)
+                filter_texts_and_add_to(style[group], groups_text_attribs[group], style, must_contain)
 
     for group in groups:
         for key, value in groups_text_attribs[group].items():
@@ -76,16 +79,21 @@ def do_it(styles, path):
 
             groups_text_attribs[group][key] = items
 
-    info_text = Path(f"info_text_{Path(path).stem}.json")
+    folder = "info"
+
+    Path(folder).mkdir(exist_ok=True)
+
+
+    info_text = Path(folder, f"info_text_{Path(path).stem}.json")
 
     json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
 
 
 if __name__ == "__main__":
     start_time = time.time()
-    path = parse_args()
+    path, must_contain = parse_args()
     styles = get_styles(path)
-    do_it(styles, path)
+    do_it(styles, path, must_contain)
     end_time = time.time()
 
     print(f"Execution time: {(end_time - start_time) * 1000} milliseconds")
