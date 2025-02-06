@@ -32,10 +32,13 @@ def parse_args():
     parser.add_argument(
         "--valuecontains", type=str, default="", help='Filter values that contain this string (default: "")'
     )
+    parser.add_argument(
+        "--valuesonly", action="store_true", help="Only include styles where the value contains the specified string"
+    )
 
     args = parser.parse_args()
 
-    return args.path, args.contains, args.valuecontains
+    return args.path, args.contains, args.valuecontains, args.valuesonly
 
 def get_styles(path):
     content: dict[str, Any] = json.loads(Path(path).read_text(encoding="utf-8"))
@@ -44,7 +47,7 @@ def get_styles(path):
 
 
 def filter_texts_and_add_to(
-    items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any], must_contain: str, value_must_contain: str 
+    items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any], must_contain: str, value_must_contain: str
 ):
     for key, value in items_of_interest.items():
         if key.startswith(must_contain):
@@ -52,6 +55,7 @@ def filter_texts_and_add_to(
             if value_must_contain in value_str:
                 if key not in add_to:
                     add_to[key] = []
+               
                 add_to[key].append((style[ID], value_str))
 
 
@@ -65,7 +69,7 @@ def order_and_groupBy(items, key):
 def format_with_(text: str):
     return f'_{text}' if text else ""
 
-def do_it(styles, path, must_contain: str,  value_must_contain: str):
+def do_it(styles, path, must_contain: str,  value_must_contain: str, values_only: bool):
     groups_text_attribs: dict[str, Any] = {}
     groups_text_attribs["style"] = path
     groups = (LAYOUT, PAINT)
@@ -85,6 +89,9 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str):
 
             items = sorted(items, key=lambda x: len(x[1]), reverse=True)
 
+            if values_only:
+                items = [item[0] for item in items]
+
             groups_text_attribs[group][key] = items
 
     folder = "info"
@@ -92,16 +99,16 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str):
     Path(folder).mkdir(exist_ok=True)
 
 
-    info_text = Path(folder, f"info_text_{Path(path).stem}{format_with_(must_contain)}{format_with_(value_must_contain)}.json")
+    info_text = Path(folder, f"info_text_{Path(path).stem}{format_with_(must_contain)}{format_with_(value_must_contain)}{format_with_("values_only" if values_only else "")}.json")
 
     json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
 
 
 if __name__ == "__main__":
     start_time = time.time()
-    path, must_contain, value_must_contain= parse_args()
+    path, must_contain, value_must_contain, values_only = parse_args()
     styles = get_styles(path)
-    do_it(styles, path, must_contain, value_must_contain)
+    do_it(styles, path, must_contain, value_must_contain, values_only)
     end_time = time.time()
 
     print(f"Execution time: {(end_time - start_time) * 1000} milliseconds")
