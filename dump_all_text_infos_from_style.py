@@ -62,6 +62,8 @@ def take_second(x):
 def order_and_groupBy(items, key):
     return groupby(sorted(items, key=key), key=key)
 
+def format_with_(text: str):
+    return f'_{text}' if text else ""
 
 def do_it(styles, path, must_contain: str,  value_must_contain: str):
     groups_text_attribs: dict[str, Any] = {}
@@ -90,7 +92,7 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str):
     Path(folder).mkdir(exist_ok=True)
 
 
-    info_text = Path(folder, f"info_text_{Path(path).stem}.json")
+    info_text = Path(folder, f"info_text_{Path(path).stem}{format_with_(must_contain)}{format_with_(value_must_contain)}.json")
 
     json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
 
