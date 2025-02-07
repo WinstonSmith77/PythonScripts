@@ -71,10 +71,15 @@ def order_and_groupBy(items, key):
 def format_with_(text: str):
     return f'_{text}' if text else ""
 
+def make_path(folder :str, path: str, must_contain: str, value_must_contain: str, values_only: bool, group : str = ""):
+    return Path(folder, f"info_text_{Path(path).stem}{format_with_(must_contain)}{format_with_(value_must_contain)}{format_with_("values_only" if values_only else "")}{format_with_(group)}.json")
+
+
+groups = (LAYOUT, PAINT)
+
 def do_it(styles, path, must_contain: str,  value_must_contain: str, values_only: bool):
     groups_text_attribs: dict[str, Any] = {}
     groups_text_attribs["style"] = path
-    groups = (LAYOUT, PAINT)
 
     values_str_to_value : dict[str, Any] = {}
 
@@ -106,11 +111,8 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str, values_only
 
     Path(folder).mkdir(exist_ok=True)
 
-
-    info_text = Path(folder, f"info_text_{Path(path).stem}{format_with_(must_contain)}{format_with_(value_must_contain)}{format_with_("values_only" if values_only else "")}.json")
-
-    json.dump(groups_text_attribs, info_text.open("w", encoding="utf-8"), indent=4)
-
+    info_text_path = make_path(folder, path, must_contain, value_must_contain, values_only)
+    json.dump(groups_text_attribs, info_text_path.open("w", encoding="utf-8"), indent=4)
 
 if __name__ == "__main__":
     start_time = time.time()
