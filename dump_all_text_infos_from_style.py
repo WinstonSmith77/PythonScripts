@@ -27,7 +27,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Process a JSON style file.")
     parser.add_argument("path", type=str, help="Path to the JSON style file")
     parser.add_argument(
-        "--contains", type=str, default="text-", help='Filter keys that contain this string (default: "text-")'
+        "--contains", type=str, default="", help='Filter keys that contain this string (default: "text-")'
     )
     parser.add_argument(
         "--valuecontains", type=str, default="", help='Filter values that contain this string (default: "")'
@@ -45,13 +45,15 @@ def get_styles(path):
 
     return content[LAYERS]
 
+values_str_to_value : dict[str, Any] = {}
 
 def filter_texts_and_add_to(
-    items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any], must_contain: str, value_must_contain: str
+    items_of_interest: dict[str, Any], add_to: dict[str, Any], style: dict[str, Any], must_contain: str, value_must_contain: str, values_str_to_value : dict[str, Any]
 ):
     for key, value in items_of_interest.items():
         if key.startswith(must_contain):
             value_str = str(value)
+            values_str_to_value[value_str] = value
             if value_must_contain in value_str:
                 if key not in add_to:
                     add_to[key] = []
@@ -73,12 +75,15 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str, values_only
     groups_text_attribs: dict[str, Any] = {}
     groups_text_attribs["style"] = path
     groups = (LAYOUT, PAINT)
+
+    values_str_to_value : dict[str, Any] = {}
+
     for group in groups:
         groups_text_attribs[group] = {}
 
         for style in styles:
             if group in style:
-                filter_texts_and_add_to(style[group], groups_text_attribs[group], style, must_contain, value_must_contain)
+                filter_texts_and_add_to(style[group], groups_text_attribs[group], style, must_contain, value_must_contain, values_str_to_value)
 
     for group in groups:
         for key, value in groups_text_attribs[group].items():
@@ -88,6 +93,9 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str, values_only
             ]
 
             items = sorted(items, key=lambda x: len(x[1]), reverse=True)
+
+            
+            items = [(values_str_to_value[ item[0]], item[1]) for item in items]
 
             if values_only:
                 items = [item[0] for item in items]
