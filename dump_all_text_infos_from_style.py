@@ -117,7 +117,10 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str, values_only
     for group in groups:
         for key, value in groups_text_attribs[group].items():
             info_text_path = make_path(folder, path, must_contain, value_must_contain, values_only, key)
-            json.dump(value, info_text_path.open("w", encoding="utf-8"), indent=4)
+
+            to_write = [{'content' : item} for item in value ]    
+
+            json.dump(to_write, info_text_path.open("w", encoding="utf-8"), indent=4)
 
 if __name__ == "__main__":
     start_time = time.time()
