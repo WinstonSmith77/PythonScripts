@@ -118,7 +118,7 @@ def do_it(styles, path, must_contain: str,  value_must_contain: str, values_only
         for key, value in groups_text_attribs[group].items():
             info_text_path = make_path(folder, path, must_contain, value_must_contain, values_only, key)
 
-            to_write = [{'content' : item} for item in value ]    
+            to_write = [{'content' : item[0]} for item in value]    
 
             json.dump(to_write, info_text_path.open("w", encoding="utf-8"), indent=4)
 
