@@ -71,7 +71,7 @@ class Game:
 game = Game()
 
 while not game.get_state() == Game.FOUND:
-    number = enter_number(f'(try number {game.get_number_of_tries() + 1} {('hint ' + str(game.get_hint())) if use_hint else ''})')   
+    number = enter_number(f'(try {game.get_number_of_tries() + 1}{(' hint ' + str(game.get_hint())) if use_hint else ''})')   
     game.enter_try(number)
     if game.get_state() == Game.FOUND:
         found_solution = True
