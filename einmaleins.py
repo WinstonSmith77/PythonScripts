@@ -1,4 +1,8 @@
 import random
+import os
+
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
 
 faktor = range(10)
 lern_faktoren = [1, 3, 5, 10]
@@ -13,10 +17,11 @@ all_aufgaben = all_aufgaben[0:anzahl]
 for index, aufgabe in enumerate(all_aufgaben):        
     richtig = False
     while not richtig:
+        cls()
         print(f"{index + 1} von {anzahl}") 
-        print(f"{aufgabe[0]} * {aufgabe[1]} = ?")
         try:
-            ergebnis = int(input())
+            eingabe =   input(f"{aufgabe[0]} * {aufgabe[1]} = ?")
+            ergebnis = int(eingabe)
         except ValueError:
             print("Bitte eine gültige Zahl eingeben.")
             continue
