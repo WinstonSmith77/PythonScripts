@@ -21,19 +21,20 @@ def solve_bezier_for_x(P0, P1, P2, P3, x, epsilon=1e-6, max_iterations=100):
 
 # Define control points
 P0 = np.array([0, 0])
-P1 = np.array([1, -3])
-P2 = np.array([3, 13])
-P3 = np.array([4, 0])
+P1 = np.array([1, -.2])
+P2 = np.array([3, .3])
+P3 = np.array([4, 4])
 
 # Generate points on the curve
 t = np.linspace(0, 1, 100)
 curve = np.array([cubic_bezier(P0, P1, P2, P3, t_i) for t_i in t])
 
 
-x_target = 2.5
+x_target = 3
 t_target = solve_bezier_for_x(P0, P1, P2, P3, x_target)
 
 PX = cubic_bezier(P0, P1, P2, P3, t_target)
+print(PX)
 
 
 # Print results
@@ -42,7 +43,7 @@ PX = cubic_bezier(P0, P1, P2, P3, t_target)
 plt.figure(figsize=(10, 6))
 plt.plot(curve[:, 0], curve[:, 1], 'b-', label='Bézier Curve')
 plt.plot([P0[0], P1[0], P2[0], P3[0]], [P0[1], P1[1], P2[1], P3[1]], 'ro-', label='Control Points')
-plt.plot([PX[0]], [PX[1]], 'go-', label=f'Point on Curve with {x_target:.2f} x-coordinate')
+plt.plot([PX[0]], [PX[1]], 'go-', label=f'Point on Curve with {x_target} x-coordinate {PX[1]}')
 plt.legend()
 plt.title('Cubic Bézier Curve')
 plt.xlabel('x')
