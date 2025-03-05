@@ -13,7 +13,7 @@ zoo_animals = [
     "Spider", "Scorpion", "Centipede", "Millipede", "Bat", "Hedgehog", "Porcupine", "Skunk", "Raccoon", "Possum"
 ]
 
-q = 7
+
 class PointMod:
     def __init__(self, x, y, q):
         self.x = x
@@ -21,28 +21,40 @@ class PointMod:
         self.q = q
 
     def __add__(self, other):
-        return PointMod((self.x + other.x) % self.q, (self.y + other.y) % self.q)
+        if self.q != other.q:
+            raise ValueError("Modulus must be the same")
+        return PointMod((self.x + other.x) % self.q, (self.y + other.y) % self.q, self.q)
 
     def __mul__(self, other):
-        return PointMod((self.x * other) % self.q, (self.y * other)% self.q)
+        if self.q != other.q:
+            raise ValueError("Modulus must be the same")
+        return PointMod((self.x * other) % self.q, (self.y * other)% self.q, self.q)
 
     def __rmul__(self, other):
         return self.__mul__(other)
     
 
     def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
+        return self.x == other.x and self.y == other.y and self.q == other.q
 
     def __str__ (self):
-        return f"({self.x}, {self.y})"
+        return f"(x={self.x}, y={self.y}, q={self.q})"
+    
+    @staticmethod
+    def makePoint(q):
+        def makePoint(x, y):
+            return PointMod(x, y, q)
+        return makePoint
 
 def generate_dobble_deck(n):
     if n < 2:
         raise ValueError("Number of symbols per card must be at least 2")
     
-
-    a = PointMod(1,2)
-    b = PointMod(13,14)
+    makePoint = PointMod.makePoint(7)
+   
+    a = makePoint(1,2)
+    b = makePoint(13,14)
+   
 
     print(a + b)
     #print(a * 10)
