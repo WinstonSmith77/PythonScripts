@@ -211,8 +211,10 @@ def generate_dobble_deck(n):
 
 
 def print_deck(deck):
-    pprint(deck)
-    pprint(len(deck))
+    pprint(f'Cards {deck}')
+    pprint(f'Number of cards {len(deck)}')
+    number_of_symbols =  len(set([symbol for line in deck for symbol in line]))   
+    pprint(f'Number of symbols {number_of_symbols}')
 
 
 if __name__ == "__main__":
