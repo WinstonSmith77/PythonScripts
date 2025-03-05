@@ -169,7 +169,7 @@ def generate_dobble_deck(q):
     horizontal = [makePoint(0, i)  for i in range(q)]
     all = tuple(set(vertical + horizontal))
 
-    deck = []
+    deck = set()
 
     for start in all:
         for d in directions:
@@ -178,16 +178,17 @@ def generate_dobble_deck(q):
                 p = start + d * i
                 line.append(matrix[p])
             line.append(directions_to_symbols[d])    
-            line.sort()
-            deck.append(line)  
+            line = tuple(line)
+            deck.add(line)  
     
-    shuffle(deck)
+  
    
     return deck 
 
 
 def print_deck(deck):
     pprint(deck)
+    pprint(len(deck))
 
 
 if __name__ == "__main__":
