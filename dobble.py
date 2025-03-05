@@ -103,7 +103,7 @@ zoo_animals = [
     "Possum",
 ]
 
-zoo_animals = [i for i in range(len(zoo_animals))]
+#zoo_animals = [i for i in range(len(zoo_animals))]
 
 zoo_animals_reverse = zoo_animals[::-1]
 
