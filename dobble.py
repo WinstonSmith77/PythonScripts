@@ -13,27 +13,42 @@ zoo_animals = [
     "Spider", "Scorpion", "Centipede", "Millipede", "Bat", "Hedgehog", "Porcupine", "Skunk", "Raccoon", "Possum"
 ]
 
+q = 7
+class PointMod:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return PointMod((self.x + other.x) % q, (self.y + other.y) % q)
+
+    def __mul__(self, other):
+        return PointMod((self.x * other) % q, (self.y * other)% q)
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
+    
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __str__ (self):
+        return f"({self.x}, {self.y})"
+
 def generate_dobble_deck(n):
     if n < 2:
         raise ValueError("Number of symbols per card must be at least 2")
     
-    deck = []
-    symbols = list(range(n * (n - 1) + 1))
 
-    symbols = [zoo_animals[i] for i in symbols]
+    a = PointMod(1,2)
+    b = PointMod(13,14)
+
+    print(a + b)
+    #print(a * 10)
+    #print(10 * a)
     
-    for i in range(n):
-        card = [symbols[i * (n - 1) + j] for j in range(n - 1)]
-        card.append(symbols[-1])
-        deck.append(card)
     
-    for i in range(n - 1):
-        for j in range(n - 1):
-            card = [symbols[i * (n - 1) + k] for k in range(n - 1)]
-            card.append(symbols[j])
-            deck.append(card)
-    
-    random.shuffle(deck)
+    deck = []
     return deck
 
 def print_deck(deck):
