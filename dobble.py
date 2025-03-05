@@ -1,4 +1,4 @@
-from  pprint import pprint
+from pprint import pprint
 
 zoo_animals = [
     "Lion",
@@ -103,6 +103,8 @@ zoo_animals = [
     "Possum",
 ]
 
+zoo_animals = [i for i in range(len(zoo_animals))]
+
 zoo_animals_reverse = zoo_animals[::-1]
 
 
@@ -126,16 +128,16 @@ class PointMod:
         return self.__mul__(other)
 
     def __hash__(self):
-        return self.x * self.q + self.y
+        return self.y * self.q + self.x
 
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y and self.q == other.q
 
     def __str__(self):
         return f"(x={self.x}, y={self.y})"
-    
+
     def __repr__(self):
-       return self.__str__()
+        return self.__str__()
 
     @staticmethod
     def makePoint(q):
@@ -159,32 +161,56 @@ def generate_dobble_deck(n):
             p = makePoint(x, y)
             matrix[p] = zoo_animals[hash(p) % len(zoo_animals)]
 
-    #print(matrix)        
-   
-    directions = {makePoint(0, 1), makePoint(-1, 2), makePoint(-1, -2), 
-                  makePoint(1,0), makePoint(2, 1), makePoint(1, 2)}      
+    # print(matrix)
 
-    directions_to_symbols = { d : zoo_animals_reverse[hash(d)  % len(zoo_animals)] for d in directions}
+    directions = {
+        makePoint(0, 1),
+        makePoint(1, 0),
+        
+        makePoint(1, 1),
+        makePoint(1, -1),
+        
+        makePoint(2, 1),
+        makePoint(2, -1),
+
+        makePoint(1, 2),
+        makePoint(1, -2),
+    }
+
+    directions_to_symbols = {
+        d: zoo_animals_reverse[hash(d) % len(zoo_animals)] for d in directions
+    }
     #pprint(directions_to_symbols)
 
-    vertical = [makePoint(i, 0)  for i in range(q)]
-    horizontal = [makePoint(0, i)  for i in range(q)]
-    all = tuple(set(vertical + horizontal))
-    #pprint(all)
+    vertical = [makePoint(i, 0) for i in range(q)]
+    horizontal = [makePoint(0, i) for i in range(q)]
+    all = tuple(
+        set(
+            vertical
+             + horizontal
+        )
+    )
+    # pprint(all)
 
-    deck = set()
+    deck = []
 
     for start in all:
         for d in directions:
-            line = set()
+            line = []
+            pprint("newLine")
             for i in qrange:
                 p = start + d * i
-                line.add(matrix[p])
-            line.add(directions_to_symbols[d])    
+                print(p, matrix[p])
+                line.append(matrix[p])
+            line.append(directions_to_symbols[d])
             line = tuple(line)
-            deck.add(line)  
-   
-    return deck 
+            deck.append(line)
+
+    deck.append(tuple(directions_to_symbols.values()))
+
+    deck = sorted(set(sorted([tuple(sorted(line)) for line in deck])))
+
+    return deck
 
 
 def print_deck(deck):
@@ -193,6 +219,6 @@ def print_deck(deck):
 
 
 if __name__ == "__main__":
-    n = 8 # Number of symbols per card
+    n = 8  # Number of symbols per card
     deck = generate_dobble_deck(n)
     print_deck(deck)
