@@ -107,7 +107,6 @@ zoo_animals = [i for i in range(len(zoo_animals))]
 
 zoo_animals_reverse = zoo_animals[::-1]
 
-
 class PointMod:
     def __init__(self, x, y, q):
         self.x = x % q
@@ -197,10 +196,8 @@ def generate_dobble_deck(n):
     for start in all:
         for d in directions:
             line = []
-            pprint("newLine")
             for i in qrange:
                 p = start + d * i
-                print(p, matrix[p])
                 line.append(matrix[p])
             line.append(directions_to_symbols[d])
             line = tuple(line)
