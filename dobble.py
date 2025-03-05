@@ -50,10 +50,15 @@ def generate_dobble_deck(n):
     if n < 2:
         raise ValueError("Number of symbols per card must be at least 2")
     
-    makePoint = PointMod.makePoint(7)
+    q = 7
+    makePoint = PointMod.makePoint(q)
+
+    for x in range(0, q):
+        for y in range(0, q):
+            print(makePoint(x, y))
    
-    a = makePoint(1,2)
-    b = makePoint(13,14)
+    #a = makePoint(1,2)
+    #b = makePoint(13,14)
    
 
     print(a + b)
