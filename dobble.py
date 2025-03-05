@@ -15,15 +15,16 @@ zoo_animals = [
 
 q = 7
 class PointMod:
-    def __init__(self, x, y):
+    def __init__(self, x, y, q):
         self.x = x
         self.y = y
+        self.q = q
 
     def __add__(self, other):
-        return PointMod((self.x + other.x) % q, (self.y + other.y) % q)
+        return PointMod((self.x + other.x) % self.q, (self.y + other.y) % self.q)
 
     def __mul__(self, other):
-        return PointMod((self.x * other) % q, (self.y * other)% q)
+        return PointMod((self.x * other) % self.q, (self.y * other)% self.q)
 
     def __rmul__(self, other):
         return self.__mul__(other)
