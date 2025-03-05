@@ -154,16 +154,16 @@ def generate_dobble_deck(q):
     makePoint = PointMod.makePoint(q)
 
     matrix = {}
-    irange = tuple(range(q))
-    for x in irange:
-        for y in irange:
+    qrange = tuple(range(q))
+    for x in qrange:
+        for y in qrange:
             p = makePoint(x, y)
             matrix[p] = zoo_animals[hash(p) % len(zoo_animals)]
    
     directions = {makePoint(0, 1), makePoint(-1, 2), makePoint(-1, -2), 
                   makePoint(1,0), makePoint(2, 1), makePoint(1, 2)}      
 
-    directions_to_symbols = { d : zoo_animals_reverse[hash(d)] for d in directions}
+    directions_to_symbols = { d : zoo_animals_reverse[hash(d)  % len(zoo_animals)] for d in directions}
 
     vertical = [makePoint(i, 0)  for i in range(q)]
     horizontal = [makePoint(0, i)  for i in range(q)]
@@ -174,7 +174,7 @@ def generate_dobble_deck(q):
     for start in all:
         for d in directions:
             line = []
-            for i in irange:
+            for i in qrange:
                 p = start + d * i
                 line.append(matrix[p])
             line.append(directions_to_symbols[d])    
