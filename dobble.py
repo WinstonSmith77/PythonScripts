@@ -1,5 +1,4 @@
 from  pprint import pprint
-from random import shuffle
 
 zoo_animals = [
     "Lion",
@@ -121,7 +120,6 @@ class PointMod:
         )
 
     def __mul__(self, other):
-       
         return PointMod((self.x * other) % self.q, (self.y * other) % self.q, self.q)
 
     def __rmul__(self, other):
@@ -147,10 +145,11 @@ class PointMod:
         return makePoint
 
 
-def generate_dobble_deck(q):
-    if q < 2:
+def generate_dobble_deck(n):
+    if n < 2:
         raise ValueError("Number of symbols per card must be at least 2")
 
+    q = n - 1
     makePoint = PointMod.makePoint(q)
 
     matrix = {}
@@ -159,29 +158,31 @@ def generate_dobble_deck(q):
         for y in qrange:
             p = makePoint(x, y)
             matrix[p] = zoo_animals[hash(p) % len(zoo_animals)]
+
+    #print(matrix)        
    
     directions = {makePoint(0, 1), makePoint(-1, 2), makePoint(-1, -2), 
                   makePoint(1,0), makePoint(2, 1), makePoint(1, 2)}      
 
     directions_to_symbols = { d : zoo_animals_reverse[hash(d)  % len(zoo_animals)] for d in directions}
+    #pprint(directions_to_symbols)
 
     vertical = [makePoint(i, 0)  for i in range(q)]
     horizontal = [makePoint(0, i)  for i in range(q)]
     all = tuple(set(vertical + horizontal))
+    #pprint(all)
 
     deck = set()
 
     for start in all:
         for d in directions:
-            line = []
+            line = set()
             for i in qrange:
                 p = start + d * i
-                line.append(matrix[p])
-            line.append(directions_to_symbols[d])    
+                line.add(matrix[p])
+            line.add(directions_to_symbols[d])    
             line = tuple(line)
             deck.add(line)  
-    
-  
    
     return deck 
 
@@ -192,6 +193,6 @@ def print_deck(deck):
 
 
 if __name__ == "__main__":
-    n = 7 # Number of symbols per card
+    n = 8 # Number of symbols per card
     deck = generate_dobble_deck(n)
     print_deck(deck)
