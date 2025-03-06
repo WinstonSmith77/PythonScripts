@@ -6,16 +6,16 @@ def find_files_in_date_range(folder_path, start_date, end_date, contains=None):
     start_datetime = datetime.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
     end_datetime = datetime.datetime.strptime(end_date, '%Y-%m-%d %H:%M')
 
-    def recursive_search(current_path):
-        for path in current_path.rglob('*'):
-            if path.is_file():
-                if contains is not None and contains in str(path):
-                    file_modification_time = datetime.datetime.fromtimestamp(path.stat().st_mtime)
-                    if start_datetime <= file_modification_time <= end_datetime:
-                        files_in_range.append((str(path), str(file_modification_time)))
-                   
+   
+    for path in Path(folder_path).rglob('*'):
+        if path.is_file():
+            if contains is not None and contains in str(path):
+                file_modification_time = datetime.datetime.fromtimestamp(path.stat().st_mtime)
+                if start_datetime <= file_modification_time <= end_datetime:
+                    files_in_range.append((str(path), str(file_modification_time)))
+                
 
-    recursive_search(Path(folder_path))
+ 
     return files_in_range
 
 # Example usage
