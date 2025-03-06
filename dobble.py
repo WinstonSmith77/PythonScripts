@@ -200,12 +200,12 @@ def generate_dobble_deck(n):
                 p = start + d * i
                 line.append(matrix[p])
             line.append(directions_to_symbols[d])
-            line = tuple(line)
+            line = tuple(sorted(line))
             deck.append(line)
 
     deck.append(tuple(directions_to_symbols.values()))
 
-    deck = sorted(set(sorted([tuple(sorted(line)) for line in deck])))
+    deck = sorted(set(deck))
 
     return deck
 
