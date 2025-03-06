@@ -1,5 +1,6 @@
 from pathlib import Path
 from datetime import datetime, timedelta
+from shutil import copyfile
 
 def find_files_in_date_range(folder_path, time_spans, contains=None):
     files_in_range = []
@@ -22,6 +23,11 @@ def find_files_in_date_range(folder_path, time_spans, contains=None):
 
 # Example usage
 folder_path = r'C:/Users/henning/OneDrive/bilder/_lightroom/2025'
+
+dest_folder = Path('C:/Users/henning/Desktop/#bilder#')
+
+dest_folder.mkdir(exist_ok=True)
+
 start_date = datetime(2025,2,27, 15)
 end_date = datetime(2025,2,27, 20)
 
@@ -31,3 +37,6 @@ timespans = [(start_date + timedelta(days=i), end_date + timedelta(days=i)) for 
 files = find_files_in_date_range(folder_path, timespans, "RW2")
 for file in files:
     print(file)
+    file_path = file[0]
+    
+    copyfile(file_path, Path(r"C:/Users/henning/Desktop/#bilder#", file_path.name))
