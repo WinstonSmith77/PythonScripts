@@ -24,7 +24,7 @@ all_aufgaben = all_aufgaben[0:anzahl]
 for index, aufgabe in enumerate(all_aufgaben):        
     richtig = False
     while not richtig:
-        //cls()
+        #cls()
         print(f"{index + 1} von {anzahl}") 
         try:
             eingabe =   input(f"{aufgabe[0]} * {aufgabe[1]} = ")
