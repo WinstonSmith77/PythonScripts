@@ -1,27 +1,57 @@
-from pathlib import Path
-import datetime
+def hsl_to_rgb(h, s, l):
+    c = (1 - abs(2 * l - 1)) * s
+    x = c * (1 - abs((h / 60) % 2 - 1))
+    m = l - c / 2
 
-def find_files_in_date_range(folder_path, start_date, end_date, contains=None):
-    files_in_range = []
-    start_datetime = datetime.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
-    end_datetime = datetime.datetime.strptime(end_date, '%Y-%m-%d %H:%M')
+    if 0 <= h < 60:
+        r, g, b = c, x, 0
+    elif 60 <= h < 120:
+        r, g, b = x, c, 0
+    elif 120 <= h < 180:
+        r, g, b = 0, c, x
+    elif 180 <= h < 240:
+        r, g, b = 0, x, c
+    elif 240 <= h < 300:
+        r, g, b = x, 0, c
+    elif 300 <= h < 360:
+        r, g, b = c, 0, x
+    else:
+        r, g, b = 0, 0, 0
 
-    def recursive_search(current_path):
-        for path in current_path.rglob('*'):
-            if path.is_file():
-                if contains is not None and contains in str(path):
-                    file_modification_time = datetime.datetime.fromtimestamp(path.stat().st_mtime)
-                    if start_datetime <= file_modification_time <= end_datetime:
-                        files_in_range.append((str(path), str(file_modification_time)))
-                   
+    r = (r + m) * 255
+    g = (g + m) * 255
+    b = (b + m) * 255
 
-    recursive_search(Path(folder_path))
-    return files_in_range
+    return int(r), int(g), int(b)
 
-# Example usage
-folder_path = r'C:/Users/henning/OneDrive/bilder/_lightroom/2025/2025-03-02'
-start_date = '2025-03-02 15:00'
-end_date = '2025-03-02 22:59'
-files = find_files_in_date_range(folder_path, start_date, end_date, "RW2")
-for file in files:
-    print(file)
+
+def rgb_to_hsl(r, g, b):
+    r /= 255
+    g /= 255
+    b /= 255
+
+    max_color = max(r, g, b)
+    min_color = min(r, g, b)
+    l = (max_color + min_color) / 2
+
+    if max_color == min_color:
+        h = s = 0
+    else:
+        d = max_color - min_color
+        s = d / (2 - max_color - min_color) if l > 0.5 else d / (max_color + min_color)
+        if max_color == r:
+            h = (g - b) / d + (6 if g < b else 0)
+        elif max_color == g:
+            h = (b - r) / d + 2
+        elif max_color == b:
+            h = (r - g) / d + 4
+        h /= 6
+
+    return int(h * 360), s, l
+
+# Example usage:
+h, s, l = 315, .4, 0.85
+rgb = hsl_to_rgb(h, s, l)
+hsl = rgb_to_hsl(*rgb)
+print(f"RGB: {rgb}")
+print(f"HSL: {hsl}")
