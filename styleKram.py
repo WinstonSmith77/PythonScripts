@@ -26,8 +26,11 @@ styles = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))[LAYERS]
 styles = [(style[ID], style[SOURCE_LAYER], style[TYPE]) for style in styles if SOURCE_LAYER  in style ]
 
 styles_to_type = [item for item in sorted(styles, key=lambda x: x[2])]
-
 styles_to_type = [(key, len(list(group))) for key, group in groupby(styles_to_type, key=lambda x: x[2])]
 
+styles_to_layer= [item for item in sorted(styles, key=lambda x: x[1])]
+styles_to_layer = [(key, len(list(group))) for key, group in groupby(styles_to_layer, key=lambda x: x[1])]
+
 pprint(styles_to_type)
+pprint(styles_to_layer)
 
