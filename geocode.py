@@ -34,9 +34,10 @@ for address in split_lines:
         if location:
             pprint(location)
             found.append((address, location.raw))
+            pprint(found)
     except Exception as e:
-        found.append((address, e))
-pprint(found)
+       pprint(f"Error geocoding {address}: {e}")
+
 
 with open("geocoded_results.json", "w", encoding="utf-8") as json_file:
     json.dump(found, json_file, ensure_ascii=False, indent=4)
