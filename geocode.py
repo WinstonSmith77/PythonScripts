@@ -53,7 +53,8 @@ pprint(found)
 
 def get_line_for_test(location):   
     ort = location["display_name"].split(",")
-    return f"{ort[2]},{ort[-2]}, {location["lat"]},{location["lon"]}, True"
+    has_plz = ort[1].strip().isnumeric()
+    return f" {ort[-5]},{ort[-2]}, {location["lat"]},{location["lon"]}, True"
 
 
 test_lines = [get_line_for_test(i[1]) for i in found]
