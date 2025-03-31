@@ -2,6 +2,7 @@
 from pprint import pprint
 from time import sleep
 from geopy.geocoders import Nominatim
+import json
 
 text = """Auf dem Hügel, 53121 Bonn
 Endenicher Allee, 53115 Bonn
@@ -31,9 +32,11 @@ for address in split_lines:
     try:
         location = geolocator.geocode(address)
         if location:
-            found.append((address,(location.latitude, location.longitude)))
-        
-      
+            pprint(location)
+            found.append((address, location.raw))
     except Exception as e:
-       pprint(e)
+        found.append((address, e))
 pprint(found)
+
+with open("geocoded_results.json", "w", encoding="utf-8") as json_file:
+    json.dump(found, json_file, ensure_ascii=False, indent=4)
