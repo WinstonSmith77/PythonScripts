@@ -1,5 +1,7 @@
 
 from pprint import pprint
+from time import sleep
+from geopy.geocoders import Nominatim
 
 text = """Auf dem Hügel, 53121 Bonn
 Endenicher Allee, 53115 Bonn
@@ -18,6 +20,20 @@ Karl-Lade-Staße 41, 10369 Berlin
 """
 
 split_lines = text.splitlines()
-split_text = [line.split(',') for line in split_lines]
+#split_text = [line.split(',') for line in split_lines]
 
-pprint(split_text)
+
+geolocator = Nominatim(user_agent="TestGeocoder")
+
+found = []
+for address in split_lines:
+    sleep(5)   
+    try:
+        location = geolocator.geocode(address)
+        if location:
+            found.append((address,(location.latitude, location.longitude)))
+        
+      
+    except Exception as e:
+       pprint(e)
+pprint(found)

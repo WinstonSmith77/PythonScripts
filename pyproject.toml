@@ -11,6 +11,7 @@ ruff = "^0.3.4"
 mapbox-vector-tile = "^2.1.0"
 pyfiglet = "^1.0.2"
 inflect = "^7.5.0"
+geopy = "^2.4.1"
 
 
 [build-system]
