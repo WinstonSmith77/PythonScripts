@@ -11,7 +11,7 @@ if not path.exists():
     text = """Auf dem Hügel, 53121 Bonn
     Endenicher Allee, 53115 Bonn
     Im Blumengarten, 53127 Bonn
-    48268 Greven, Am Überesch
+    Am Überesch, 48268 Greven
     Hinter der Ley, 57258 Freudenberg 
     Im Mettelsiefen, 53639 Königswinter
     Max Plank Straße 53, 33659 Bielefeld
@@ -24,7 +24,7 @@ if not path.exists():
     Karl-Lade-Staße 41, 10369 Berlin
     """
 
-    split_lines = text.splitlines()
+    split_lines = [line.strip() for line in text.splitlines()]
     #split_text = [line.split(',') for line in split_lines]
 
 
@@ -41,6 +41,7 @@ if not path.exists():
                 pprint(found)
         except Exception as e:
             pprint(f"Error geocoding {address}: {e}")
+            found.append((address, None))
 
 
     with open(path, "w", encoding="utf-8") as json_file:
@@ -51,15 +52,6 @@ else:
 
 pprint(found)       
 
-def get_line_for_test(location):   
-    ort = location["display_name"].split(",")
-    has_plz = ort[1].strip().isnumeric()
-    return f" {ort[-5]},{ort[-2]}, {location["lat"]},{location["lon"]}, True"
-
-
-test_lines = [get_line_for_test(i[1]) for i in found]
-
-pprint(test_lines) 
 
 
    
