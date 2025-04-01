@@ -52,7 +52,11 @@ else:
 
 #pprint(found)       
 
-display = [(i[0], (i[1]["lat"], i[1]["lon"])) for i in found]
+def to_german_number(number):
+    """Convert a number to a German number format."""
+    return str(number).replace(".", ",")
+
+display = [f"{i[0]};  {to_german_number(i[1]["lat"])}; {to_german_number(i[1]["lon"])}" for i in found]
 
 pprint(display)
 
