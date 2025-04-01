@@ -50,7 +50,11 @@ else:
     with open(path, "r", encoding="utf-8") as json_file:   
         found = json.load(json_file)  
 
-pprint(found)       
+#pprint(found)       
+
+display = [(i[0], (i[1]["lat"], i[1]["lon"])) for i in found]
+
+pprint(display)
 
 
 
