@@ -12,6 +12,7 @@ if not path.exists():
     Endenicher Allee, 53115 Bonn
     Im Blumengarten, 53127 Bonn
     Am Überesch, 48268 Greven
+    Am Überesch, 48268 
     Hinter der Ley, 57258 Freudenberg 
     Im Mettelsiefen, 53639 Königswinter
     Max Plank Straße 53, 33659 Bielefeld
@@ -41,7 +42,7 @@ if not path.exists():
                 pprint(found)
         except Exception as e:
             pprint(f"Error geocoding {address}: {e}")
-            found.append((address, None))
+            found.append((address, str(e)))
 
 
     with open(path, "w", encoding="utf-8") as json_file:

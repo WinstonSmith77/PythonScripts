@@ -12,6 +12,8 @@ mapbox-vector-tile = "^2.1.0"
 pyfiglet = "^1.0.2"
 inflect = "^7.5.0"
 geopy = "^2.4.1"
+sympy = "^1.13.3"
+pygame = "^2.6.1"
 
 
 [build-system]
