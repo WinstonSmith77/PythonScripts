@@ -10,6 +10,7 @@ sound = pygame.mixer.Sound("090285_metal-ping-1wav-86972.mp3")  # Replace with y
 WIDTH = 1200
 HEIGHT = 800
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 
 # Create the window
@@ -27,9 +28,14 @@ shot_size = 5
 # Clock to control frame rate
 clock = pygame.time.Clock()
 
-
+#shots
 shots = []
 shot_speed = 10
+
+# Font setup
+font = pygame.font.Font(None, 74)  # Default font, size 74
+
+
 
 # Main game loop
 running = True
@@ -69,6 +75,8 @@ while running:
 
     # Draw the player
     pygame.draw.rect(screen, RED, (player_x, player_y, player_size, player_size))
+    text = font.render(f"Shots live = {len(shots)}", True, BLACK, None)  # Text, anti-aliased, 
+    screen.blit(text, (WIDTH - text.get_width() , 0))
 
     shots = [(shot[0], shot[1] - shot_speed) for shot in shots if shot[1] > shot_speed]
    
