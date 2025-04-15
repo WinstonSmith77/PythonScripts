@@ -20,11 +20,13 @@ player_x = WIDTH // 2 - player_size // 2
 player_y = HEIGHT // 2 - player_size // 2
 player_speed = 5
 
+shot_size = 5
+
 # Clock to control frame rate
 clock = pygame.time.Clock()
 
 
-shots : list[(int, int)] = []
+shots = []
 shot_speed = 10
 
 # Main game loop
@@ -65,11 +67,11 @@ while running:
     # Draw the player
     pygame.draw.rect(screen, RED, (player_x, player_y, player_size, player_size))
 
-    for i, _ in enumerate(shots):
-          shot = shots[i]
-          shots[i] = (shot[0], shot[1] - shot_speed)
-         
-          pygame.draw.rect(screen, (0, 0, 255), (shot[0] - 5, shot[1] -5 , 5, 5))
+    shots = [(shot[0], shot[1] - shot_speed) for shot in shots if shot[1] > shot_speed]
+   
+
+    for shot in shots:
+        pygame.draw.rect(screen, (0, 0, 255), (shot[0] - 5, shot[1] -5 , 5, 5))
 
     # Update the display
     pygame.display.flip()
