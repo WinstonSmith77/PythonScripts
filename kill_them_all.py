@@ -42,13 +42,13 @@ while running:
     keys = pygame.key.get_pressed()
     
     # WASD movement logic
-    if keys[pygame.K_w]:  # Move up
+    if keys[pygame.K_w] or keys[pygame.K_UP]:  # Move up
         player_y -= player_speed
-    if keys[pygame.K_s]:  # Move down
+    if keys[pygame.K_s] or keys[pygame.K_DOWN]:  # Move down
         player_y += player_speed
-    if keys[pygame.K_a]:  # Move left
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:  # Move left
         player_x -= player_speed
-    if keys[pygame.K_d]:  # Move right
+    if keys[pygame.K_d]  or keys[pygame.K_RIGHT]:  # Move right
         player_x += player_speed
 
     if keys[pygame.K_SPACE]:  # Move right
