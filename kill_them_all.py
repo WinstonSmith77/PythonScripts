@@ -3,6 +3,8 @@ import sys
 
 # Initialize Pygame
 pygame.init()
+pygame.mixer.init()
+sound = pygame.mixer.Sound("090285_metal-ping-1wav-86972.mp3")  # Replace with your file path
 
 # Screen size and colors
 WIDTH = 1200
@@ -60,6 +62,7 @@ while running:
 
     if fireShot:
         shots.append((player_x + player_size // 2, player_y + player_size // 2))
+        sound.play()
 
     # Clear the screen
     screen.fill(WHITE)
