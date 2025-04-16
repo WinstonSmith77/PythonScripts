@@ -1,7 +1,6 @@
 import pygame
 import sys
 from random import random
-from collections import namedtuple
 
 # Initialisierung
 pygame.init()
