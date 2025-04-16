@@ -38,8 +38,8 @@ clock = pygame.time.Clock()
 
 # Spiel-Loop
 running = True
+space_was_pressed = False
 while running:
-    space_was_pressed = False
     dt = clock.tick(60)
     win.fill(WHITE)
 
