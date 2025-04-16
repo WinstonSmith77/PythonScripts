@@ -41,7 +41,7 @@ running = True
 space_was_pressed = False
 consecutive_hits = 0
 while running:
-    dt = clock.tick(60)
+    dt = clock.tick(30)
     win.fill(WHITE)
 
     keys = pygame.key.get_pressed()
@@ -61,7 +61,7 @@ while running:
     else:
         space_was_pressed = False
 
-    def check_ball_collision(ball : Ball, player) -> (bool, int): 
+    def check_ball_collision(ball : Ball, player) -> tuple[bool, int]: 
         consecutive_hits = 0
         ball.position[0] += ball.speed[0]
         ball.position[1] += ball.speed[1]
@@ -117,9 +117,8 @@ while running:
 
     render_rect(player, WIDTH_RACKET, HEIGHT_RACKET, RED)
 
-    if balls:
-        for ball in balls:
-            render_rect(ball.position, HEIGHT_BALL, HEIGHT_BALL, BLUE)
+    for ball in balls:
+        render_rect(ball.position, HEIGHT_BALL, HEIGHT_BALL, BLUE)
 
     # font = pygame.font.SysFont('Comic Sans MS', 30)
     # text_surface = font.render(
