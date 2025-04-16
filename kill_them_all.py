@@ -75,7 +75,7 @@ while running:
 
     # Draw the player
     pygame.draw.rect(screen, RED, (player_x, player_y, player_size, player_size))
-    text = font.render(f"Shots live = {len(shots)}", True, BLACK, None)  # Text, anti-aliased, 
+    text = font.render(f"Bullets alive {len(shots)}", True, BLACK, None)  # Text, anti-aliased, 
     screen.blit(text, (WIDTH - text.get_width() , 0))
 
     shots = [(shot[0], shot[1] - shot_speed) for shot in shots if shot[1] > shot_speed]
