@@ -32,13 +32,14 @@ class Ball:
 
 balls = []
 
-consecutive_hits = 0
+
 
 clock = pygame.time.Clock()
 
 # Spiel-Loop
 running = True
 space_was_pressed = False
+consecutive_hits = 0
 while running:
     dt = clock.tick(60)
     win.fill(WHITE)
@@ -60,8 +61,8 @@ while running:
     else:
         space_was_pressed = False
 
-    def check_ball_collision(ball : Ball, player) -> bool: 
-    
+    def check_ball_collision(ball : Ball, player) -> (bool, int): 
+        consecutive_hits = 0
         ball.position[0] += ball.speed[0]
         ball.position[1] += ball.speed[1]
 
@@ -86,17 +87,22 @@ while running:
                 ball.position[1] = player[1] - HEIGHT_RACKET // 2
                 ball.position[1] = -ball.position[1]
                 ball.speed = [ball.speed[0] * 1.0, ball.speed[1] * 1.0]
-            else:
-             return True
+                consecutive_hits += 1
+        
+        #bottom
+        if ball.position[1] > HEIGHT:
+            return (True, consecutive_hits)    
 
-        return False    
+        return (False, consecutive_hits)    
 
       
     # movement ball
     if balls:
         for ball in balls:
-           if check_ball_collision(ball, player):
-               balls.remove(ball)
+           result = check_ball_collision(ball, player)
+           if result[0]:
+                balls.remove(ball)
+           consecutive_hits += result[1]   
 
     def render_rect(pos_center, width: int, height: int, color):
         rect = (pos_center[0] - width // 2, pos_center[1] - height //
@@ -122,7 +128,7 @@ while running:
 
     font = pygame.font.SysFont('Comic Sans MS', 30)
     text_surface = font.render(
-        str(space_was_pressed), False, (0, 0, 0))
+        str(consecutive_hits), False, (0, 0, 0))
     win.blit(text_surface, (0, 0))
 
     for event in pygame.event.get():
