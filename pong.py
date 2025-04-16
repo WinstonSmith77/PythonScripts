@@ -12,6 +12,8 @@ pygame.display.set_caption("Pong")
 WIDTH_RACKET = 70
 HEIGHT_RACKET = 10
 HEIGHT_BALL = 10
+PLAYER_SPEED = 4
+OFFSET_Y_IN_RACKET_HEIGHT = 3
 
 
 # Farben
@@ -21,7 +23,7 @@ BLUE = (150, 77, 80)
 GREEN = (60, 200, 199)
 # Spielfigur
 
-OFFSET_Y_IN_RACKET_HEIGHT = 3
+
 
 player = [WIDTH // 2, HEIGHT - OFFSET_Y_IN_RACKET_HEIGHT * HEIGHT_RACKET]
 
@@ -29,7 +31,7 @@ ball = None
 ball_speed = None
 consecutive_hits = 0
 
-PLAYER_SPEED = 4
+
 
 clock = pygame.time.Clock()
 
@@ -98,7 +100,8 @@ while running:
 
     if ball:
         render_rect(ball, HEIGHT_BALL, HEIGHT_BALL, BLUE)
-
+bsNone
+b_
     # font = pygame.font.SysFont('Comic Sans MS', 30)
     # text_surface = font.render(
     #     str(player[0]) + " " + str(ball) + " " + str(ball_speed), False, (0, 0, 0))
