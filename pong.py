@@ -1,6 +1,7 @@
 import pygame
 import sys
 from random import random
+from math import sin, cos
 
 # Initialisierung
 pygame.init()
@@ -32,7 +33,8 @@ class Ball:
 
 balls = []
 
-
+def random_float(start, end):
+    return start + random() * (end - start)
 
 clock = pygame.time.Clock()
 
@@ -54,9 +56,11 @@ while running:
 
     if keys[pygame.K_SPACE]:
         if not space_was_pressed:
-            random_x = (random() * 6) - 3
+            speed = random_float(5, 15)
+            angle = random_float(-30, 30) / 180 * 3.14 
+            direction =[sin(angle) * speed, cos(angle) * speed]
             #balls.clear()
-            balls.append(Ball([float(player[0]), float(player[1])],  [float(random_x), float(-8)]))
+            balls.append(Ball([float(player[0]), float(player[1])], direction))
             space_was_pressed = True
     else:
         space_was_pressed = False
