@@ -14,7 +14,9 @@ from double_finder.find_double_files import get_all_files, dump_it
 
 root = Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal')
 
-working_dirs = (Path(root, "bilder", "_lightroom"), Path(root, "#emmaTaufe"))
+working_dirs = (Path(root, "bilder", "_lightroom")
+                #, Path(root, "#emmaTaufe")
+                )
 minLength = 1
 XMP = ".xmp"
 JPG = ".jpg"
