@@ -33,5 +33,9 @@ trashes_path = stick / ".trashes"
 pathlib.Path(trashes_path).touch()
 
 copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Arthur Conan Doyle', stick / 'Krimis')
+copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/neue musik/In Vino Veritas', stick / 'Krimis' / 'In Vino Veritas')
+
 copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Dirk Bach', stick / 'Dirk Bach')
+copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/neue musik/Horst Evers', stick / 'Horst Evers')
+copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Die Drei ___', stick / 'Die Drei Fragezeichen')
 
