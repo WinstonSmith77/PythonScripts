@@ -1,17 +1,6 @@
-from sympy import symbols, Eq, solve, expand, factor, collect, simplify
+def get_text(a : int, b : int) -> str:
+    result : str = str(a + b)
 
-# Define the variable
-x = symbols('x')
+    return  result
 
-# Define the coefficients
-
-b = symbols('b')
-c = symbols('c')
-
-
-# Define the equation
-equation = Eq(x**5 + b * x + c, 0)
-
-# Solve the equation
-roots = solve(equation, x)
-print("The roots are:", roots)
+print(get_text(1, 2))

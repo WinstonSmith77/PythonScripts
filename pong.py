@@ -127,8 +127,7 @@ while running:
     # font = pygame.font.SysFont('Comic Sans MS', 30)
     # text_surface = font.render(
     #     str(player[0]) + " " + str(ball) + " " + str(ball_speed), False, (0, 0, 0))
-    # win.blit(text_surface, (0, 0))
-
+    # win.blit(text_
     font = pygame.font.SysFont('Comic Sans MS', 30)
     text_surface = font.render(
         str(consecutive_hits), False, (0, 0, 0))
