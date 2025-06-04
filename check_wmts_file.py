@@ -8,6 +8,12 @@ url_hint = 'usage_hint_url'
 all_urls : list[str] = []
 all_hint_providers : list[str] = []
 
+
+def add_to_list(entry,  urls: list[str], url: str):
+    provider_url = entry.attrib.get(url)
+    if provider_url:
+        urls.append(provider_url)
+
 try:
     tree = ET.parse(xml_file)
     root = tree.getroot()
@@ -16,13 +22,8 @@ try:
     wmts_providers = root.find(providers)
     if wmts_providers is not None:
         for entry in wmts_providers:
-            provider_url = entry.attrib.get(url)
-            if provider_url:
-                all_urls.append(provider_url)
-            provider_url_hint = entry.attrib.get(url_hint)
-            if provider_url_hint:
-                all_hint_providers.append(provider_url_hint)    
-               
+           add_to_list(entry, all_urls, url)
+           add_to_list(entry, all_hint_providers, url_hint)
     else:
         print("'wmts_providers' not found in the XML.")
 except Exception as e:
