@@ -17,10 +17,10 @@
   </tile_systems>
 
   <wmts_providers>
-    <wmts_provider id="MapsForFree" usage_hint_url="http:=//www.maps-for-free.com/" provider_url="http:=//www.maps-for-free.com/">
+    <wmts_provider id="MapsForFree" usage_hint_url="http://www.maps-for-free.com/" provider_url="http://www.maps-for-free.com/">
     </wmts_provider>
-    <wmts_provider id="CloudMade" copyright_text="Powered by CloudMade" usage_hint_url="http://cloudmade.com/api-terms-of-service" provider_url="http://cloudmade.com" common_access_key="true">
-    </wmts_provider>
+    <!-- <wmts_provider id="CloudMade" copyright_text="Powered by CloudMade" usage_hint_url="http://cloudmade.com/api-terms-of-service" provider_url="http://cloudmade.com" common_access_key="true">
+    </wmts_provider> -->
     <wmts_provider id="OSM" copyright_text="© OpenStreetMap contributors" usage_hint_url="http://wiki.openstreetmap.org/wiki/Tile_usage_policy" usage_hint_url_de="http://wiki.openstreetmap.org/wiki/DE:Tile_usage_policy" provider_url="http://www.openstreetmap.org/">
     </wmts_provider>
     <wmts_provider id="Microsoft" usage_hint_url="https://www.microsoft.com/maps/product/terms.html" provider_url="https://www.microsoft.com/maps/" provider_key="BingMaps">
@@ -29,7 +29,7 @@
     </wmts_provider>
     <!--<wmts_provider id="BKG_Basemap_EPSG_25832" tile_system="BKG_Webatlas" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu/basemapde_web_dienste_lizenz.pdf" provider_url="https://basemap.de/" provider_key="BaseMapDE">
     </wmts_provider>-->
-    <wmts_provider id="BKG_Basemap" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu/basemapde_web_dienste_lizenz.pdf" provider_url="https://basemap.de/" provider_key="BaseMapDE">
+    <wmts_provider id="BKG_Basemap" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu" provider_url="https://basemap.de/" provider_key="BaseMapDE">
     </wmts_provider>
     <wmts_provider id="BKG_TopPlusWebOpen" copyright_text="© Bundesamt für Kartographie und Geodäsie [YYYY], Datenquellen: http://sg.geodatenzentrum.de/web_public/Datenquellen_TopPlus_Open.pdf (Daten verändert)" usage_hint_url="https://www.govdata.de/dl-de/by-2-0" provider_url="http://www.geodatenzentrum.de" provider_key="BkgTopPlusWebOpen">
     </wmts_provider>
