@@ -37,7 +37,7 @@
     </wmts_provider>    
     <wmts_provider id="Falk" copyright_text="© [YYYY] Falk Verlag" usage_hint_url="http://www.falk.de/" provider_url="http://www.falk.de/">
     </wmts_provider>
-    <wmts_provider id="Mapquest" copyright_text="Tiles Courtesy of MapQuest" usage_hint_url="http://developer.mapquest.com/web/products/open/map" provider_url="http://www.mapquest.com/">
+    <wmts_provider id="Mapquest" copyright_text="Tiles Courtesy of MapQuest" usage_hint_url="https://developer.mapquest.com/legal/" provider_url="http://www.mapquest.com/">
     </wmts_provider>    
     <wmts_provider id="NationaalGeoregister" tile_system="NationaalGeoregisterTMS" copyright_text="© http://nationaalgeoregister.nl" usage_hint_url="http://www.nationaalgeoregister.nl" provider_url="http://www.nationaalgeoregister.nl">
     </wmts_provider>
