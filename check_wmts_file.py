@@ -35,8 +35,11 @@ def check_url_exists(url):
     try:
         response = requests.head(url, allow_redirects=True, timeout=5)
         return response.status_code == 200
-    except Exception as e:
+    except Exception:
         return False
+
+print(all_urls)
+print(all_hint_providers)
 
 non_existing_urls = [u for u in all_urls if not check_url_exists(u)]
 print("Non Existing URLs:")

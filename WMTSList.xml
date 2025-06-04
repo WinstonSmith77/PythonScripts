@@ -29,7 +29,7 @@
     </wmts_provider>
     <!--<wmts_provider id="BKG_Basemap_EPSG_25832" tile_system="BKG_Webatlas" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu/basemapde_web_dienste_lizenz.pdf" provider_url="https://basemap.de/" provider_key="BaseMapDE">
     </wmts_provider>-->
-    <wmts_provider id="BKG_Basemap" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu" provider_url="https://basemap.de/" provider_key="BaseMapDE">
+    <wmts_provider id="BKG_Basemap" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu/basemapde_web_dienste_lizenz.pdf" provider_url="https://basemap.de/" provider_key="BaseMapDE">
     </wmts_provider>
     <wmts_provider id="BKG_TopPlusWebOpen" copyright_text="© Bundesamt für Kartographie und Geodäsie [YYYY], Datenquellen: http://sg.geodatenzentrum.de/web_public/Datenquellen_TopPlus_Open.pdf (Daten verändert)" usage_hint_url="https://www.govdata.de/dl-de/by-2-0" provider_url="http://www.geodatenzentrum.de" provider_key="BkgTopPlusWebOpen">
     </wmts_provider>
