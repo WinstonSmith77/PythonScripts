@@ -1,5 +1,7 @@
 import pathlib
+import shutil
 
+stick  = pathlib.Path ("/Volumes/Matze/matze/Desktop/usb stick")
 
 
 def copy_files_to_usb(source_folder: str, dest_folder: str | pathlib.Path):
@@ -19,24 +21,15 @@ def copy_files_to_usb(source_folder: str, dest_folder: str | pathlib.Path):
             print(f"Skipping directory {item}")
 
 def remove_all_files_in_folder(folder: str | pathlib.Path):
-    """Remove all files in the USB stick folder recursively."""
-    stick = pathlib.Path(folder)
-    for item in stick.rglob("*"):
-        try:
-            if item.is_file():
-                item.unlink()
-            else:
-                item.rmdir()
-        except Exception as e:
-            print(f"Error removing {item}: {e}")
+    shutil.rmtree(folder, ignore_errors=True)
         
-stick  = pathlib.Path ("/Volumes/Matze/matze/Desktop/usb stick")
-stick.mkdir(parents=True, exist_ok=True)
 
 
 remove_all_files_in_folder(stick)
-trashes_path = stick / ".trashes"
 
+stick.mkdir(parents=True, exist_ok=True)
+
+trashes_path = stick / ".trashes"
 pathlib.Path(trashes_path).touch()
 
 copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Arthur Conan Doyle/Sherlock Holmes Edition', stick / 'Krimis')
