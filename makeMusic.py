@@ -12,8 +12,8 @@ def copy_files_to_usb(source_folder: str, dest_folder: str | pathlib.Path):
     for item in source.rglob("*"):
         if item.is_file():
             relative_path = item.relative_to(source)
-            folder_name = item.parts[-2]
-            destination = dest / folder_name / relative_path
+            #folder_name = item.parts[-2]
+            destination = dest / relative_path
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(item.read_bytes())
             print(f"Copied {item} to {destination}")
@@ -32,4 +32,6 @@ stick.mkdir(parents=True, exist_ok=True)
 trashes_path = stick / ".trashes"
 pathlib.Path(trashes_path).touch()
 
-copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Arthur Conan Doyle/Sherlock Holmes Edition', stick / 'Krimis')
+copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Arthur Conan Doyle', stick / 'Krimis')
+copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Dirk Bach', stick / 'Dirk Bach')
+
