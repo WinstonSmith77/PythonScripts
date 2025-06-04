@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<wmts_config>
+
+  <tile_systems>
+    <!--Impliziter Default ist das vordefinierte Mercator-Tilesystem; Dieses muss hier nicht extra definiert werden-->
+    <!--Angabe der Projektion und der Bounding Box: Semikolon-separiert.-->
+    <tile_system id="BKG_Webatlas" projection_settings="init=epsg:25832" tile_pixelsize="256" bounding_box="-46133.17;5048877.54;1206208.82;6301219.54">
+      <!--http://sg.geodatenzentrum.de/wmts_webatlasde.light?request=GetCapabilities&service=wmts-->
+    </tile_system>
+    <tile_system id="Mapbox" projection_settings="init=epsg:3857" tile_pixelsize="512" bounding_box="-20037508;-20037508;20037508;20037508">
+      <!--https://docs.mapbox.com/help/glossary/zoom-level/-->
+    </tile_system>
+    <tile_system id="NationaalGeoregisterTMS" projection_settings="init=EPSG:28992" tile_pixelsize="256" bounding_box="-285401.92;22598.08;595401.92;903401.92">
+      <!--http://www.nationaalgeoregister.nl/geonetwork/srv/eng/search#|6d23a02b-5a8a-447e-a481-ddb2a085c1fb-->
+      <!--https://www.pdok.nl/nl/ngr/ngr-voor-ontwikkelaars-->
+    </tile_system>
+  </tile_systems>
+
+  <wmts_providers>
+    <wmts_provider id="MapsForFree" usage_hint_url="http:=//www.maps-for-free.com/" provider_url="http:=//www.maps-for-free.com/">
+    </wmts_provider>
+    <wmts_provider id="CloudMade" copyright_text="Powered by CloudMade" usage_hint_url="http://cloudmade.com/api-terms-of-service" provider_url="http://cloudmade.com" common_access_key="true">
+    </wmts_provider>
+    <wmts_provider id="OSM" copyright_text="© OpenStreetMap contributors" usage_hint_url="http://wiki.openstreetmap.org/wiki/Tile_usage_policy" usage_hint_url_de="http://wiki.openstreetmap.org/wiki/DE:Tile_usage_policy" provider_url="http://www.openstreetmap.org/">
+    </wmts_provider>
+    <wmts_provider id="Microsoft" usage_hint_url="https://www.microsoft.com/maps/product/terms.html" provider_url="https://www.microsoft.com/maps/" provider_key="BingMaps">
+    </wmts_provider>
+    <wmts_provider id="BKG_Webatlas" tile_system="BKG_Webatlas" copyright_text="© GeoBasis-DE / BKG [YYYY] (Daten verändert)" usage_hint_url="http://www.geodatenzentrum.de/auftrag/pdf/WebAtlasDE%20Lizenz%20freie%20Nutzung1.pdf" provider_url="http://www.geodatenzentrum.de" provider_key="WebAtlasDE.light">
+    </wmts_provider>
+    <!--<wmts_provider id="BKG_Basemap_EPSG_25832" tile_system="BKG_Webatlas" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu/basemapde_web_dienste_lizenz.pdf" provider_url="https://basemap.de/" provider_key="BaseMapDE">
+    </wmts_provider>-->
+    <wmts_provider id="BKG_Basemap" copyright_text="© basemap.de / BKG [MM] [YYYY] (Daten verändert)" usage_hint_url="https://sgx.geodatenzentrum.de/web_public/gdz/lizenz/deu" provider_url="https://basemap.de/" provider_key="BaseMapDE">
+    </wmts_provider>
+    <wmts_provider id="BKG_TopPlusWebOpen" copyright_text="© Bundesamt für Kartographie und Geodäsie [YYYY], Datenquellen: http://sg.geodatenzentrum.de/web_public/Datenquellen_TopPlus_Open.pdf (Daten verändert)" usage_hint_url="https://www.govdata.de/dl-de/by-2-0" provider_url="http://www.geodatenzentrum.de" provider_key="BkgTopPlusWebOpen">
+    </wmts_provider>
+    <wmts_provider id="Basemap_at" copyright_text="basemap.at" usage_hint_url="http://www.basemap.at/#nutzung" provider_url="http://www.basemap.at/" provider_key="BaseMapAT">
+    </wmts_provider>    
+    <wmts_provider id="Falk" copyright_text="© [YYYY] Falk Verlag" usage_hint_url="http://www.falk.de/" provider_url="http://www.falk.de/">
+    </wmts_provider>
+    <wmts_provider id="Mapquest" copyright_text="Tiles Courtesy of MapQuest" usage_hint_url="http://developer.mapquest.com/web/products/open/map" provider_url="http://www.mapquest.com/">
+    </wmts_provider>    
+    <wmts_provider id="NationaalGeoregister" tile_system="NationaalGeoregisterTMS" copyright_text="© http://nationaalgeoregister.nl" usage_hint_url="http://www.nationaalgeoregister.nl" provider_url="http://www.nationaalgeoregister.nl">
+    </wmts_provider>
+    <wmts_provider id="OpenTopoMap" copyright_text="Kartendaten: © OpenStreetMap-Mitwirkende, SRTM | Kartendarstellung: © OpenTopoMap (CC-BY-SA)" usage_hint_url="http://opentopomap.org/about" provider_url="http://opentopomap.org/about">
+    </wmts_provider>
+    <wmts_provider id="Google" copyright_text="" provider_url="https://developers.google.com/maps/documentation/static-maps/">
+    </wmts_provider>
+    <wmts_provider id="Infas_LT" copyright_text="" provider_url="https://maps.infas-lt.de">
+    </wmts_provider>
+  </wmts_providers>
+
+  <wmts_services>
+    <wmts_service caption_de="Maps For Free Relief" caption_en="Maps For Free Relief" ltintern="true" provider="MapsForFree">
+      <get_image_url>http://maps-for-free.com/layer/relief/z[Z]/row[Y]/[Z]_[X]-[Y].jpg</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Maps For Free Relief Wasser" caption_en="Maps For Free Relief Water" ltintern="true" provider="MapsForFree">
+      <get_image_url>http://maps-for-free.com/layer/relief_water/z[Z]/row[Y]/[Z]_[X]-[Y].jpg</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Maps For Free Straßen" caption_en="Maps For Free Streets" ltintern="true" provider="MapsForFree">
+      <get_image_url>http://maps-for-free.com/layer/streets/z[Z]/row[Y]/[Z]_[X]-[Y].gif</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Maps For Free Wasser" caption_en="Maps For Free Water" ltintern="true" provider="MapsForFree">
+      <get_image_url>http://maps-for-free.com/layer/water/z[Z]/row[Y]/[Z]_[X]-[Y].gif</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Maps For Free Wasser 2" caption_en="Maps For Free Water" ltintern="true" provider="MapsForFree">
+      <get_image_url>http://maps-for-free.com/layer/water/z[Z]/row[Y]/[Z]_[X]-[Y].gif</get_image_url>
+    </wmts_service>
+    
+    <wmts_service caption_de="Open Street Maps" caption_en="" ltintern="true" provider="OSM">
+      <get_image_url>http://tile.openstreetmap.org/[Z]/[X]/[Y].png</get_image_url>
+    </wmts_service>
+
+    <wmts_service key="vector_basemapde_farbe" tile_system="Mapbox" caption_de="Basemap.de (Vektor)" caption_en="" provider="BKG_Basemap" min_zoomlevel="5" max_zoomlevel="14" ltintern="true">
+      <get_image_url>https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/[Z]/[X]/[Y].pbf</get_image_url>
+      <mb_style_url>https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_col.json</mb_style_url>
+    </wmts_service>
+
+    <wmts_service key="basemapde_farbe" caption_de="Basemap.de" caption_en="" provider="BKG_Basemap" min_zoomlevel="5" max_zoomlevel="18" default="true">
+      <!--<get_image_url>https://sgx.geodatenzentrum.de/wmts_basemapde/tile/1.0.0/de_basemapde_web_raster_farbe/default/DE_EPSG_3857_ADV/[Z]/[X]/[Y].png</get_image_url>-->
+      <!--Über LT-Azure-Proxy, Konfig in TileProxy-WebApp-->
+      <get_image_url>https://tiles.infas-lt.de/BasemapDE/[Z]/[X]/[Y]</get_image_url>
+    </wmts_service>
+    <wmts_service key="basemapde_grau" caption_de="Basemap.de (Graustufen)" caption_en="Basemap.de (grayscale)" provider="BKG_Basemap" min_zoomlevel="5" max_zoomlevel="18">
+      <!--<get_image_url>https://sgx.geodatenzentrum.de/wmts_basemapde/tile/1.0.0/de_basemapde_web_raster_grau/default/DE_EPSG_3857_ADV/[Z]/[X]/[Y].png</get_image_url>-->
+      <!--Über LT-Azure-Proxy, Konfig in TileProxy-WebApp-->
+      <get_image_url>https://tiles.infas-lt.de/BasemapDE.gray/[Z]/[X]/[Y]</get_image_url>
+    </wmts_service>
+
+    <!-- Basemap UTM-Version mit WebatlasDE-kompatiblem Raster
+    <wmts_service caption_de="Basemap.de Web Raster" caption_en="" provider="BKG_Basemap_EPSG_25832" max_zoomlevel="13" default="true">
+      <get_image_url>https://lt-tile-bkg-2.azureedge.net/wmts_basemapde/tile/1.0.0/de_basemapde_web_raster_farbe/default/DE_EPSG_25832_ADV/[Z]/[Y]/[X].png</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Basemap.de Web Raster (Graustufen)" caption_en="" provider="BKG_Basemap_EPSG_25832" max_zoomlevel="13">
+      <get_image_url>https://lt-tile-bkg-2.azureedge.net/wmts_basemapde/tile/1.0.0/de_basemapde_web_raster_grau/default/DE_EPSG_25832_ADV/[Z]/[Y]/[X].png</get_image_url>
+    </wmts_service>
+    -->
+    
+    <wmts_service key="web" caption_de="BKG TopPlusOpen" caption_en="" provider="BKG_TopPlusWebOpen" max_zoomlevel="18">
+      <!--<get_image_url>http://sg.geodatenzentrum.de/wmts_topplus_web_open/tile/1.0.0/web/default/WEBMERCATOR/[Z]/[Y]/[X].png</get_image_url>-->
+      <!--Über LT-Azure-Proxy, Konfig in TileProxy-WebApp-->
+      <get_image_url>http://tiles.infas-lt.de/BkgTopPlusWebOpen/[Z]/[X]/[Y]</get_image_url>
+    </wmts_service>
+    <wmts_service key="web_grau" caption_de="BKG TopPlusOpen (Graustufen)" caption_en="BKG TopPlusOpen (grayscale)" provider="BKG_TopPlusWebOpen" max_zoomlevel="18">
+      <!--<get_image_url>http://sg.geodatenzentrum.de/wmts_topplus_web_open/tile/1.0.0/web_grau/default/WEBMERCATOR/[Z]/[Y]/[X].png</get_image_url>-->
+      <get_image_url>http://tiles.infas-lt.de/BkgTopPlusWebOpen.graustufen/[Z]/[X]/[Y]</get_image_url>
+    </wmts_service>
+    <wmts_service key="web_light" caption_de="BKG TopPlusOpen Light" caption_en="" provider="BKG_TopPlusWebOpen" max_zoomlevel="18">
+      <get_image_url>http://tiles.infas-lt.de/BkgTopPlusWebOpen.light/[Z]/[X]/[Y]</get_image_url>
+    </wmts_service>
+    <wmts_service key="web_light_grau" caption_de="BKG TopPlusOpen Light (Graustufen)" caption_en="BKG TopPlusOpen Light (grayscale)" provider="BKG_TopPlusWebOpen" max_zoomlevel="18">
+      <get_image_url>http://tiles.infas-lt.de/BkgTopPlusWebOpen.light.gray/[Z]/[X]/[Y]</get_image_url>
+    </wmts_service>
+
+    <wmts_service key="vector_basemapat_farbe" tile_system="Mapbox" caption_de="Basemap.at (Vektor)" caption_en="" provider="Basemap_at" max_zoomlevel="16" ltintern="true">
+      <get_image_url>https://maps.wien.gv.at/basemapv/bmapv/3857/tile/[Z]/[Y]/[X].pbf</get_image_url>
+      <mb_style_url>https://maps.wien.gv.at/basemapv/bmapv/3857/resources/styles/root.json</mb_style_url>
+    </wmts_service>
+
+    <wmts_service key="basemapat" caption_de="Basemap.at" caption_en="" provider="Basemap_at" max_zoomlevel="19">
+      <!--<get_image_url>http://maps.wien.gv.at/basemap/geolandbasemap/normal/google3857/[Z]/[Y]/[X].png</get_image_url>-->
+      <get_image_url>http://tiles.infas-lt.de/BasemapAT/[Z]/[Y]/[X]</get_image_url>
+    </wmts_service>
+    <wmts_service key="basemapat_grau" caption_de="Basemap.at (Graustufen)" caption_en="Basemap.at (grayscale)" provider="Basemap_at" max_zoomlevel="19">
+      <!--<get_image_url>http://maps.wien.gv.at/basemap/bmapgrau/normal/google3857/[Z]/[Y]/[X].png</get_image_url>-->
+      <get_image_url>http://tiles.infas-lt.de/BasemapAT.graustufen/[Z]/[Y]/[X]</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Basemap.at (Orthofoto)" caption_en="Basemap.at (Orthophoto)" provider="Basemap_at" max_zoomlevel="19" ltintern="true">
+      <!--<get_image_url>http://maps.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/[Z]/[Y]/[X].png</get_image_url>-->
+      <get_image_url>http://tiles.infas-lt.de/BasemapAT.ortho/[Z]/[Y]/[X]</get_image_url>
+    </wmts_service>
+    <!--
+    <wmts_service caption_de="Falk Original" caption_en="" provider="Falk" max_zoomlevel="19" ltintern="true">
+      <get_image_url>http://ec[Rnd(0,3)].cdn.ecmaps.de/WmsGateway.ashx.jpg?Experience=falk&amp;MapStyle=Falk%20Base&amp;TileX=[X]&amp;TileY=[Y]&amp;ZoomLevel=[Z]</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Falk OSM" caption_en="" provider="Falk" max_zoomlevel="19" ltintern="true">
+      <get_image_url>http://ec[Rnd(0,3)].cdn.ecmaps.de/WmsGateway.ashx.jpg?Experience=falk&amp;MapStyle=Falk%20OSM&amp;TileX=[X]&amp;TileY=[Y]&amp;ZoomLevel=[Z]</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="OSM gehostet bei Falk" caption_en="" provider="Falk" max_zoomlevel="19" ltintern="true">
+      <get_image_url>http://t[Rnd(1,5)].falk.de/osm-de/[Z]/[X]/[Y].png</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Mapquest-OSM" caption_en="" provider="Mapquest" max_zoomlevel="19" ltintern="true">
+      <get_image_url>http://otile[Rnd(1,4)].mqcdn.com/tiles/1.0.0/map/[Z]/[X]/[Y].jpg</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Mapquest Open Aerial" caption_en="" provider="Mapquest" max_zoomlevel="11" copyright_text="Tiles Courtesy of MapQuest, Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency" ltintern="true">
+      <get_image_url>http://otile[Rnd(1,4)].mqcdn.com/tiles/1.0.0/sat/[Z]/[X]/[Y].jpg</get_image_url>
+    </wmts_service>
+    -->
+    <wmts_service caption_de="Niederlande Achtergrondkaart" caption_en="Netherlands Achtergrondkaart" provider="NationaalGeoregister" max_zoomlevel="13" ltintern="true">
+      <get_image_url>http://geodata.nationaalgeoregister.nl/tiles/service/tms/1.0.0/brtachtergrondkaart@EPSG%3A28992@png8/[Z]/[X]/[YInv].png8</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="OpenTopoMap" caption_en="" provider="OpenTopoMap" max_zoomlevel="15" ltintern="true">
+      <get_image_url>http://[Rnd(a)].tile.opentopomap.org/[Z]/[X]/[Y].png</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Bing Maps Straßen" caption_en="Bing Maps Streets" provider="Microsoft" min_zoomlevel="1">
+      <get_image_url>http://dev.virtualearth.net/REST/v1/Imagery/Metadata/Road?key=[Key]</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Bing Maps Luftbild" caption_en="Bing Maps Aerial" provider="Microsoft" min_zoomlevel="1">
+      <get_image_url>http://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial?key=[Key]</get_image_url>
+    </wmts_service>
+    <wmts_service caption_de="Google Maps Straßen" caption_en="Google Maps Streets" provider="Google" min_zoomlevel="1" ltintern="true">
+      <get_image_url>https://maps.googleapis.com/maps/api/staticmap?center=[LatCenter],[LonCenter]&#038;zoom=[Z]&#038;size=256x256&#038;key=[Key]</get_image_url>
+    </wmts_service>
+
+    <wmts_service key="map_api_d_topo" caption_de="Infas LT Topografie" caption_en="Infas LT Topography" provider="Infas_LT" min_zoomlevel="1" ltintern="true">
+      <get_image_url>https://maps.infas-lt.de/maps/[LtLicenseKey]/test/tiles/collections/2022_12_d_topo/tiles/WebMercatorQuad/[Z]/[Y]/[X]?f=application/vnd.mapbox-vector-tile</get_image_url>
+      <mb_style_url>https://maps.infas-lt.de/maps/[LtLicenseKey]/test/styles/2022_12_d_topo_mb?f=application/vnd.geoserver.mbstyle+json</mb_style_url>
+    </wmts_service>
+
+  </wmts_services>
+
+</wmts_config>
