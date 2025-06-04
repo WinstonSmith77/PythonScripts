@@ -20,12 +20,12 @@ def copy_files_to_usb(source_folder: str, dest_folder: str | pathlib.Path):
         else:
             print(f"Skipping directory {item}")
 
-def remove_all_files_in_folder(folder: str | pathlib.Path):
+def remove_folder_with_content(folder: str | pathlib.Path):
     shutil.rmtree(folder, ignore_errors=True)
         
 
 
-remove_all_files_in_folder(stick)
+remove_folder_with_content(stick)
 
 stick.mkdir(parents=True, exist_ok=True)
 
@@ -39,7 +39,7 @@ copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/i
 
 copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Dirk Bach', stick / 'Walter Moers')
 copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Walter Moers', stick / 'Walter Moers')
-copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/neue musik/Moers_EInhörnchen', stick / 'Walter Moers')
+copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/neue musik/Moers_EInhörnchen', stick / 'Walter Moers' / 'Einhörnchen')
 
 copy_files_to_usb('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/neue musik/Horst Evers', stick / 'Horst Evers')
 
