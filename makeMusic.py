@@ -34,17 +34,19 @@ pathlib.Path(trashes_path).touch()
 
 itunes_path = pathlib.Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music')
 music_path = itunes_path / 'Music'
+music_new_path = itunes_path / 'neue musik'
+
 
 copy_files_to_usb(music_path / 'Arthur Conan Doyle', stick / 'Krimis')
-copy_files_to_usb(itunes_path / 'neue musik/In Vino Veritas', stick / 'Krimis' / 'In Vino Veritas')
-copy_files_to_usb(itunes_path / 'neue musik/stelter', stick / 'Krimis' / 'Stelter')
-copy_files_to_usb(itunes_path / 'neue musik/Agatha Christie', stick / 'Krimis' / 'Agatha Christie')
+copy_files_to_usb(music_new_path / 'In Vino Veritas', stick / 'Krimis' / 'In Vino Veritas')
+copy_files_to_usb(music_new_path / 'stelter', stick / 'Krimis' / 'Stelter')
+copy_files_to_usb(music_new_path / 'Agatha Christie', stick / 'Krimis' / 'Agatha Christie')
 
 copy_files_to_usb(music_path / 'Dirk Bach', stick / 'Walter Moers')
 copy_files_to_usb(music_path / 'Walter Moers', stick / 'Walter Moers')
-copy_files_to_usb(itunes_path / 'neue musik/Moers_EInhörnchen', stick / 'Walter Moers' / 'Einhörnchen')
+copy_files_to_usb(music_new_path / 'Moers_EInhörnchen', stick / 'Walter Moers' / 'Einhörnchen')
 
-copy_files_to_usb(itunes_path / 'neue musik/Horst Evers', stick / 'Horst Evers')
+copy_files_to_usb(music_new_path / 'Horst Evers', stick / 'Horst Evers')
 
 copy_files_to_usb(music_path / 'Marc-Uwe Kling', stick / 'Marc-Uwe Kling')
 
