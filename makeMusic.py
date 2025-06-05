@@ -31,34 +31,41 @@ def empty_folder(folder: str | pathlib.Path):
                 shutil.rmtree(item, ignore_errors=True)
                 print(f"Removed directory {item}")
    
+
+def prepare_stick():
+    empty_folder(stick)
+    stick.mkdir(parents=True, exist_ok=True)
+
+    trashes_path = stick / ".trashes"
+    pathlib.Path(trashes_path).touch()
       
+def copy():
+    """Copy music files to the USB stick."""
+    itunes_path = pathlib.Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music')
+    music_path = itunes_path / 'Music'
+    music_new_path = itunes_path / 'neue musik'
 
 
-empty_folder(stick)
+    copy_files_to_usb(music_path / 'Arthur Conan Doyle', stick / 'Krimis')
+    copy_files_to_usb(music_new_path / 'In Vino Veritas', stick / 'Krimis' / 'In Vino Veritas')
+    copy_files_to_usb(music_new_path / 'stelter', stick / 'Krimis' / 'Stelter')
+    copy_files_to_usb(music_new_path / 'Agatha Christie', stick / 'Krimis' / 'Agatha Christie')
 
-stick.mkdir(parents=True, exist_ok=True)
+    copy_files_to_usb(music_path / 'Dirk Bach', stick / 'Walter Moers')
+    copy_files_to_usb(music_path / 'Walter Moers', stick / 'Walter Moers')
+    copy_files_to_usb(music_new_path / 'Moers_EInhörnchen', stick / 'Walter Moers' / 'Einhörnchen')
 
-trashes_path = stick / ".trashes"
-pathlib.Path(trashes_path).touch()
+    copy_files_to_usb(music_new_path / 'Horst Evers', stick / 'Horst Evers')
 
-itunes_path = pathlib.Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music')
-music_path = itunes_path / 'Music'
-music_new_path = itunes_path / 'neue musik'
-
-
-copy_files_to_usb(music_path / 'Arthur Conan Doyle', stick / 'Krimis')
-copy_files_to_usb(music_new_path / 'In Vino Veritas', stick / 'Krimis' / 'In Vino Veritas')
-copy_files_to_usb(music_new_path / 'stelter', stick / 'Krimis' / 'Stelter')
-copy_files_to_usb(music_new_path / 'Agatha Christie', stick / 'Krimis' / 'Agatha Christie')
-
-copy_files_to_usb(music_path / 'Dirk Bach', stick / 'Walter Moers')
-copy_files_to_usb(music_path / 'Walter Moers', stick / 'Walter Moers')
-copy_files_to_usb(music_new_path / 'Moers_EInhörnchen', stick / 'Walter Moers' / 'Einhörnchen')
-
-copy_files_to_usb(music_new_path / 'Horst Evers', stick / 'Horst Evers')
-
-copy_files_to_usb(music_path / 'Marc-Uwe Kling', stick / 'Marc-Uwe Kling')
+    copy_files_to_usb(music_path / 'Marc-Uwe Kling', stick / 'Marc-Uwe Kling')
 
 
-copy_files_to_usb(music_path / 'Die Drei ___', stick / 'Die Drei Fragezeichen')
+    copy_files_to_usb(music_path / 'Die Drei ___', stick / 'Die Drei Fragezeichen')
+    
+    
+if __name__ == "__main__":
+    prepare_stick()
+    copy()
+    print("Finished copying files to USB stick.")
+       
 
