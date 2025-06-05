@@ -1,6 +1,24 @@
-def get_text(a : int, b : int) -> str:
-    result : str = str(a + b)
+import requests
 
-    return  result
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
-print(get_text(1, 2))
+class Program
+{
+    static async Task Main()
+    {
+        var url = "https://maps.infas-lt.de";
+        using (var client = new HttpClient())
+        {
+            // HEAD request
+            var headRequest = new HttpRequestMessage(HttpMethod.Head, url);
+            var headResponse = await client.SendAsync(headRequest);
+            Console.WriteLine(headResponse);
+
+            // GET request
+            var getResponse = await client.GetAsync(url);
+            Console.WriteLine(getResponse);
+        }
+    }
+}
