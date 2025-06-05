@@ -20,12 +20,22 @@ def copy_files_to_usb(source_folder: str | pathlib.Path, dest_folder: str | path
         else:
             print(f"Skipping directory {item}")
 
-def remove_folder_with_content(folder: str | pathlib.Path):
-    shutil.rmtree(folder, ignore_errors=True)
-        
+def empty_folder(folder: str | pathlib.Path):
+    """Remove all content in the folder but keep the folder structure."""
+    folder_path = pathlib.Path(folder)
+    if folder_path.exists():
+        for item in folder_path.iterdir():
+            if item.is_file():
+                item.unlink()
+                print(f"Removed file {item}")
+            elif item.is_dir():
+                shutil.rmtree(item, ignore_errors=True)
+                print(f"Removed directory {item}")
+   
+      
 
 
-remove_folder_with_content(stick)
+empty_folder(stick)
 
 stick.mkdir(parents=True, exist_ok=True)
 
