@@ -8,6 +8,8 @@ def copy_files_to_usb(source_folder: str | pathlib.Path, dest_folder: str | path
     """Copy all files from the source folder to the USB stick folder."""
     source = pathlib.Path(source_folder)
     dest = pathlib.Path(dest_folder)
+    
+    print(f"Copying files from {source} to {dest}")
 
     for item in source.rglob("*"):
         if item.is_file():
@@ -16,9 +18,6 @@ def copy_files_to_usb(source_folder: str | pathlib.Path, dest_folder: str | path
             destination = dest / relative_path
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(item.read_bytes())
-            print(f"Copied {item} to {destination}")
-        else:
-            print(f"Skipping directory {item}")
 
 def empty_folder(folder: str | pathlib.Path):
     """Remove all content in the folder but keep the folder structure."""
