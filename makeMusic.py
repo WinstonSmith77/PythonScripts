@@ -71,6 +71,7 @@ def copy():
 
 
     copy_files_to_usb(music_path / 'Die Drei ___', stick / 'Die Drei Fragezeichen')
+    copy_files_to_usb(music_new_path / 'paletti', stick / 'paletti')
     
     
 if __name__ == "__main__":
