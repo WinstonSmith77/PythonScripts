@@ -74,6 +74,11 @@ def copy():
     copy_files_to_usb(music_new_path / 'paletti', stick / 'paletti')
     
     
+    copy_files_to_usb(music_new_path / 'Christian Humberg', stick / 'Christian Humberg')
+    
+    
+    
+    
 if __name__ == "__main__":
     prepare_stick()
     copy()
