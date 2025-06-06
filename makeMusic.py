@@ -1,7 +1,7 @@
 import pathlib
 import shutil
 
-stick  = pathlib.Path ("/Volumes/Matze/matze/Desktop/usb stick")
+stick  = pathlib.Path ("/Volumes/AUTO")
 
 
 def copy_files_to_usb(source_folder: str | pathlib.Path, dest_folder: str | pathlib.Path):
@@ -10,6 +10,10 @@ def copy_files_to_usb(source_folder: str | pathlib.Path, dest_folder: str | path
     dest = pathlib.Path(dest_folder)
     
     print(f"Copying files from {source} to {dest}")
+    
+    if not source.exists():
+        print(f"Source folder {source} does not exist.")
+        return
 
     for item in source.rglob("*"):
         if item.is_file():
@@ -24,27 +28,33 @@ def empty_folder(folder: str | pathlib.Path):
     folder_path = pathlib.Path(folder)
     if folder_path.exists():
         for item in folder_path.iterdir():
-            if item.is_file():
-                item.unlink()
-                print(f"Removed file {item}")
-            elif item.is_dir():
-                shutil.rmtree(item, ignore_errors=True)
-                print(f"Removed directory {item}")
+            try:
+                item = pathlib.Path(item)
+                if item.is_file():
+                    item.unlink()
+                    print(f"Removed file {item}")
+                elif item.is_dir():
+                    shutil.rmtree(item, ignore_errors=True)
+                    print(f"Removed directory {item}")
+            except Exception as e:
+                print(f"Error removing {item}: {e}")        
    
 
 def prepare_stick():
     empty_folder(stick)
     stick.mkdir(parents=True, exist_ok=True)
 
-    trashes_path = stick / ".trashes"
-    pathlib.Path(trashes_path).touch()
+    #trashes_path = stick / ".trashes"
+    #pathlib.Path(trashes_path).touch()
       
 def copy():
     """Copy music files to the USB stick."""
     itunes_path = pathlib.Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music')
     music_path = itunes_path / 'Music'
     music_new_path = itunes_path / 'neue musik'
+    
 
+    copy_files_to_usb(music_new_path / 'Christoph Waltz', stick / 'Christoph Waltz')
 
     copy_files_to_usb(music_path / 'Arthur Conan Doyle', stick / 'Krimis')
     copy_files_to_usb(music_new_path / 'In Vino Veritas', stick / 'Krimis' / 'In Vino Veritas')
