@@ -28,11 +28,9 @@ class SyncMusic:
             self.copy_files_to_usb(source, destination)
 
     def copy_files_to_usb(
-        self, source_folder: str | Path, dest_folder: str | Path
+        self, source: Path, dest: Path
     ):
         """Copy all files from the source folder to the USB stick folder."""
-        source = Path(source_folder)
-        dest = Path(dest_folder)
 
         print(f"Copying files from {source} to {dest}")
 
@@ -65,8 +63,8 @@ class SyncMusic:
     def add_to_sync(
         self, source_folder: str | Path, dest_folder: str | Path
     ):
-        self.sources.append(source_folder)
-        self.destinations.append(dest_folder)
+        self.sources.append(Path(source_folder))
+        self.destinations.append(Path(dest_folder))
 
 
 def add(sync: SyncMusic):
