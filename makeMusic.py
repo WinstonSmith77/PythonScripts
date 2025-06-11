@@ -29,8 +29,8 @@ class SyncMusic:
     def copy_files_to_usb(
         self, source: Path, dest_folder: Path
     ):
-        parent = stick/ dest_folder
-        print(f"Copying files from {source} to {parent}")
+        total_dest_folder = stick/ dest_folder
+        print(f"Copying files from {source} to {total_dest_folder}")
 
         if not source.exists():
             print(f"Source folder {source} does not exist.")
@@ -40,7 +40,7 @@ class SyncMusic:
             if item.is_file():
                 relative_path = item.relative_to(source)
                 
-                destination = parent / relative_path
+                destination = total_dest_folder / relative_path
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(item, destination)
                 print("*", end='', flush=True)
