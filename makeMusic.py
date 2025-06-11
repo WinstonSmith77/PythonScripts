@@ -9,9 +9,9 @@ if useMac:
         "/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music"
     )
 else:
-    stick = pathlib.Path(r"C:\Users\henning\stick")
+    stick = pathlib.Path("C:/Users/matze/Desktop/stick")
     itunes_path = pathlib.Path(
-        r"C:\Users\henning\OneDrive\iTunes Music"
+        "C:/Users/matze/OneDrive/iTunes Music"
     )
 
 
@@ -34,7 +34,9 @@ def copy_files_to_usb(
             # folder_name = item.parts[-2]
             destination = dest / relative_path
             destination.parent.mkdir(parents=True, exist_ok=True)
-            destination.write_bytes(item.read_bytes())
+            shutil.copyfile(str(item), str(destination))
+
+            #destination.write_bytes(item.read_bytes())
 
 
 def empty_folder(folder: str | pathlib.Path):
@@ -82,7 +84,7 @@ def copy():
     copy_files_to_usb(music_path / "Dirk Bach", stick / "Walter Moers")
     copy_files_to_usb(music_path / "Walter Moers", stick / "Walter Moers")
     copy_files_to_usb(
-        music_new_path / "Moers_EInhörnchen", stick / "Walter Moers" / "Einhörnchen"
+        music_new_path / "Moers_Einhörnchen", stick / "Walter Moers" / "Einhörnchen"
     )
 
     copy_files_to_usb(music_new_path / "Horst Evers", stick / "Horst Evers")
