@@ -47,13 +47,12 @@ class SyncMusic:
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(str(item), str(destination))
 
-    def empty_folder(self, folder: str | Path):
+    def empty_folder(self, folder: Path):
         """Remove all content in the folder but keep the folder structure."""
-        folder_path = Path(folder)
-        if folder_path.exists():
-            for item in folder_path.iterdir():
+      
+        if folder.exists():
+            for item in folder.iterdir():
                 try:
-                    item = Path(item)
                     if item.is_file():
                         item.unlink()
                         print(f"Removed file {item}")
