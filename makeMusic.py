@@ -28,11 +28,11 @@ class SyncMusic:
             self.copy_files_to_usb(source, destination)
 
     def copy_files_to_usb(
-        self, source: Path, dest: Path
+        self, source: Path, dest_folder: Path
     ):
         """Copy all files from the source folder to the USB stick folder."""
 
-        print(f"Copying files from {source} to {dest}")
+        print(f"Copying files from {source} to {dest_folder}")
 
         if not source.exists():
             print(f"Source folder {source} does not exist.")
@@ -41,9 +41,10 @@ class SyncMusic:
         for item in source.rglob("*"):
             if item.is_file():
                 relative_path = item.relative_to(source)
-                destination = dest / relative_path
+                parent = stick/ dest_folder
+                destination = parent / relative_path
                 destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(str(item), str(destination))
+                shutil.copyfile(item, destination)
 
     def empty_folder(self, folder: Path):
         """Remove all content in the folder but keep the folder structure."""
@@ -73,31 +74,31 @@ def add(sync: SyncMusic):
     music_path = itunes_path / "Music"
     music_new_path = itunes_path / "neue musik"
 
-    sync.add_to_sync(music_new_path / "Christoph Waltz", stick / "Christoph Waltz")
+    sync.add_to_sync(music_new_path / "Christoph Waltz",  "Christoph Waltz")
 
-    sync.add_to_sync(music_path / "Arthur Conan Doyle", stick / "Krimis")
+    sync.add_to_sync(music_path / "Arthur Conan Doyle",  "Krimis")
     sync.add_to_sync(
-        music_new_path / "In Vino Veritas", stick / "Krimis" / "In Vino Veritas"
+        music_new_path / "In Vino Veritas",  "Krimis/In Vino Veritas"
     )
-    sync.add_to_sync(music_new_path / "stelter", stick / "Krimis" / "Stelter")
+    sync.add_to_sync(music_new_path / "stelter",  "Krimis/Stelter")
     sync.add_to_sync(
-        music_new_path / "Agatha Christie", stick / "Krimis" / "Agatha Christie"
-    )
-
-    sync.add_to_sync(music_path / "Dirk Bach", stick / "Walter Moers")
-    sync.add_to_sync(music_path / "Walter Moers", stick / "Walter Moers")
-    sync.add_to_sync(
-        music_new_path / "Moers_Einhörnchen", stick / "Walter Moers" / "Einhörnchen"
+        music_new_path / "Agatha Christie",  "Krimis/Agatha Christie"
     )
 
-    sync.add_to_sync(music_new_path / "Horst Evers", stick / "Horst Evers")
+    sync.add_to_sync(music_path / "Dirk Bach",  "Walter Moers")
+    sync.add_to_sync(music_path / "Walter Moers",  "Walter Moers")
+    sync.add_to_sync(
+        music_new_path / "Moers_Einhörnchen", "Walter Moers/Einhörnchen"
+    )
 
-    sync.add_to_sync(music_path / "Marc-Uwe Kling", stick / "Marc-Uwe Kling")
+    sync.add_to_sync(music_new_path / "Horst Evers","Horst Evers")
 
-    sync.add_to_sync(music_path / "Die Drei ___", stick / "Die Drei Fragezeichen")
-    sync.add_to_sync(music_new_path / "paletti", stick / "paletti")
+    sync.add_to_sync(music_path / "Marc-Uwe Kling",  "Marc-Uwe Kling")
 
-    sync.add_to_sync(music_new_path / "Christian Humberg", stick / "Christian Humberg")
+    sync.add_to_sync(music_path / "Die Drei ___",  "Die Drei Fragezeichen")
+    sync.add_to_sync(music_new_path / "paletti",  "paletti")
+
+    sync.add_to_sync(music_new_path / "Christian Humberg",  "Christian Humberg")
 
 
 if __name__ == "__main__":
