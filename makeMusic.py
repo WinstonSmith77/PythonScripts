@@ -20,8 +20,7 @@ class SyncMusic:
         self.stick = Path(stick)
 
     def sync(self):
-        self.empty_folder(self.stick)
-        stick.mkdir(parents=True, exist_ok=True)
+        self.empty_or_make_folder(self.stick)
 
         """Sync files from sources to destinations."""
         for source, destination in zip(self.sources, self.destinations):
@@ -46,7 +45,7 @@ class SyncMusic:
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(item, destination)
 
-    def empty_folder(self, folder: Path):
+    def empty_or_make_folder(self, folder: Path):
         """Remove all content in the folder but keep the folder structure."""
       
         if folder.exists():
@@ -60,6 +59,9 @@ class SyncMusic:
                         print(f"Removed directory {item}")
                 except Exception as e:
                     print(f"Error removing {item}: {e}")
+        else:
+            stick.mkdir(parents=True, exist_ok=True)
+                        
 
     def add_to_sync(
         self, source_folder: str | Path, dest_folder: str | Path
