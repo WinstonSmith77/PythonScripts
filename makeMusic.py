@@ -29,8 +29,6 @@ class SyncMusic:
     def copy_files_to_usb(
         self, source: Path, dest_folder: Path
     ):
-        """Copy all files from the source folder to the USB stick folder."""
-
         print(f"Copying files from {source} to {dest_folder}")
 
         if not source.exists():
@@ -44,6 +42,8 @@ class SyncMusic:
                 destination = parent / relative_path
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(item, destination)
+                print("*", end='', flush=True)
+        print()     
 
     def empty_or_make_folder(self, folder: Path):
         """Remove all content in the folder but keep the folder structure."""
