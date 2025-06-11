@@ -4,8 +4,8 @@ import shutil
 useMac: bool = False  # Set to False if you are not using a Mac
 
 if useMac:
-    stick = pathlib.Path("/Volumes/AUTO")
-    itunes_path = pathlib.Path(
+    stick = Path("/Volumes/AUTO")
+    itunes_path = Path(
         "/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music"
     )
 else:
