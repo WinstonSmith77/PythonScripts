@@ -1,7 +1,18 @@
 import pathlib
 import shutil
 
-stick = pathlib.Path("/Volumes/AUTO")
+useMac: bool = False  # Set to False if you are not using a Mac
+
+if useMac:
+    stick = pathlib.Path("/Volumes/AUTO")
+    itunes_path = pathlib.Path(
+        "/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music"
+    )
+else:
+    stick = pathlib.Path(r"C:\Users\henning\stick")
+    itunes_path = pathlib.Path(
+        r"C:\Users\henning\OneDrive\iTunes Music"
+    )
 
 
 def copy_files_to_usb(
@@ -53,9 +64,7 @@ def prepare_stick():
 
 def copy():
     """Copy music files to the USB stick."""
-    itunes_path = pathlib.Path(
-        "/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music"
-    )
+
     music_path = itunes_path / "Music"
     music_new_path = itunes_path / "neue musik"
 
