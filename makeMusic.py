@@ -15,8 +15,8 @@ else:
 
 class SyncMusic:
     def __init__(self, stick: Path | str):
-        self.sources: list[str | Path] = []
-        self.destinations: list[str | Path] = []
+        self.sources: list[Path] = []
+        self.destinations: list[Path] = []
         self.stick = Path(stick)
 
     def sync(self):
