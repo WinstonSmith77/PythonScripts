@@ -97,8 +97,9 @@ def add_stuff(sync: SyncMusic):
     sync.add_to_sync(music_path / wm, wm)
     sync.add_to_sync(music_new_path / "Moers_Einhörnchen", f"{wm}/Einhörnchen")
 
-    sync.add_to_sync(music_new_path / "Horst Evers", "Horst Evers")
-    sync.add_to_sync(music_path / "Marc-Uwe Kling", "Marc-Uwe Kling")
+    humor = "humor"
+    sync.add_to_sync(music_new_path / "Horst Evers", f"{humor}/Horst Evers")
+    sync.add_to_sync(music_path / "Marc-Uwe Kling", f"{humor}/Marc-Uwe Kling")
 
     sync.add_to_sync(music_new_path / "Christian Humberg", "Eifel/Christian Humberg")
 
