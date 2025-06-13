@@ -58,7 +58,7 @@ class SyncMusic:
             print(f"Source folder {source} does not exist.")
             return
 
-        for item in source.rglob("*"):
+        for item in source.rglob("*", case_sensitive=False):
             if item.is_file():
                 relative_path = item.relative_to(source)
 
@@ -91,6 +91,9 @@ def add_stuff(sync: SyncMusic):
     sync.add_to_sync(music_new_path / "stelter", f"{krimis}/Stelter")
     sync.add_to_sync(music_new_path / "Agatha Christie", f"{krimis}/Agatha Christie")
     sync.add_to_sync(music_new_path / "Gisbert Haefs", f"{krimis}/Gisbert Haefs")
+    sync.add_to_sync(music_new_path / "durbridge", f"{krimis}/durbridge")
+    
+
 
     wm = "Walter Moers"
     sync.add_to_sync(music_path / "Dirk Bach", wm)
