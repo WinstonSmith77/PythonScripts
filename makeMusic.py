@@ -87,27 +87,28 @@ def add_stuff(sync: SyncMusic):
     music_path = itunes_path / "Music"
     music_new_path = itunes_path / "neue musik"
 
-    sync.add_to_sync(music_new_path / "Christoph Waltz", "Christoph Waltz")
+    krimis = "Krimis"
 
-    sync.add_to_sync(music_path / "Arthur Conan Doyle", "Krimis")
-    sync.add_to_sync(music_new_path / "In Vino Veritas", "Krimis/In Vino Veritas")
-    sync.add_to_sync(music_new_path / "stelter", "Krimis/Stelter")
-    sync.add_to_sync(music_new_path / "Agatha Christie", "Krimis/Agatha Christie")
+    sync.add_to_sync(music_path / "Arthur Conan Doyle", f"{krimis}")
+    sync.add_to_sync(music_new_path / "In Vino Veritas", f"{krimis}/In Vino Veritas")
+    sync.add_to_sync(music_new_path / "stelter", f"{krimis}/Stelter")
+    sync.add_to_sync(music_new_path / "Agatha Christie", f"{krimis}/Agatha Christie")
+    sync.add_to_sync(music_new_path / "Gisbert Haefs", f"{krimis}/Gisbert Haefs")
 
     sync.add_to_sync(music_path / "Dirk Bach", "Walter Moers")
     sync.add_to_sync(music_path / "Walter Moers", "Walter Moers")
     sync.add_to_sync(music_new_path / "Moers_Einhörnchen", "Walter Moers/Einhörnchen")
 
     sync.add_to_sync(music_new_path / "Horst Evers", "Horst Evers")
-
     sync.add_to_sync(music_path / "Marc-Uwe Kling", "Marc-Uwe Kling")
 
-    sync.add_to_sync(music_path / "Die Drei ___", "Die Drei Fragezeichen")
-    sync.add_to_sync(music_new_path / "paletti", "kinder lernen/paletti")
-
     sync.add_to_sync(music_new_path / "Christian Humberg", "Eifel/Christian Humberg")
-    sync.add_to_sync(music_new_path / "Gisbert Haefs", "Krimis/Gisbert Haefs")
 
+    kinder_lernen = "kinder lernen"
+    sync.add_to_sync(music_new_path / "paletti", f"{kinder_lernen}/paletti")
+    sync.add_to_sync(music_new_path / "Christoph Waltz", f"{kinder_lernen}/Christoph Waltz")
+
+    sync.add_to_sync(music_path / "Die Drei ___", "Die Drei Fragezeichen")
 
 if __name__ == "__main__":
     sync: SyncMusic = SyncMusic(stick)
