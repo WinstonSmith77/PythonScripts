@@ -20,14 +20,22 @@ class SyncMusic:
         self.stick = Path(stick)
 
     def sync(self):
-        self.empty_or_make_folder(self.stick)
+        #self.empty_or_make_folder(self.stick)
+        stick.mkdir(parents=True, exist_ok=True)
+                
+
+        all_files: set[Path] = set(self.stick.rglob("*.*"))
 
         """Sync files from sources to destinations."""
         for source, destination in zip(self.sources, self.destinations):
-            self.copy_files_to_usb(source, destination)
+            self.copy_files_to_usb(source, destination, all_files)
+
+        for to_delete in [file for file in all_files if file.is_file()]:
+            to_delete.unlink()
+            print(f"Deleted {to_delete}")
 
     def copy_files_to_usb(
-        self, source: Path, dest_folder: Path
+        self, source: Path, dest_folder: Path, all_files: set[Path] 
     ):
         total_dest_folder = stick/ dest_folder
         print(f"Copying files from {source} to {total_dest_folder}")
@@ -42,27 +50,13 @@ class SyncMusic:
                 
                 destination = total_dest_folder / relative_path
                 destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(item, destination)
-                print("*", end='', flush=True)
+                if destination in all_files:
+                    print("~", end='', flush=True)
+                    all_files.remove(destination)  # Remove from set to avoid duplicates
+                else:
+                    shutil.copyfile(item, destination)
+                    print("+", end='', flush=True)
         print()     
-
-    def empty_or_make_folder(self, folder: Path):
-        """Remove all content in the folder but keep the folder structure."""
-      
-        if folder.exists():
-            for item in folder.iterdir():
-                try:
-                    if item.is_file():
-                        item.unlink()
-                        print(f"Removed file {item}")
-                    elif item.is_dir():
-                        shutil.rmtree(item, ignore_errors=True)
-                        print(f"Removed directory {item}")
-                except Exception as e:
-                    print(f"Error removing {item}: {e}")
-        else:
-            stick.mkdir(parents=True, exist_ok=True)
-                        
 
     def add_to_sync(
         self, source_folder: str | Path, dest_folder: str | Path
@@ -101,7 +95,7 @@ def add(sync: SyncMusic):
     sync.add_to_sync(music_path / "Die Drei ___",  "Die Drei Fragezeichen")
     sync.add_to_sync(music_new_path / "paletti",  "paletti")
 
-    sync.add_to_sync(music_new_path / "Christian Humberg",  "Christian Humberg")
+    sync.add_to_sync(music_new_path / "Christian Humberg",  "Eifel/Christian Humberg")
 
 
 if __name__ == "__main__":
