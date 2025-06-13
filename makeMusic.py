@@ -13,11 +13,11 @@ else:
     itunes_path = Path("C:/Users/matze/OneDrive/iTunes Music")
 
 
-def delete_emypty_folders(path: Path):
+def delete_emypty_folders_recursive(path: Path):
     """Delete empty folders in the given path."""
     for item in path.iterdir():
         if item.is_dir():
-            delete_emypty_folders(item)
+            delete_emypty_folders_recursive(item)
             if not any(item.iterdir()):  # Check if the directory is empty
                 item.rmdir()
                 print(f"Deleted empty folder: {item}")
@@ -37,16 +37,16 @@ class SyncMusic:
 
         """Sync files from sources to destinations."""
         for source, destination in zip(self.sources, self.destinations):
-            self.copy_files_to_usb(source, destination, all_files)
+            self.__copy_files_to_usb(source, destination, all_files)
 
         files_to_delete = [file for file in all_files if file.is_file()]
         for to_delete in files_to_delete:
             to_delete.unlink()
             print(f"Deleted {to_delete}")
 
-        delete_emypty_folders(self.stick)
+        delete_emypty_folders_recursive(self.stick)
 
-    def copy_files_to_usb(self, source: Path, dest_folder: Path, all_files: set[Path]):
+    def __copy_files_to_usb(self, source: Path, dest_folder: Path, all_files: set[Path]):
         total_dest_folder = stick / dest_folder
         print(f"Copying files from {source} to {total_dest_folder}")
 
@@ -81,7 +81,7 @@ class SyncMusic:
         self.destinations.append(Path(dest_folder))
 
 
-def add(sync: SyncMusic):
+def add_stuff(sync: SyncMusic):
     """Copy music files to the USB stick."""
 
     music_path = itunes_path / "Music"
@@ -103,7 +103,7 @@ def add(sync: SyncMusic):
     sync.add_to_sync(music_path / "Marc-Uwe Kling", "Marc-Uwe Kling")
 
     sync.add_to_sync(music_path / "Die Drei ___", "Die Drei Fragezeichen")
-    sync.add_to_sync(music_new_path / "paletti", "paletti")
+    sync.add_to_sync(music_new_path / "paletti", "kinder lernen/paletti")
 
     sync.add_to_sync(music_new_path / "Christian Humberg", "Eifel/Christian Humberg")
     sync.add_to_sync(music_new_path / "Gisbert Haefs", "Krimis/Gisbert Haefs")
@@ -111,5 +111,5 @@ def add(sync: SyncMusic):
 
 if __name__ == "__main__":
     sync: SyncMusic = SyncMusic(stick)
-    add(sync)
+    add_stuff(sync)
     sync.sync()
