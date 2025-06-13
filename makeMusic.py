@@ -44,9 +44,7 @@ class SyncMusic:
             to_delete.unlink()
             print(f"Deleted {to_delete}")
 
-        folders_to_delete = [dir for dir in all_files if dir.is_dir()]
-        for folder_to_delete in folders_to_delete:
-            delete_emypty_folders(folder_to_delete)
+        delete_emypty_folders(self.stick)
 
     def copy_files_to_usb(self, source: Path, dest_folder: Path, all_files: set[Path]):
         total_dest_folder = stick / dest_folder
