@@ -106,6 +106,7 @@ def add(sync: SyncMusic):
     sync.add_to_sync(music_new_path / "paletti", "paletti")
 
     sync.add_to_sync(music_new_path / "Christian Humberg", "Eifel/Christian Humberg")
+    sync.add_to_sync(music_new_path / "Gisbert Haefs", "Krimis/Gisbert Haefs")
 
 
 if __name__ == "__main__":
