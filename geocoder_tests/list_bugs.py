@@ -7,18 +7,11 @@ script_path = Path(os.path.abspath(__file__))
 path_xml = script_path.parent / "tests.xml"
 print(f"Current script path: {script_path}")
 
-def read_xml_file(file_path):
-    tree = ET.parse(file_path)
-    root = tree.getroot()
-    return root
 
+tree = ET.parse(path_xml)
+root = tree.getroot()
+children = list(root)
 
-file = read_xml_file(path_xml)
+for child in children:
+    print({child.attrib["name"]})
 
-print(file)
-
-
-# Example usage:
-# xml_root = read_xml_file('your_file.xml')
-# for child in xml_root:
-#     print(child.tag, child.attrib)
