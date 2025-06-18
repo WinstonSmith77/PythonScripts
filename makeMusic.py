@@ -119,3 +119,6 @@ if __name__ == "__main__":
     sync: SyncMusic = SyncMusic(stick)
     add_stuff(sync)
     sync.sync()
+
+
+#rsync -avhP --size-only stick/kinder\ lernen/paletti/   /Volumes/TEST/
