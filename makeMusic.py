@@ -113,6 +113,11 @@ def add_stuff(sync: SyncMusic):
     )
 
     sync.add_to_sync(music_path / "Die Drei ___", "Die Drei Fragezeichen")
+    sync.add_to_sync(music_path / "Jürgen Von Der Lippe"/"Ja Uff Erstmal - Winnetou Unter Comedy-G", "Jürgen Von Der Lippe")
+    
+
+
+    '/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Jürgen Von Der Lippe/Ja Uff Erstmal - Winnetou Unter Comedy-G'
 
 
 if __name__ == "__main__":
