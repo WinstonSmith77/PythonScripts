@@ -39,6 +39,7 @@ class SyncMusic:
 
         """Sync files from sources to destinations."""
         for source, destination in zip(self.sources, self.destinations):
+            self.__check_mp3(source)
             self.__copy_files_to_usb(source, destination, all_files)
 
         files_to_delete = [file for file in all_files if file.is_file()]
@@ -47,6 +48,23 @@ class SyncMusic:
             print(f"Deleted {to_delete}")
 
         delete_emypty_folders_recursive(self.stick)
+
+
+
+    def __check_mp3(self,  source):
+       
+
+        if not source.exists():
+            print(f"Source folder {source} does not exist.")
+            return
+
+        for item in source.rglob("*", case_sensitive=False):
+            if item.is_file() and item.suffix == ".mp3":
+                pass
+                
+                
+        
+
 
     def __copy_files_to_usb(
         self, source: Path, dest_folder: Path, all_files: set[Path]
