@@ -1,5 +1,6 @@
 from pathlib import Path
 import shutil
+from mutagen.mp3 import MP3
 
 use_mac: bool = True  # Set to False if you are not using a Mac
 
@@ -52,15 +53,17 @@ class SyncMusic:
 
 
     def __check_mp3(self,  source):
-       
-
         if not source.exists():
             print(f"Source folder {source} does not exist.")
             return
 
         for item in source.rglob("*", case_sensitive=False):
-            if item.is_file() and item.suffix == ".mp3":
-                pass
+            if item.is_file() and item.suffix.lower() == ".mp3":
+                try:
+                    audio = MP3(item)
+                    print(f"{item}: {audio.pprint()}")
+                except Exception as e:
+                    print(f"Error reading MP3 metadata for {item}: {e}")
                 
                 
         
