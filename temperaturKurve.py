@@ -20,7 +20,7 @@ sol = result.rhs.subs(t0, t0_val)
 C1 = symbols('C1')
 # The general solution has C1 in it, so solve for C1
 sol_with_C1 = sol.subs('C1', C1)
-eq = Eq(sol_with_C1.subs(x, 0), 25)
+eq = Eq(sol_with_C1.subs(x, 0), 22)
 C1_val = solve(eq, C1)[0]
 # Substitute C1 back into the solution
 sol_final = sol.subs('C1', C1_val)
@@ -29,7 +29,7 @@ sol_final = sol.subs('C1', C1_val)
 f = lambdify(x, sol_final, modules=['numpy'])
 
 # Plot
-x_vals = np.linspace(0, 10, 400)
+x_vals = np.linspace(-2, 10, 400)
 y_vals = f(x_vals)
 
 plt.plot(x_vals, y_vals, label=f't0={t0_val}, y(0)=25')
