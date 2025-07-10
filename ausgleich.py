@@ -8,7 +8,7 @@ hat_bezahlt = [
 
 
 def do_ausgleich(bezahlt: list[tuple[str, float]]) -> list[tuple[str, str, float]]:
-    schnitt = sum([x[1] for x in bezahlt]) / len(bezahlt)
+    schnitt : float = sum([x[1] for x in bezahlt]) / len(bezahlt)
     bezahlt_korrigiert: dict[str, float] = {x[0]: (x[1] - schnitt) for x in bezahlt}
 
     ausgleiche = []
