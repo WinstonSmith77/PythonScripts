@@ -8,7 +8,13 @@ hat_bezahlt = [
 
 
 def do_ausgleich(bezahlt: list[tuple[str, float]]) -> list[tuple[str, str, float]]:
-    schnitt : float = sum([x[1] for x in bezahlt]) / len(bezahlt)
+    summe : float = sum([x[1] for x in bezahlt])
+    
+    #print(summe)
+
+    schnitt : float = summe / len(bezahlt)
+
+    #print(schnitt)
     bezahlt_korrigiert: dict[str, float] = {x[0]: (x[1] - schnitt) for x in bezahlt}
 
     ausgleiche = []
@@ -18,8 +24,12 @@ def do_ausgleich(bezahlt: list[tuple[str, float]]) -> list[tuple[str, str, float
             k: v for k, v in bezahlt_korrigiert.items() if abs(v) >= 0.01
         }
 
+        #bezahlt_korrigiert  = dict(sorted(bezahlt_korrigiert.items(), key=lambda x: x[1], reverse=True))
+
         if not bezahlt_korrigiert:
             break
+
+        #print(bezahlt_korrigiert)    
 
         max_bezahlt = max(bezahlt_korrigiert.items(), key=lambda x: x[1])
         min_bezahlt = min(bezahlt_korrigiert.items(), key=lambda x: x[1])
@@ -29,6 +39,8 @@ def do_ausgleich(bezahlt: list[tuple[str, float]]) -> list[tuple[str, str, float
         ausgleiche.append((min_bezahlt[0], max_bezahlt[0], betrag_ausgleich))
         bezahlt_korrigiert[max_bezahlt[0]] -= betrag_ausgleich
         bezahlt_korrigiert[min_bezahlt[0]] += betrag_ausgleich
+
+        
 
     return ausgleiche
 
