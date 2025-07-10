@@ -1,4 +1,4 @@
-hat_bezahlt = (("Matthias", 168.11), ("Roberto", 59),  ("Jens M.", 65),  ("Jens G.", 0), ("Stefan", 12))
+hat_bezahlt = (("Matthias", 168.11), ("Roberto", 59),  ("Jens M.", 65),  ("Jens G.", 0), ("Stefan", 12 + 12))
 
 def ausgleich(bezahlt):
     schnitt = sum([x[1] for x in bezahlt]) / len(bezahlt)
