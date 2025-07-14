@@ -40,7 +40,7 @@ class SyncMusic:
 
         """Sync files from sources to destinations."""
         for source, destination in zip(self.sources, self.destinations):
-            self.__check_mp3(source)
+          #  self.__check_mp3(source)
             self.__copy_files_to_usb(source, destination, all_files)
 
         files_to_delete = [file for file in all_files if file.is_file()]
@@ -134,12 +134,12 @@ def add_stuff(sync: SyncMusic):
     )
 
     sync.add_to_sync(music_path / "Die Drei ___", "Die Drei Fragezeichen")
-    sync.add_to_sync(music_path / "Jürgen Von Der Lippe"/"Ja Uff Erstmal - Winnetou Unter Comedy-G", "Jürgen Von Der Lippe")
+    sync.add_to_sync(music_path / "Jürgen Von Der Lippe"/"Ja Uff Erstmal - Winnetou Unter Comedy-G", f"{humor}/Jürgen Von Der Lippe")
     sync.add_to_sync(music_new_path / "In Vino Veritas", f"{krimis}/In Vino Veritas")
     
 
 
-    '/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal/iTunes Music/Music/Jürgen Von Der Lippe/Ja Uff Erstmal - Winnetou Unter Comedy-G'
+   
 
 
 if __name__ == "__main__":
@@ -148,4 +148,4 @@ if __name__ == "__main__":
     sync.sync()
 
 
-#rsync -avhP --size-only stick/kinder\ lernen/paletti/   /Volumes/TEST/
+#rsync -avhP   --size-only --delete  stick/   /Volumes/AUTO/
