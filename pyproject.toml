@@ -16,6 +16,8 @@ sympy = "^1.13.3"
 pygame = "^2.6.1"
 requests = "^2.32.3"
 mutagen = "^1.47.0"
+nltk = "^3.9.1"
+pandas = "^2.3.2"
 
 
 [build-system]
