@@ -1,4 +1,5 @@
 import csv
+from  pprint import pprint 
 
 path = r"C:\Users\henning\Downloads\61111-0002_de.csv"
 data = []
@@ -25,6 +26,6 @@ with open(path, 'r', encoding='utf-8') as file:
             row = [row[0], row[1], value]
             data.append(row)
 
-# Print first few rows
-for i, row in enumerate(data):
-    print(row)
+range = data[3:-4]
+
+pprint(range)
