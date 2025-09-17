@@ -22,7 +22,7 @@ with open(path, 'r', encoding='utf-8') as file:
                         row[0] = prev_row[0]
                         break
             # Handle the value in row[6]: if "-" use 0, else parse as float with ',' as decimal separator
-            value = 0 if (row[6] == "-" or row[6] == "...") else float(row[6].replace(',', '.'))
+            value  = 0 if (row[6] == "-" or row[6] == "...") else float(row[6].replace(',', '.'))
             row = [row[0], row[1], value]
             data.append(row)
 
@@ -30,11 +30,16 @@ range = data[3:-4]
 pprint(range)
 
 total_inflation : float = 1
+total_inflation_min : float = total_inflation
+total_inflation_max : float = total_inflation
+
 for inflation in range:
     month : float = (1 + inflation[2] / 100)
     total_inflation *= month
-    print(f"Month: {month:.4f} total: {total_inflation:.4f}")
-   
+    total_inflation_min *= month - .05 / 100
+    total_inflation_max *= month + .05 / 100
+    print(f"Month: {inflation[1], inflation[0], str(inflation[2])+"%"} {month:.4f} total: {total_inflation:.4f}  min: {total_inflation_min:.4f} max: {total_inflation_max:.4f}")
+
 
 
 pprint(f"Total inflation: {(total_inflation - 1) * 100:.1f}%")
