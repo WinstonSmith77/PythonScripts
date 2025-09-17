@@ -27,5 +27,6 @@ with open(path, 'r', encoding='utf-8') as file:
             data.append(row)
 
 range = data[3:-4]
+inflation = product([1 + (entry[2] / 100) for entry in range])
 
 pprint(range)
