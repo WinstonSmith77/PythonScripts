@@ -1,7 +1,7 @@
 import csv
 from  pprint import pprint 
 
-path = r"C:\Users\henning\Downloads\61111-0002_de.csv"
+path = r"61111-0002_de.csv"
 data = []
 with open(path, 'r', encoding='utf-8') as file:
     reader = csv.reader(file, delimiter=';')
@@ -23,7 +23,8 @@ with open(path, 'r', encoding='utf-8') as file:
                         break
             # Handle the value in row[6]: if "-" use 0, else parse as float with ',' as decimal separator
             value  = 0 if (row[6] == "-" or row[6] == "...") else float(row[6].replace(',', '.'))
-            row = [row[0], row[1], value]
+            value_year  = 0 if (row[4] == "-" or row[4] == "...") else float(row[4].replace(',', '.'))
+            row = [row[0], row[1], value,value_year]
             data.append(row)
 
 range = data[3:-4]
