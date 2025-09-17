@@ -27,9 +27,12 @@ with open(path, 'r', encoding='utf-8') as file:
             data.append(row)
 
 range = data[3:-4]
-total_inflation = 1
+total_inflation : float = 1
 for inflation in range:
-    total_inflation *= (1 + inflation[2] / 100)
+    month : float = (1 + inflation[2] / 100)
+    total_inflation *= month
+    print(f"Month: {month:.4f} total: {total_inflation:.4f}")
+   
 
 pprint(range)
-pprint(f"Total inflation: {total_inflation:.4f}")
+pprint(f"Total inflation: {(total_inflation - 1) * 100:.1f}%")
