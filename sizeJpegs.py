@@ -12,7 +12,7 @@ def get_creation_date(file_path):
                 tag = TAGS.get(tag_id)
                # print(f"Tag: {tag}, Value: {value}")
                 if tag == 'DateTimeOriginal' or tag == 'DateTime':
-                    #print(f"Found creation date: {value} {tag}")
+                    print(f"Found creation date: {value} {tag}")
                     return value
     except Exception:
         pass
