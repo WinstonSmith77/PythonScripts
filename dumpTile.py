@@ -12,10 +12,12 @@ def dump_to_file_json(path, jsonData):
         json.dump(jsonData, file, indent=4)
 
 
-url_basemap = "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v1/bm_web_de_3857/13/4297/2667.pbf"
-url_flur = 'https://maps.infas-lt.de/maps/05CA1656-C77F-4F11-AD88-724AEFBE79ED/prerelease/tiles/collections/grp_ags23_2024/tiles/WebMercatorQuad/12/1374/2173?f=application/vnd.mapbox-vector-tile'
+url_basemap = "https://vectortiles2.geo.admin.ch/tiles/ch.swisstopo.relief.vt/v1.0.0/9/266/181.pbf"
+#url_flur = 'https://maps.infas-lt.de/maps/05CA1656-C77F-4F11-AD88-724AEFBE79ED/prerelease/tiles/collections/grp_ags23_2024/tiles/WebMercatorQuad/12/1374/2173?f=application/vnd.mapbox-vector-tile'
 
-urls = [url_basemap, url_flur]
+#url_nl = "https://api.pdok.nl/kadaster/brt-achtergrondkaart/ogc/v1/tiles/NetherlandsRDNewQuad/3/2/2"
+
+urls = [url_basemap]
 
 pathFile = Path(__file__)
 parent = pathFile.parent
