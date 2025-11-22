@@ -10,6 +10,7 @@ def get_creation_date(file_path):
         if exif_data:
             for tag_id, value in exif_data.items():
                 tag = TAGS.get(tag_id)
+                
                # print(f"Tag: {tag}, Value: {value}")
                 if tag == 'DateTimeOriginal' or tag == 'DateTime':
                     print(f"Found creation date: {value} {tag}")
