@@ -140,7 +140,7 @@ def add_stuff(sync: SyncMusic):
     sync.add_to_sync(music_path / "Jürgen Von Der Lippe"/"Ja Uff Erstmal - Winnetou Unter Comedy-G", f"{humor}/Jürgen Von Der Lippe")
     sync.add_to_sync(music_new_path / "In Vino Veritas", f"{krimis}/In Vino Veritas")
 
-    sync.add_to_sync(music_new_path / 'Ben Aaronovitch', f'{krimis}Ben Aaronovitch')
+    sync.add_to_sync(music_new_path / 'Ben Aaronovitch', f'{krimis}/Ben Aaronovitch')
     
 
 
