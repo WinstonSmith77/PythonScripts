@@ -32,7 +32,7 @@ def find_longest_path(root_folder):
 
 # Example usage
 if __name__ == "__main__":
-    sample_path = r"C:\Users\henning\source\easymapGit\dev"
+    sample_path = r"C:\Users\Matthias.Henning\source\easymap\main"
     print(f"Path: {sample_path}")
     print(f"Length: {path_length(sample_path)} characters")
     print(f"Depth: {path_depth(sample_path)} levels")
