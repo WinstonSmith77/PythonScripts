@@ -36,8 +36,11 @@ for style_file in style_files:
                     
                     if PAINT_KEY in layer:
                         if FILL_COLOR_KEY in layer[PAINT_KEY]:
-                            print(f"\n{LAYERS_KEY}: {layer_id} (Type: {layer_type})")
-                            print(f" { FILL_COLOR_KEY}: {layer[PAINT_KEY][FILL_COLOR_KEY]}")
+                            color_value = layer[PAINT_KEY][FILL_COLOR_KEY]
+                            if not isinstance(color_value, str):
+                               
+                                print(f"\n{LAYERS_KEY}: {layer_id} (Type: {layer_type})")
+                                print(f" { FILL_COLOR_KEY}: {layer[PAINT_KEY][FILL_COLOR_KEY]}")
             else:
                 print("No 'layers' key found in this file")
                 
