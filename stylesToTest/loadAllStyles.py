@@ -5,7 +5,7 @@ import json
 # Get all JSON style files from the current directory
 style_folder = os.path.dirname(os.path.abspath(__file__))
 style_files = glob.glob(os.path.join(style_folder, "*.json"))
-#style_files = list(filter(lambda f: 'neu' in str(os.path), style_files))
+# style_files = list(filter(lambda f: 'neu' in str(os.path), style_files))
 
 
 LAYERS_KEY = "layers"
@@ -15,7 +15,7 @@ PAINT_KEY = "paint"
 FILL_COLOR_KEY = "fill-color"
 
 
-# Print all found style files 
+# Print all found style files
 print(f"Found {len(style_files)} style file(s):")
 for style_file in style_files:
     print(f"  - {os.path.basename(style_file)}")
@@ -28,21 +28,23 @@ for style_file in style_files:
             print(f"\n{'=' * 60}")
             print(f"File: {os.path.basename(style_file)}")
             print('=' * 60)
-            
+
             if LAYERS_KEY in content:
                 for layer in content[LAYERS_KEY]:
                     layer_id = layer.get(LAYER_ID_KEY, "unknown")
                     layer_type = layer.get(LAYER_TYPE_KEY, "unknown")
-                    
+
                     if PAINT_KEY in layer:
                         if FILL_COLOR_KEY in layer[PAINT_KEY]:
                             color_value = layer[PAINT_KEY][FILL_COLOR_KEY]
-                            if not isinstance(color_value, str):
-                               
-                                print(f"\n{LAYERS_KEY}: {layer_id} (Type: {layer_type})")
-                                print(f" { FILL_COLOR_KEY}: {layer[PAINT_KEY][FILL_COLOR_KEY]}")
+                            if isinstance(color_value, str):
+
+                                print(
+                                    f"\n{LAYERS_KEY}: {layer_id} (Type: {layer_type})")
+                                print(
+                                    f" {FILL_COLOR_KEY}: {layer[PAINT_KEY][FILL_COLOR_KEY]}")
             else:
                 print("No 'layers' key found in this file")
-                
+
         except json.JSONDecodeError as e:
             print(f"\nError parsing {os.path.basename(style_file)}: {e}")
