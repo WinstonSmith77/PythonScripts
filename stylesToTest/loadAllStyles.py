@@ -7,6 +7,14 @@ style_folder = os.path.dirname(os.path.abspath(__file__))
 style_files = glob.glob(os.path.join(style_folder, "*.json"))
 #style_files = list(filter(lambda f: 'neu' in str(os.path), style_files))
 
+
+LAYERS_KEY = "layers"
+LAYER_ID_KEY = "id"
+LAYER_TYPE_KEY = "type"
+PAINT_KEY = "paint"
+FILL_COLOR_KEY = "fill-color"
+
+
 # Print all found style files 
 print(f"Found {len(style_files)} style file(s):")
 for style_file in style_files:
@@ -17,20 +25,19 @@ for style_file in style_files:
     with open(style_file, 'r', encoding='utf-8') as f:
         try:
             content = json.load(f)
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print(f"File: {os.path.basename(style_file)}")
-            print('='*60)
+            print('=' * 60)
             
-            if 'layers' in content:
-                for layer in content['layers']:
-                    layer_id = layer.get('id', 'unknown')
-                    layer_type = layer.get('type', 'unknown')
+            if LAYERS_KEY in content:
+                for layer in content[LAYERS_KEY]:
+                    layer_id = layer.get(LAYER_ID_KEY, "unknown")
+                    layer_type = layer.get(LAYER_TYPE_KEY, "unknown")
                     
-                    if 'paint' in layer:
-                        if 'fill-color' in layer['paint']:
-                            print(f"\nLayer: {layer_id} (Type: {layer_type})")
-                           
-                            print(f"  fill-color: {layer['paint']['fill-color']}")
+                    if PAINT_KEY in layer:
+                        if FILL_COLOR_KEY in layer[PAINT_KEY]:
+                            print(f"\n{LAYERS_KEY}: {layer_id} (Type: {layer_type})")
+                            print(f" { FILL_COLOR_KEY}: {layer[PAINT_KEY][FILL_COLOR_KEY]}")
             else:
                 print("No 'layers' key found in this file")
                 
