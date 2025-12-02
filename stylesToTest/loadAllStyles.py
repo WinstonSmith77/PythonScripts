@@ -2,17 +2,18 @@ import os
 import glob
 import json
 
-# Get all JSON style files from the current directory
-style_folder = os.path.dirname(os.path.abspath(__file__))
-style_files = glob.glob(os.path.join(style_folder, "*.json"))
-# style_files = list(filter(lambda f: 'neu' in str(os.path), style_files))
-
-
 LAYERS_KEY = "layers"
 LAYER_ID_KEY = "id"
 LAYER_TYPE_KEY = "type"
 PAINT_KEY = "paint"
 FILL_COLOR_KEY = "fill-color"
+
+
+
+# Get all JSON style files from the current directory
+style_folder = os.path.dirname(os.path.abspath(__file__))
+style_files = glob.glob(os.path.join(style_folder, "*.json"))
+style_files = list(filter(lambda f:  "bm_web_col" in str(os.path.basename(f)), style_files))
 
 
 # Print all found style files
@@ -31,13 +32,13 @@ for style_file in style_files:
 
             if LAYERS_KEY in content:
                 for layer in content[LAYERS_KEY]:
-                    layer_id = layer.get(LAYER_ID_KEY, "unknown")
-                    layer_type = layer.get(LAYER_TYPE_KEY, "unknown")
 
                     if PAINT_KEY in layer:
                         if FILL_COLOR_KEY in layer[PAINT_KEY]:
                             color_value = layer[PAINT_KEY][FILL_COLOR_KEY]
                             if isinstance(color_value, str):
+                                layer_id = layer.get(LAYER_ID_KEY)
+                                layer_type = layer.get(LAYER_TYPE_KEY)
 
                                 print(
                                     f"\n{LAYERS_KEY}: {layer_id} (Type: {layer_type})")
