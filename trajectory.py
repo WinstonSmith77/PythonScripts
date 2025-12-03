@@ -56,7 +56,7 @@ def simulate_grenade_trajectory(v0, angle, dt=0.01, drag_coefficient=0.47, cross
 
 # Example usage
 initial_velocity = 1500  # m/s
-angles = range(30, 60, 3)  # 10 to 45 degrees in 5-degree steps
+angles = range(41, 50, 1)  # 10 to 45 degrees in 5-degree steps
 
 # Plot the trajectories
 plt.figure(figsize=(12, 8))
