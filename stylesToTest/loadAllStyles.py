@@ -7,13 +7,14 @@ LAYER_ID_KEY = "id"
 LAYER_TYPE_KEY = "type"
 PAINT_KEY = "paint"
 FILL_COLOR_KEY = "fill-color"
+LINE_WIDTH_KEY = "line-width"
 
 
 
 # Get all JSON style files from the current directory
 style_folder = os.path.dirname(os.path.abspath(__file__))
 style_files = glob.glob(os.path.join(style_folder, "*.json"))
-style_files = list(filter(lambda f:  "bm_web_col" in str(os.path.basename(f)), style_files))
+style_files = list(filter(lambda f:  "bm_web_col_new" in str(os.path.basename(f)), style_files))
 
 
 # Print all found style files
@@ -34,16 +35,16 @@ for style_file in style_files:
                 for layer in content[LAYERS_KEY]:
 
                     if PAINT_KEY in layer:
-                        if FILL_COLOR_KEY in layer[PAINT_KEY]:
-                            color_value = layer[PAINT_KEY][FILL_COLOR_KEY]
-                            if isinstance(color_value, str):
+                        if LINE_WIDTH_KEY in layer[PAINT_KEY]:
+                            line_width = layer[PAINT_KEY][LINE_WIDTH_KEY]
+                            if any(map(lambda x: isinstance(line_width, x), [int, float, str])):
                                 layer_id = layer.get(LAYER_ID_KEY)
                                 layer_type = layer.get(LAYER_TYPE_KEY)
 
                                 print(
                                     f"\n{LAYERS_KEY}: {layer_id} (Type: {layer_type})")
                                 print(
-                                    f" {FILL_COLOR_KEY}: {layer[PAINT_KEY][FILL_COLOR_KEY]}")
+                                    f" {LINE_WIDTH_KEY}: {layer[PAINT_KEY][LINE_WIDTH_KEY]}")
             else:
                 print("No 'layers' key found in this file")
 

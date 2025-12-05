@@ -56,13 +56,31 @@ def simulate_grenade_trajectory(v0, angle, dt=0.01, drag_coefficient=0.47, cross
 
 # Example usage
 initial_velocity = 1500  # m/s
-angles = range(41, 50, 1)  # 10 to 45 degrees in 5-degree steps
+angles = range(10, 60, 2) 
+
+max_heights = 0
+max_heights_angle = 0
+
+max_width = 0
+max_width_angle = 0
 
 # Plot the trajectories
 plt.figure(figsize=(12, 8))
 for angle in angles:
     x, y = simulate_grenade_trajectory(initial_velocity, angle)
     plt.plot(x, y, linewidth=2, label=f'{angle}°')
+    print(f'Angle: {angle}°, Range: {x[-1]:.2f} m, Max Height: {max(y):.2f} m')
+    if max(y) > max_heights:
+        max_heights = max(y)
+        max_heights_angle = angle
+    if x[-1] > max_width:
+        max_width = x[-1]
+        max_width_angle = angle    
+
+print(f'  -> New max height {max_heights:.2f} m at angle {max_heights_angle}°')    
+print(f'  -> New max range {max_width:.2f} m at angle {max_width_angle}°')
+
+
 
 plt.xlabel('Distance (m)')
 plt.ylabel('Height (m)')
