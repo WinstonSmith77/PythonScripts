@@ -39,22 +39,28 @@ for style_file in style_files:
 
             # pprint(layer_names)
 
-            def dash_fits(dash):
+            def dash_fits(dash : dict | list):
                 if isinstance(dash, dict):
                     if 'stops' in dash:
                         interpolation = dash['stops']
-                        return True
+                        found_near_zero  = False
+                        for step in interpolation:
+                            found_near_zero |= any(
+                                map(lambda x: x < 0.01,  step[1]))
+                        if found_near_zero:
+                            return interpolation
                 return False
 
             if LAYERS_KEY in content:
                 for layer in content[LAYERS_KEY]:
                    # if layer[LAYER_ID_KEY] == "Gewaesser_L_Durchlass_Dueker":
 
-                        if PAINT_KEY in layer:
-                            if LINE_DASH_ARRAY in layer[PAINT_KEY]:
-                                dash = layer[PAINT_KEY][LINE_DASH_ARRAY]
-                                if dash_fits(dash):
-                                    print(f"{layer[LAYER_ID_KEY]} {dash}")
+                    if PAINT_KEY in layer:
+                        if LINE_DASH_ARRAY in layer[PAINT_KEY]:
+                            dash = layer[PAINT_KEY][LINE_DASH_ARRAY]
+                            fits_dash = dash_fits(dash)
+                            if fits_dash:
+                                print(f"{layer[LAYER_ID_KEY]} {fits_dash}")
 
             else:
                 print("No 'layers' key found in this file")
