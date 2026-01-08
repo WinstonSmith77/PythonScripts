@@ -16,7 +16,7 @@ LINE_DASH_ARRAY = "line-dasharray"
 style_folder = os.path.dirname(os.path.abspath(__file__))
 style_files = glob.glob(os.path.join(style_folder, "*.json"))
 style_files = list(
-    filter(lambda f:  "bm_web_col_new" in str(os.path.basename(f)), style_files))
+    filter(lambda f:  "" in str(os.path.basename(f)), style_files))
 
 
 # Print all found style files
