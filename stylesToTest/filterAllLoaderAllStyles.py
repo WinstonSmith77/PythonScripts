@@ -42,6 +42,7 @@ for style_file in style_files:
             def dash_fits(dash):
                 if isinstance(dash, dict):
                     if 'stops' in dash:
+                        interpolation = dash['stops']
                         return True
                 return False
 
