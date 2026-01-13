@@ -3,6 +3,7 @@ import glob
 import json
 from pprint import pprint
 
+
 LAYERS_KEY = "layers"
 LAYER_ID_KEY = "id"
 LAYER_TYPE_KEY = "type"
@@ -33,9 +34,11 @@ for style_file in style_files:
             print(f"File: {os.path.basename(style_file)}")
             print('=' * 60)
 
-            layer_names = map(lambda x: x[LAYER_ID_KEY], content[LAYERS_KEY])
+            layer_names = (x[LAYER_ID_KEY] for x in content[LAYERS_KEY])
+            
             layer_names = sorted(
                 layer_names, key=lambda s: len(s), reverse=True)
+         
 
             # pprint(layer_names)
 
@@ -46,7 +49,7 @@ for style_file in style_files:
                         found_near_zero  = False
                         for step in interpolation:
                             found_near_zero |= any(
-                                map(lambda x: x < 0.01,  step[1]))
+                                (x < 0.01 for x in step[1]))
                         if found_near_zero:
                             return interpolation
                 return False
