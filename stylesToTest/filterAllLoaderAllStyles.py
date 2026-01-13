@@ -16,9 +16,7 @@ LINE_DASH_ARRAY = "line-dasharray"
 # Get all JSON style files from the current directory
 style_folder = os.path.dirname(os.path.abspath(__file__))
 style_files = glob.glob(os.path.join(style_folder, "*.json"))
-style_files = list(
-    filter(lambda f:  "" in str(os.path.basename(f)), style_files))
-
+style_files = [style_file for style_file in style_files if "" in str(os.path.basename(style_file))]
 
 # Print all found style files
 print(f"Found {len(style_files)} style file(s):")
@@ -48,7 +46,7 @@ for style_file in style_files:
                         interpolation = dash['stops']
                         found_near_zero  = False
                         for step in interpolation:
-                            found_near_zero |=  (True for x in step[1] if x < 0.01)
+                            found_near_zero |= any (True for x in step[1] if x < 0.01)
                         if found_near_zero:
                             return interpolation
                 return False
