@@ -48,8 +48,7 @@ for style_file in style_files:
                         interpolation = dash['stops']
                         found_near_zero  = False
                         for step in interpolation:
-                            found_near_zero |= any(
-                                (x < 0.01 for x in step[1]))
+                            found_near_zero |=  (True for x in step[1] if x < 0.01)
                         if found_near_zero:
                             return interpolation
                 return False
