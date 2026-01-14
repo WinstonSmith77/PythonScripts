@@ -32,10 +32,8 @@ def find_longest_path(root_folder):
 
 # Example usage
 if __name__ == "__main__":
-    sample_path = r"C:\Users\Matthias.Henning\source\easymap\main"
-    print(f"Path: {sample_path}")
-    print(f"Length: {path_length(sample_path)} characters")
-    print(f"Depth: {path_depth(sample_path)} levels")
+    sample_path = r"C:\Users\Matthias.Henning\source\easymap\tl\src\TestResults\x64\Deploy_Matthias.Henning 20260113T165738_57388\Out\UnitTestFiles"
+
     
     # Find longest path
     longest, length = find_longest_path(sample_path)
