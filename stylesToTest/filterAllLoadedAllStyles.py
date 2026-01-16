@@ -1,8 +1,5 @@
-import glob
 import json
-from pprint import pprint
 from pathlib import Path
-
 
 LAYERS_KEY = "layers"
 LAYER_ID_KEY = "id"
@@ -35,26 +32,23 @@ def extractFonts(fonts: dict | list):
 
 allFonts = set()
 
-# Get all JSON style files from the current directory
 style_folder = Path(__file__).parent
-print(style_folder)
-style_files = list(style_folder.glob("*.json"))
+style_files = style_folder.glob("*.json")
 
 style_files = [
     style_file for style_file in style_files if style_file.is_file and "" in str(style_file)]
 
 print(style_files)
 
-# Print all found style files
 print(f"Found {len(style_files)} style file(s):")
 for style_file in style_files:
     print(f"  - {style_file.parts[-1]}")
 
 
-# Extract paint properties from layers
 for style_file in style_files:
     try:
-        content = json.loads(style_file.read_text())
+        with  style_file.open() as f:
+            content = json.load(f)
         print(f"\n{'=' * 60}")
         print(f"File: {style_file.parts[-1]}")
         print('=' * 60)
@@ -69,16 +63,15 @@ for style_file in style_files:
         if LAYERS_KEY in content:
             for layer in content[LAYERS_KEY]:
 
-                if LAYOUT_KEY in layer:
-                    if TEXT_FONT in layer[LAYOUT_KEY]:
-                        fonts = layer[LAYOUT_KEY][TEXT_FONT]
-                        print(f"{layer[LAYER_ID_KEY]} {fonts}")
-                        if (any(isinstance(item, list) for item in fonts)):
-                            for fontInner in (extractFonts(fonts)):
-                                allFonts.add(fontInner)
-                        else:
-                            for font in fonts:
-                                allFonts.add(font)
+                if LAYOUT_KEY in layer and TEXT_FONT in layer[LAYOUT_KEY]:
+                    fonts = layer[LAYOUT_KEY][TEXT_FONT]
+                    print(f"{layer[LAYER_ID_KEY]} {fonts}")
+                    if (any(isinstance(item, list) for item in fonts)):
+                        for fontInner in (extractFonts(fonts)):
+                            allFonts.add(fontInner)
+                    else:
+                        for font in fonts:
+                            allFonts.add(font)
 
         else:
             print("No 'layers' key found in this file")
@@ -87,5 +80,5 @@ for style_file in style_files:
         print(f"\nError parsing {style_file.parent}: {e}")
 
 print(f'\nAlle Fonts\n')
-for f in sorted(allFonts):
-    print(f)
+for font in sorted(allFonts):
+    print(font)
