@@ -15,6 +15,7 @@ LINE_COLOR_KEY = "line-color"
 LINE_DASH_ARRAY = "line-dasharray"
 TEXT_FONT = "text-font"
 
+
 def dash_fits(dash: dict | list):
     if isinstance(dash, dict):
         if 'stops' in dash:
@@ -32,7 +33,8 @@ style_folder = Path(__file__).parent
 print(style_folder)
 style_files = list(style_folder.glob("*.json"))
 
-style_files = [style_file for style_file in style_files if  "" in str(style_file)]
+style_files = [
+    style_file for style_file in style_files if style_file.is_file and "" in str(style_file)]
 
 print(style_files)
 
@@ -40,6 +42,8 @@ print(style_files)
 print(f"Found {len(style_files)} style file(s):")
 for style_file in style_files:
     print(f"  - {style_file.parts[-1]}")
+
+allFonts = set()
 
 # Extract paint properties from layers
 for style_file in style_files:
@@ -64,9 +68,15 @@ for style_file in style_files:
                     if TEXT_FONT in layer[LAYOUT_KEY]:
                         fonts = layer[LAYOUT_KEY][TEXT_FONT]
                         print(f"{layer[LAYER_ID_KEY]} {fonts}")
+                        for font in fonts:
+                            if (isinstance(font, list)):
+                               continue     
+                            
+                            allFonts.add(font)
 
         else:
             print("No 'layers' key found in this file")
+        print(allFonts)    
 
     except json.JSONDecodeError as e:
         print(f"\nError parsing {os.path.basename(style_file)}: {e}")
