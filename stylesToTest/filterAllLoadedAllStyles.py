@@ -10,13 +10,26 @@ LAYER_TYPE_KEY = "type"
 PAINT_KEY = "paint"
 FILL_COLOR_KEY = "fill-color"
 LINE_WIDTH_KEY = "line-width"
+LINE_COLOR_KEY = "line-color"
 LINE_DASH_ARRAY = "line-dasharray"
+
+def dash_fits(dash: dict | list):
+    if isinstance(dash, dict):
+        if 'stops' in dash:
+            interpolation = dash['stops']
+            found_near_zero = False
+            for step in interpolation:
+                found_near_zero |= any(True for x in step[1] if x < 0.01)
+            if found_near_zero:
+                return interpolation
+    return False
 
 
 # Get all JSON style files from the current directory
 style_folder = os.path.dirname(os.path.abspath(__file__))
 style_files = glob.glob(os.path.join(style_folder, "*.json"))
-style_files = [style_file for style_file in style_files if "" in str(os.path.basename(style_file))]
+style_files = [style_file for style_file in style_files if "" in str(
+    os.path.basename(style_file))]
 
 # Print all found style files
 print(f"Found {len(style_files)} style file(s):")
@@ -33,34 +46,20 @@ for style_file in style_files:
             print('=' * 60)
 
             layer_names = (x[LAYER_ID_KEY] for x in content[LAYERS_KEY])
-            
+
             layer_names = sorted(
                 layer_names, key=lambda s: len(s), reverse=True)
-         
 
             # pprint(layer_names)
 
-            def dash_fits(dash : dict | list):
-                if isinstance(dash, dict):
-                    if 'stops' in dash:
-                        interpolation = dash['stops']
-                        found_near_zero  = False
-                        for step in interpolation:
-                            found_near_zero |= any (True for x in step[1] if x < 0.01)
-                        if found_near_zero:
-                            return interpolation
-                return False
-
             if LAYERS_KEY in content:
                 for layer in content[LAYERS_KEY]:
-                   # if layer[LAYER_ID_KEY] == "Gewaesser_L_Durchlass_Dueker":
+                   if "Gewaesser_L_Breite_42m" in layer[LAYER_ID_KEY] :
 
                     if PAINT_KEY in layer:
-                        if LINE_DASH_ARRAY in layer[PAINT_KEY]:
-                            dash = layer[PAINT_KEY][LINE_DASH_ARRAY]
-                            fits_dash = dash_fits(dash)
-                            if fits_dash:
-                                print(f"{layer[LAYER_ID_KEY]} {fits_dash}")
+                        if LINE_COLOR_KEY in layer[PAINT_KEY]:
+                            color = layer[PAINT_KEY][LINE_COLOR_KEY]
+                            print(f"{layer[LAYER_ID_KEY]} {color}")
 
             else:
                 print("No 'layers' key found in this file")
