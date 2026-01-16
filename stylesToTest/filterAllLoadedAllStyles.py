@@ -28,7 +28,16 @@ def dash_fits(dash: dict | list):
     return False
 
 def extractFonts(fonts: dict | list):
-    return [ str(fonts[3][1][0]), str(fonts[4][1][0])]
+    pprint(fonts)
+    result = [ str(fonts[3][1][0]), str(fonts[4][1][0])] 
+    return result
+
+
+allFonts = set()
+
+def addFont(toAdd):
+    allFonts.add(toAdd)
+
 
 
 
@@ -47,7 +56,7 @@ print(f"Found {len(style_files)} style file(s):")
 for style_file in style_files:
     print(f"  - {style_file.parts[-1]}")
 
-allFonts = set()
+
 
 # Extract paint properties from layers
 for style_file in style_files:
@@ -74,10 +83,10 @@ for style_file in style_files:
                         for font in fonts:
                             if (isinstance(font, list)):
                                for fontInner in (extractFonts(fonts)):
-                                   allFonts.add(fontInner)
-                               continue     
-                            
-                            allFonts.add(font)
+                                   addFont(fontInner)
+                                   continue
+                            else:
+                                addFont(font)
 
         else:
             print("No 'layers' key found in this file")
@@ -87,5 +96,6 @@ for style_file in style_files:
         print(f"\nError parsing {style_file.parent}: {e}")
 
 pprint(allFonts)
+
 
 
