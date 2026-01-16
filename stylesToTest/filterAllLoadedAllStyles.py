@@ -78,7 +78,6 @@ for style_file in style_files:
                         if (any(isinstance(item, list) for item in fonts)):
                             for fontInner in (extractFonts(fonts)):
                                 allFonts.add(fontInner)
-                                continue
                         else:
                             for font in fonts:
                                 allFonts.add(font)
