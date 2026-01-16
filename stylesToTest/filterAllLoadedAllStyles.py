@@ -13,6 +13,7 @@ FILL_COLOR_KEY = "fill-color"
 LINE_WIDTH_KEY = "line-width"
 LINE_COLOR_KEY = "line-color"
 LINE_DASH_ARRAY = "line-dasharray"
+TEXT_FONT = "text-font"
 
 def dash_fits(dash: dict | list):
     if isinstance(dash, dict):
@@ -59,10 +60,10 @@ for style_file in style_files:
             for layer in content[LAYERS_KEY]:
                 # if "Gewaesser_L_Breite_42m" in layer[LAYER_ID_KEY] :
 
-                if PAINT_KEY in layer:
-                    if LINE_COLOR_KEY in layer[PAINT_KEY]:
-                        color = layer[PAINT_KEY][LINE_COLOR_KEY]
-                        print(f"{layer[LAYER_ID_KEY]} {color}")
+                if LAYOUT_KEY in layer:
+                    if TEXT_FONT in layer[LAYOUT_KEY]:
+                        fonts = layer[LAYOUT_KEY][TEXT_FONT]
+                        print(f"{layer[LAYER_ID_KEY]} {fonts}")
 
         else:
             print("No 'layers' key found in this file")
