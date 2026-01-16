@@ -30,7 +30,7 @@ def dash_fits(dash: dict | list):
 def extractFonts(fonts: dict | list):
     results = []
     results.append(str(fonts))
-    return [ str(fonts)]
+    return [ str(fonts[0])]
 
 
 
