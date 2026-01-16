@@ -79,4 +79,4 @@ for style_file in style_files:
         print(allFonts)    
 
     except json.JSONDecodeError as e:
-        print(f"\nError parsing {os.path.basename(style_file)}: {e}")
+        print(f"\nError parsing {style_file.parent}: {e}")
