@@ -48,7 +48,7 @@ for style_file in style_files:
 for style_file in style_files:
     try:
         with  style_file.open() as f:
-            content = json.load(f)
+            content2 = json.load(f)
         print(f"\n{'=' * 60}")
         print(f"File: {style_file.parts[-1]}")
         print('=' * 60)
