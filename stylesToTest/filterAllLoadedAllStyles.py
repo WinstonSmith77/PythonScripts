@@ -28,8 +28,6 @@ def dash_fits(dash: dict | list):
     return False
 
 def extractFonts(fonts: dict | list):
-    results = []
-    results.append(str(fonts))
     return [ str(fonts[3][1][0]), str(fonts[4][1][0])]
 
 
