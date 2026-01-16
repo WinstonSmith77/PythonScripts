@@ -89,5 +89,5 @@ for style_file in style_files:
         print(f"\nError parsing {style_file.parent}: {e}")
 
 print(f'\nAlle Fonts\n')
-for f in allFonts:
+for f in sorted(allFonts):
     print(f)
