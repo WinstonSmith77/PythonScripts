@@ -47,13 +47,13 @@ for style_file in style_files:
 
 for style_file in style_files:
     try:
-        with  style_file.open() as f:
-            content2 = json.load(f)
+        with style_file.open() as f:
+            content = json.load(f)
         print(f"\n{'=' * 60}")
         print(f"File: {style_file.parts[-1]}")
         print('=' * 60)
 
-        layer_names = (x[LAYER_ID_KEY] for x in content[LAYERS_KEY])
+        layer_names = (layer[LAYER_ID_KEY] for layer in content[LAYERS_KEY])
 
         layer_names = sorted(
             layer_names, key=lambda s: len(s), reverse=True)
