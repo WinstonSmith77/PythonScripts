@@ -89,4 +89,5 @@ for style_file in style_files:
     except json.JSONDecodeError as e:
         print(f"\nError parsing {style_file.parent}: {e}")
 
+print(f'\nAlle Fonts')
 pprint(allFonts)
