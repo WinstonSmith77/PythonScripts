@@ -30,7 +30,7 @@ def dash_fits(dash: dict | list):
 def extractFonts(fonts: dict | list):
     results = []
     results.append(str(fonts))
-    return [ str(fonts[0])]
+    return [ str(fonts[3][1][0]), str(fonts[4][1][0])]
 
 
 
@@ -50,7 +50,6 @@ for style_file in style_files:
     print(f"  - {style_file.parts[-1]}")
 
 allFonts = set()
-allFontsComplex = []
 
 # Extract paint properties from layers
 for style_file in style_files:
@@ -69,7 +68,6 @@ for style_file in style_files:
 
         if LAYERS_KEY in content:
             for layer in content[LAYERS_KEY]:
-                # if "Gewaesser_L_Breite_42m" in layer[LAYER_ID_KEY] :
 
                 if LAYOUT_KEY in layer:
                     if TEXT_FONT in layer[LAYOUT_KEY]:
@@ -77,7 +75,8 @@ for style_file in style_files:
                         print(f"{layer[LAYER_ID_KEY]} {fonts}")
                         for font in fonts:
                             if (isinstance(font, list)):
-                               allFontsComplex.append(extractFonts(fonts))
+                               for fontInner in (extractFonts(fonts)):
+                                   allFonts.add(fontInner)
                                continue     
                             
                             allFonts.add(font)
@@ -90,5 +89,5 @@ for style_file in style_files:
         print(f"\nError parsing {style_file.parent}: {e}")
 
 pprint(allFonts)
-pprint(allFontsComplex) 
+
 
