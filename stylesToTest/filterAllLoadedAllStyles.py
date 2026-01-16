@@ -29,13 +29,11 @@ def dash_fits(dash: dict | list):
 
 
 def extractFonts(fonts: dict | list):
-    pprint(fonts)
     result = [str(fonts[3][1][0]), str(fonts[4][1][0])]
     return result
 
 
 allFonts = set()
-
 
 # Get all JSON style files from the current directory
 style_folder = Path(__file__).parent
