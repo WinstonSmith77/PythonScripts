@@ -26,11 +26,11 @@ def dash_fits(dash: dict | list):
 
 
 def list_all_fonts(items):
-    results = set()
+    results = []
     if (any(isinstance(item, list) for item in fonts)):
-        results.update([str(fonts[3][1][0]), str(fonts[4][1][0])])
+        results.extend([str(fonts[3][1][0]), str(fonts[4][1][0])])
     else:
-        results.update(fonts)
+        results.extend(fonts)
     return results
 
 
