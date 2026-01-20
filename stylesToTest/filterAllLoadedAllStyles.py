@@ -25,9 +25,15 @@ def dash_fits(dash: dict | list):
     return False
 
 
-def extractFonts(fonts: dict | list):
-    result = [str(fonts[3][1][0]), str(fonts[4][1][0])]
-    return result
+def list_fonts(items):
+    results = set()
+    if (any(isinstance(item, list) for item in fonts)):
+        for fontInner in [str(fonts[3][1][0]), str(fonts[4][1][0])]:
+            results.add(fontInner)
+    else:
+        for font in fonts:
+            results.add(font)
+    return results
 
 
 allFonts = set()
@@ -38,11 +44,10 @@ style_files = style_folder.glob("*.json")
 style_files = [
     style_file for style_file in style_files if style_file.is_file and "" in str(style_file)]
 
-print(style_files)
-
 print(f"Found {len(style_files)} style file(s):")
 for style_file in style_files:
-    print(f"  - {style_file.parts[-1]}")
+    print(f" {style_file.parts[-1]}", end='; ')
+print(f"\n")
 
 
 for style_file in style_files:
@@ -65,20 +70,13 @@ for style_file in style_files:
 
                 if LAYOUT_KEY in layer and TEXT_FONT in layer[LAYOUT_KEY]:
                     fonts = layer[LAYOUT_KEY][TEXT_FONT]
-                    print(f"{layer[LAYER_ID_KEY]} {fonts}")
-                    if (any(isinstance(item, list) for item in fonts)):
-                        for fontInner in (extractFonts(fonts)):
-                            allFonts.add(fontInner)
-                    else:
-                        for font in fonts:
-                            allFonts.add(font)
-
-        else:
-            print("No 'layers' key found in this file")
+                    print(f"{layer[LAYER_ID_KEY]} {fonts}", end='; ')
+                    for newItem in list_fonts(fonts):
+                        allFonts.add(newItem)
 
     except json.JSONDecodeError as e:
-        print(f"\nError parsing {style_file.parent}: {e}")
+        print(f"\n\nError parsing {style_file.parent}: {e}")
 
-print(f'\nAlle Fonts\n')
+print(f'\nAlle Fonts:\n')
 for font in sorted(allFonts):
     print(font)
