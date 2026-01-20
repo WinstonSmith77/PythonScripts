@@ -25,14 +25,12 @@ def dash_fits(dash: dict | list):
     return False
 
 
-def list_fonts(items):
+def list_all_fonts(items):
     results = set()
     if (any(isinstance(item, list) for item in fonts)):
-        for fontInner in [str(fonts[3][1][0]), str(fonts[4][1][0])]:
-            results.add(fontInner)
+        results.update([str(fonts[3][1][0]), str(fonts[4][1][0])])
     else:
-        for font in fonts:
-            results.add(font)
+        results.update(fonts)
     return results
 
 
@@ -67,12 +65,10 @@ for style_file in style_files:
 
         if LAYERS_KEY in content:
             for layer in content[LAYERS_KEY]:
-
                 if LAYOUT_KEY in layer and TEXT_FONT in layer[LAYOUT_KEY]:
                     fonts = layer[LAYOUT_KEY][TEXT_FONT]
                     print(f"{layer[LAYER_ID_KEY]} {fonts}", end='; ')
-                    for newItem in list_fonts(fonts):
-                        allFonts.add(newItem)
+                    allFonts.update(list_all_fonts(fonts))
 
     except json.JSONDecodeError as e:
         print(f"\n\nError parsing {style_file.parent}: {e}")
