@@ -65,7 +65,7 @@ def prune_snapshots(base_dir: Path, keep: int = 10) -> None:
         return
 
     snapshots.sort(key=lambda pathAndParsedTime: pathAndParsedTime[1], reverse=True)
-    for obsolete in snapshots[keep:]:
+    for obsolete in (snapshot[0] for snapshot in snapshots[keep:]):
         try:
             shutil.rmtree(obsolete)
             print(f"Removed snapshot {obsolete}")
