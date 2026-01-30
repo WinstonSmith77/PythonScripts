@@ -7,7 +7,7 @@ from watchdog.observers import Observer
 
 
 class FolderWatcher(FileSystemEventHandler):
-    def __init__(self, debounce_seconds: float = 2.0, event=None):
+    def __init__(self, debounce_seconds: float = 1, event=None):
         super().__init__()
         self._debounce_seconds = debounce_seconds
         self._event = event
@@ -57,14 +57,22 @@ def get_time_stamp():
     return timestamp
 
 
-def event_handler(event_info, timestamp):
-    print(event_info)
-    print(timestamp)
+def parse_time_stamp(timestamp: str):
+    return time.strptime(timestamp, "%d_%m_%Y__%H:%M:%S")
 
 
-def main(path: Path):
+def main(path: Path, copy_dest: Path | None = None):
+    def event_handler(event_info, timestamp):
+        print(event_info)
+        print(timestamp)
+
+        print(parse_time_stamp(timestamp))
+
     if not path.exists():
         raise FileNotFoundError(path)
+
+    if copy_dest and not copy_dest.exists():
+        raise FileNotFoundError(copy_dest)
 
     handler = FolderWatcher(debounce_seconds=1, event=event_handler)
     observer = Observer()
@@ -86,10 +94,12 @@ def parse_args():
         description="Watch a directory for file system events.")
     parser.add_argument("-f", "--folder", required=True,
                         type=Path, help="Folder to monitor.")
+    parser.add_argument("-c", "--copyDest", type=Path,
+                        help="Optional folder to copy changes to.")
     args = parser.parse_args()
     return args
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.folder)
+    main(args.folder, args.copyDest)
