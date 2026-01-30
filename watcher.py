@@ -96,7 +96,7 @@ def is_subpath(child: Path, parent: Path):
     return parent.is_relative_to(child)
 
 
-def main(toWatch: Path, copy_dest: Path | None = None, keep: int | None = 100):
+def main(toWatch: Path, keep: int | None, copy_dest: Path):
     def event_handler(event_info, timestamp):
         print(event_info)
         print(timestamp)
@@ -120,14 +120,13 @@ def main(toWatch: Path, copy_dest: Path | None = None, keep: int | None = 100):
     if keep is not None and keep < 1:
         raise ValueError("keep must be at least 1 or None")
 
-    if copy_dest:
-        if not copy_dest.exists():
-            raise FileNotFoundError(copy_dest)
-        if not copy_dest.is_dir():
-            raise NotADirectoryError(copy_dest)
-        if is_subpath(copy_dest, toWatch):
-            raise FileNotFoundError(
-                f"{copy_dest} is inside or equal {toWatch}")
+    if not copy_dest.exists():
+        raise FileNotFoundError(copy_dest)
+    if not copy_dest.is_dir():
+        raise NotADirectoryError(copy_dest)
+    if is_subpath(copy_dest, toWatch):
+        raise FileNotFoundError(
+            f"{copy_dest} is inside or equal {toWatch}")
 
     event_handler("init", get_time_stamp())
 
@@ -153,7 +152,8 @@ def parse_args():
         try:
             value = int(raw)
         except ValueError as exc:
-            raise ArgumentTypeError("keep must be an integer or 'none'") from exc
+            raise ArgumentTypeError(
+                "keep must be an integer or 'none'") from exc
         if value < 1:
             raise ArgumentTypeError("keep must be at least 1 or 'none'")
         return value
@@ -162,14 +162,14 @@ def parse_args():
         description="Watch a directory for file system events.")
     parser.add_argument("-f", "--folder", required=True,
                         type=Path, help="Folder to monitor.")
-    parser.add_argument("-c", "--copyDest", type=Path,
-                        help="Optional folder to copy changes to.")
-    parser.add_argument("-k", "--keep", type=parse_keep_arg, default=parse_keep_arg("none"),
-                        help="Snapshots to retain (integer) or 'none' to keep everything (default: all)")
+    parser.add_argument("-c", "--copyDest", type=Path, required=True,
+                        help="Folder to copy changes to.")
+    parser.add_argument("-k", "--keep", type=parse_keep_arg, default=10,
+                        help="Snapshots to retain (integer) or 'none' to keep everything (default: 10)")
     args = parser.parse_args()
     return args
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.folder, args.copyDest, args.keep)
+    main(toWatch=args.folder, copy_dest=args.copyDest, keep=args.keep)
