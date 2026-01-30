@@ -1,13 +1,49 @@
 import time
 import argparse
+import threading
 from pathlib import Path
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
 class FolderWatcher(FileSystemEventHandler):
+    def __init__(self, debounce_seconds: float = 2.0):
+        super().__init__()
+        self._debounce_seconds = debounce_seconds
+        self._timer: threading.Timer | None = None
+        self._pending_event: tuple[str, str, str] | None = None
+        self._lock = threading.Lock()
+
     def on_any_event(self, event):
         kind = "directory" if event.is_directory else "file"
-        print(f"{time.strftime('%Y-%m-%d %H:%M:%S')} | {kind} | {event.event_type} | {event.src_path}")
+        event_info = (kind, event.event_type, event.src_path)
+
+        with self._lock:
+            self._pending_event = event_info
+            if self._timer:
+                self._timer.cancel()
+            self._timer = threading.Timer(self._debounce_seconds, self._emit_pending)
+            self._timer.daemon = True
+            self._timer.start()
+
+    def stop(self):
+        with self._lock:
+            if self._timer:
+                self._timer.cancel()
+                self._timer = None
+            self._pending_event = None
+
+    def _emit_pending(self):
+        with self._lock:
+            event_info = self._pending_event
+            self._pending_event = None
+            self._timer = None
+
+        if not event_info:
+            return
+
+        kind, event_type, src_path = event_info
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
+        print(f"{timestamp} | {kind} | {event_type} | {src_path}")
 
 def main(path: Path):
     if not path.exists():
@@ -23,6 +59,7 @@ def main(path: Path):
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
+        handler.stop()
         observer.stop()
     observer.join()
 
@@ -31,7 +68,11 @@ if __name__ == "__main__":
     parser.add_argument("-f", "--folder", required=True, type=Path, help="Folder to monitor.")
     args = parser.parse_args()
     main(args.folder)
-    
 
 
-    
+
+
+
+
+
+
