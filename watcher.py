@@ -57,6 +57,18 @@ def get_time_stamp():
     timestamp = f"{now.tm_mday:02d}_{now.tm_mon:02d}_{now.tm_year:02d}__{now.tm_hour:02d}_{now.tm_min:02d}_{now.tm_sec:02d}"
     return timestamp
 
+def prune_snapshots(base_dir: Path, keep: int = 3) -> None:
+    snapshots = [entry for entry in base_dir.iterdir() if entry.is_dir()]
+    if len(snapshots) <= keep:
+        return
+
+    snapshots.sort(key=lambda path: parse_time_stamp( path.parts[-1]), reverse=True)
+    for obsolete in snapshots[keep:]:
+        try:
+            shutil.rmtree(obsolete)
+            print(f"Removed snapshot {obsolete}")
+        except Exception as exc:
+            print(f"Failed to remove snapshot {obsolete}: {exc}")
 
 
 def parse_time_stamp(timestamp: str):
@@ -80,12 +92,14 @@ def main(toWatch: Path, copy_dest: Path | None = None):
 
         if copy_dest:
             try:
-                destination = copy_dest / toWatch.name / timestamp
+                destination = copy_dest / timestamp
                 shutil.copytree(toWatch, destination,
                                 dirs_exist_ok=True, ignore=shutil.ignore_patterns('.git'))
                 print(f"Copied {toWatch} to {destination}")
             except Exception as exc:
                 print(f"Failed to copy {toWatch} to {destination}: {exc}")
+
+            prune_snapshots(copy_dest)    
 
     if not toWatch.exists():
         raise FileNotFoundError(toWatch)
