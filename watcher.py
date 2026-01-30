@@ -107,7 +107,7 @@ def main(toWatch: Path, keep: int | None, copy_dest: Path):
             try:
                 destination = copy_dest / timestamp / toWatch.parts[-1]
                 shutil.copytree(toWatch, destination,
-                                dirs_exist_ok=True, ignore=shutil.ignore_patterns('.git'))
+                                dirs_exist_ok=True)
                 print(f"Copied {toWatch} to {destination}")
             except Exception as exc:
                 print(f"Failed to copy {toWatch} to {destination}: {exc}")
