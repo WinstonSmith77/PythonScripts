@@ -9,23 +9,21 @@ from rx import operators as ops
 
 
 class FolderWatcher(FileSystemEventHandler):
-    def __init__(self, debounce_seconds: float , event):
+    def __init__(self, debounce_seconds: float, event):
         super().__init__()
         self._debounce_seconds = debounce_seconds
         self._event = event
         self._event_stream = Subject()
         self._subscription = None
-        
-        # Set up the reactive pipeline with debounce
-        if event:
-            self._subscription = self._event_stream.pipe(
-                ops.debounce(debounce_seconds)
-            ).subscribe(self._handle_debounced_event)
+
+        self._subscription = self._event_stream.pipe(
+            ops.debounce(debounce_seconds)
+        ).subscribe(self._handle_debounced_event)
 
     def on_any_event(self, event):
         kind = "directory" if event.is_directory else "file"
         event_info = (kind, event.event_type, event.src_path)
-        
+
         # Push event to the reactive stream
         self._event_stream.on_next(event_info)
 
@@ -50,16 +48,17 @@ def prune_snapshots(base_dir: Path, keep: int | None) -> None:
     if keep is None:
         return
 
-    dirsAndParsedTime = ((entry, parse_time_stamp(
-        entry.parts[-1])) for entry in base_dir.iterdir())
-    snapshots = [
-        entry for entry in dirsAndParsedTime if entry[0].is_dir() and entry[1]]
+    dirsAndParsedTime = (
+        (entry, parse_time_stamp(entry.parts[-1])) for entry in base_dir.iterdir()
+    )
+    snapshots = [entry for entry in dirsAndParsedTime if entry[0].is_dir() and entry[1]]
 
     if len(snapshots) <= keep:
         return
 
     snapshots = sorted(
-        snapshots, key=lambda pathAndParsedTime: pathAndParsedTime[1], reverse=True)[keep:]
+        snapshots, key=lambda pathAndParsedTime: pathAndParsedTime[1], reverse=True
+    )[keep:]
     for obsolete in (snapshot[0] for snapshot in snapshots):
         try:
             shutil.rmtree(obsolete)
@@ -99,8 +98,7 @@ def main(toWatch: Path, keep: int | None, copy_dest: Path):
         if copy_dest:
             try:
                 destination = copy_dest / timestamp / toWatch.parts[-1]
-                shutil.copytree(toWatch, destination,
-                                dirs_exist_ok=True, ignore=ignore)
+                shutil.copytree(toWatch, destination, dirs_exist_ok=True, ignore=ignore)
                 print(f"Copied {toWatch} to {destination}")
             except Exception as exc:
                 print(f"Failed to copy {toWatch} to {destination}: {exc}")
@@ -118,8 +116,7 @@ def main(toWatch: Path, keep: int | None, copy_dest: Path):
     if not copy_dest.is_dir():
         raise NotADirectoryError(copy_dest)
     if is_subpath(copy_dest, toWatch):
-        raise FileNotFoundError(
-            f"{copy_dest} is inside or equal {toWatch}")
+        raise FileNotFoundError(f"{copy_dest} is inside or equal {toWatch}")
 
     event_handler("init", get_time_stamp())
 
@@ -137,8 +134,10 @@ def main(toWatch: Path, keep: int | None, copy_dest: Path):
         observer.stop()
     observer.join()
 
-default_keep  = 100
+
+default_keep = 100
 default_debounce = 5
+
 
 def parse_args():
     def parse_keep_arg(raw: str) -> int | None:
@@ -147,20 +146,25 @@ def parse_args():
         try:
             value = int(raw)
         except ValueError as exc:
-            raise ArgumentTypeError(
-                "keep must be an integer or 'none'") from exc
+            raise ArgumentTypeError("keep must be an integer or 'none'") from exc
         if value < 1:
             raise ArgumentTypeError("keep must be at least 1 or 'none'")
         return value
 
-    parser = ArgumentParser(
-        description="Watch a directory for file system events.")
-    parser.add_argument("-f", "--folder", required=True,
-                        type=Path, help="Folder to monitor.")
-    parser.add_argument("-c", "--copyDest", type=Path, required=True,
-                        help="Folder to copy changes to.")
-    parser.add_argument("-k", "--keep", type=parse_keep_arg, default=default_keep,
-                        help=f"Snapshots to retain (integer) or 'none' to keep everything (default: {default_keep})")
+    parser = ArgumentParser(description="Watch a directory for file system events.")
+    parser.add_argument(
+        "-f", "--folder", required=True, type=Path, help="Folder to monitor."
+    )
+    parser.add_argument(
+        "-c", "--copyDest", type=Path, required=True, help="Folder to copy changes to."
+    )
+    parser.add_argument(
+        "-k",
+        "--keep",
+        type=parse_keep_arg,
+        default=default_keep,
+        help=f"Snapshots to retain (integer) or 'none' to keep everything (default: {default_keep})",
+    )
     args = parser.parse_args()
     return args
 
