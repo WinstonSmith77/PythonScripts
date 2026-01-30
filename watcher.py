@@ -1,55 +1,43 @@
 import time
 from argparse import ArgumentParser, ArgumentTypeError
-import threading
 import shutil
 from pathlib import Path
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
+from rx.subject import Subject
+from rx import operators as ops
 
 
 class FolderWatcher(FileSystemEventHandler):
-    def __init__(self, debounce_seconds: float = 1, event=None):
+    def __init__(self, debounce_seconds: float , event):
         super().__init__()
         self._debounce_seconds = debounce_seconds
         self._event = event
-        self._timer: threading.Timer | None = None
-        self._pending_event: tuple[str, str, str] | None = None
-        self._lock = threading.Lock()
+        self._event_stream = Subject()
+        self._subscription = None
+        
+        # Set up the reactive pipeline with debounce
+        if event:
+            self._subscription = self._event_stream.pipe(
+                ops.debounce(debounce_seconds)
+            ).subscribe(self._handle_debounced_event)
 
     def on_any_event(self, event):
         kind = "directory" if event.is_directory else "file"
         event_info = (kind, event.event_type, event.src_path)
-
-        with self._lock:
-            self._pending_event = event_info
-            if self._timer:
-                self._timer.cancel()
-            self._timer = threading.Timer(
-                self._debounce_seconds, self._emit_pending)
-            self._timer.daemon = True
-            self._timer.start()
+        
+        # Push event to the reactive stream
+        self._event_stream.on_next(event_info)
 
     def stop(self):
-        with self._lock:
-            if self._timer:
-                self._timer.cancel()
-                self._timer = None
-            self._pending_event = None
+        if self._subscription:
+            self._subscription.dispose()
+        self._event_stream.on_completed()
 
-    def _emit_pending(self):
-        with self._lock:
-            event_info = self._pending_event
-            self._pending_event = None
-            self._timer = None
-
-        if not event_info:
-            return
-
-        if not self._event:
-            return
-
-        timestamp = get_time_stamp()
-        self._event(event_info, timestamp)
+    def _handle_debounced_event(self, event_info):
+        if self._event:
+            timestamp = get_time_stamp()
+            self._event(event_info, timestamp)
 
 
 def get_time_stamp():
@@ -135,7 +123,7 @@ def main(toWatch: Path, keep: int | None, copy_dest: Path):
 
     event_handler("init", get_time_stamp())
 
-    handler = FolderWatcher(debounce_seconds=1, event=event_handler)
+    handler = FolderWatcher(debounce_seconds=default_debounce, event=event_handler)
     observer = Observer()
     observer.schedule(handler, toWatch, recursive=True)
     observer.start()
@@ -150,6 +138,7 @@ def main(toWatch: Path, keep: int | None, copy_dest: Path):
     observer.join()
 
 default_keep  = 100
+default_debounce = 5
 
 def parse_args():
     def parse_keep_arg(raw: str) -> int | None:
