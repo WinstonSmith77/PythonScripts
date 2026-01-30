@@ -1,5 +1,5 @@
 import time
-import argparse
+from argparse import ArgumentParser
 import threading
 import shutil
 from pathlib import Path
@@ -58,7 +58,7 @@ def get_time_stamp():
     return timestamp
 
 
-def prune_snapshots(base_dir: Path, keep: int = 10) -> None:
+def prune_snapshots(base_dir: Path, keep: int = 100) -> None:
     dirsAndParsedTime = ((entry, parse_time_stamp(
         entry.parts[-1])) for entry in base_dir.iterdir())
     snapshots = [
@@ -93,7 +93,7 @@ def is_subpath(child: Path, parent: Path):
     return parent.is_relative_to(child)
 
 
-def main(toWatch: Path, copy_dest: Path | None = None):
+def main(toWatch: Path, copy_dest: Path | None = None, keep: int = 100):
     def event_handler(event_info, timestamp):
         print(event_info)
         print(timestamp)
@@ -109,10 +109,13 @@ def main(toWatch: Path, copy_dest: Path | None = None):
             except Exception as exc:
                 print(f"Failed to copy {toWatch} to {destination}: {exc}")
 
-            prune_snapshots(copy_dest)
+            prune_snapshots(copy_dest, keep=keep)
 
     if not toWatch.exists():
         raise FileNotFoundError(toWatch)
+
+    if keep < 1:
+        raise ValueError("keep must be at least 1")
 
     if copy_dest:
         if not copy_dest.exists():
@@ -141,16 +144,18 @@ def main(toWatch: Path, copy_dest: Path | None = None):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
+    parser = ArgumentParser(
         description="Watch a directory for file system events.")
     parser.add_argument("-f", "--folder", required=True,
                         type=Path, help="Folder to monitor.")
     parser.add_argument("-c", "--copyDest", type=Path,
                         help="Optional folder to copy changes to.")
+    parser.add_argument("-k", "--keep", type=int, default=100,
+                        help="Number of timestamped snapshots to retain (default: 100).")
     args = parser.parse_args()
     return args
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(args.folder, args.copyDest)
+    main(args.folder, args.copyDest, args.keep)
