@@ -62,6 +62,14 @@ def get_time_stamp():
 def parse_time_stamp(timestamp: str):
     return time.strptime(timestamp, "%d_%m_%Y__%H_%M_%S")
 
+def is_subpath(child : Path, parent: Path):
+    # .resolve() makes the path absolute and follows symlinks
+    child = Path(child).resolve()
+    parent = Path(parent).resolve()
+    
+    # Check if parent is actually a parent (or the same as) child
+    return parent in child.parents or parent == child
+
 
 def main(toWatch: Path, copy_dest: Path | None = None):
     def event_handler(event_info, timestamp):
@@ -87,6 +95,8 @@ def main(toWatch: Path, copy_dest: Path | None = None):
             raise FileNotFoundError(copy_dest)
         if not copy_dest.is_dir():
             raise NotADirectoryError(copy_dest)
+        if is_subpath(copy_dest, toWatch):
+            raise FileNotFoundError(f"{copy_dest} is inside or equal {toWatch}")
 
     handler = FolderWatcher(debounce_seconds=1, event=event_handler)
     observer = Observer()
