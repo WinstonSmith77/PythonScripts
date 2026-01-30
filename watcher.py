@@ -149,6 +149,7 @@ def main(toWatch: Path, keep: int | None, copy_dest: Path):
         observer.stop()
     observer.join()
 
+default_keep  = 100
 
 def parse_args():
     def parse_keep_arg(raw: str) -> int | None:
@@ -169,8 +170,8 @@ def parse_args():
                         type=Path, help="Folder to monitor.")
     parser.add_argument("-c", "--copyDest", type=Path, required=True,
                         help="Folder to copy changes to.")
-    parser.add_argument("-k", "--keep", type=parse_keep_arg, default=10,
-                        help="Snapshots to retain (integer) or 'none' to keep everything (default: 10)")
+    parser.add_argument("-k", "--keep", type=parse_keep_arg, default=default_keep,
+                        help=f"Snapshots to retain (integer) or 'none' to keep everything (default: {default_keep})")
     args = parser.parse_args()
     return args
 
