@@ -121,7 +121,7 @@ def main(toWatch: Path, copy_dest: Path | None = None):
 
     handler = FolderWatcher(debounce_seconds=1, event=event_handler)
     observer = Observer()
-    observer.schedule(handler, str(toWatch), recursive=True)
+    observer.schedule(handler, toWatch, recursive=True)
     observer.start()
     print(f"Watching {toWatch.resolve()} (Ctrl+C to stop)")
 
