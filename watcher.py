@@ -1,5 +1,5 @@
-import sys
 import time
+import argparse
 from pathlib import Path
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -27,7 +27,11 @@ def main(path: Path):
     observer.join()
 
 if __name__ == "__main__":
-    target = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
-    main(target)
+    parser = argparse.ArgumentParser(description="Watch a directory for file system events.")
+    parser.add_argument("-f", "--folder", required=True, type=Path, help="Folder to monitor.")
+    args = parser.parse_args()
+    main(args.folder)
+    
+
 
     
