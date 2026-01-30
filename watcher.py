@@ -5,10 +5,12 @@ from pathlib import Path
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+
 class FolderWatcher(FileSystemEventHandler):
-    def __init__(self, debounce_seconds: float = 2.0):
+    def __init__(self, debounce_seconds: float = 2.0, event=None):
         super().__init__()
         self._debounce_seconds = debounce_seconds
+        self._event = event
         self._timer: threading.Timer | None = None
         self._pending_event: tuple[str, str, str] | None = None
         self._lock = threading.Lock()
@@ -21,7 +23,8 @@ class FolderWatcher(FileSystemEventHandler):
             self._pending_event = event_info
             if self._timer:
                 self._timer.cancel()
-            self._timer = threading.Timer(self._debounce_seconds, self._emit_pending)
+            self._timer = threading.Timer(
+                self._debounce_seconds, self._emit_pending)
             self._timer.daemon = True
             self._timer.start()
 
@@ -41,15 +44,29 @@ class FolderWatcher(FileSystemEventHandler):
         if not event_info:
             return
 
-        kind, event_type, src_path = event_info
-        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
-        print(f"{timestamp} | {kind} | {event_type} | {src_path}")
+        if not self._event:
+            return
+
+        timestamp = get_time_stamp()
+        self._event(event_info, timestamp)
+
+
+def get_time_stamp():
+    now = time.localtime()
+    timestamp = f"{now.tm_mday:02d}_{now.tm_mon:02d}_{now.tm_year:02d}__{now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d}"
+    return timestamp
+
+
+def event_handler(event_info, timestamp):
+    print(event_info)
+    print(timestamp)
+
 
 def main(path: Path):
     if not path.exists():
         raise FileNotFoundError(path)
 
-    handler = FolderWatcher()
+    handler = FolderWatcher(debounce_seconds=1, event=event_handler)
     observer = Observer()
     observer.schedule(handler, str(path), recursive=True)
     observer.start()
@@ -63,16 +80,16 @@ def main(path: Path):
         observer.stop()
     observer.join()
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Watch a directory for file system events.")
-    parser.add_argument("-f", "--folder", required=True, type=Path, help="Folder to monitor.")
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Watch a directory for file system events.")
+    parser.add_argument("-f", "--folder", required=True,
+                        type=Path, help="Folder to monitor.")
     args = parser.parse_args()
+    return args
+
+
+if __name__ == "__main__":
+    args = parse_args()
     main(args.folder)
-
-
-
-
-
-
-
-
