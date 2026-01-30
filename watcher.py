@@ -57,12 +57,14 @@ def get_time_stamp():
     timestamp = f"{now.tm_mday:02d}_{now.tm_mon:02d}_{now.tm_year:02d}__{now.tm_hour:02d}_{now.tm_min:02d}_{now.tm_sec:02d}"
     return timestamp
 
-def prune_snapshots(base_dir: Path, keep: int = 3) -> None:
-    snapshots = [entry for entry in base_dir.iterdir() if entry.is_dir()]
+def prune_snapshots(base_dir: Path, keep: int = 10) -> None:
+    dirsAndParsedTime =  ((entry, parse_time_stamp(entry.parts[-1])) for entry in base_dir.iterdir())
+    snapshots = [entry for entry in dirsAndParsedTime if entry[0].is_dir() and entry[1]]
+
     if len(snapshots) <= keep:
         return
 
-    snapshots.sort(key=lambda path: parse_time_stamp( path.parts[-1]), reverse=True)
+    snapshots.sort(key=lambda pathAndParsedTime: pathAndParsedTime[1], reverse=True)
     for obsolete in snapshots[keep:]:
         try:
             shutil.rmtree(obsolete)
@@ -71,8 +73,11 @@ def prune_snapshots(base_dir: Path, keep: int = 3) -> None:
             print(f"Failed to remove snapshot {obsolete}: {exc}")
 
 
-def parse_time_stamp(timestamp: str):
-    return time.strptime(timestamp, "%d_%m_%Y__%H_%M_%S")
+def parse_time_stamp(timestamp: str) -> time.struct_time | None:
+    try:
+        return time.strptime(timestamp, "%d_%m_%Y__%H_%M_%S")
+    except:
+        return None
 
 def is_subpath(child : Path, parent: Path):
     # .resolve() makes the path absolute and follows symlinks
@@ -92,7 +97,7 @@ def main(toWatch: Path, copy_dest: Path | None = None):
 
         if copy_dest:
             try:
-                destination = copy_dest / timestamp
+                destination = copy_dest / timestamp /  toWatch.parts[-1]
                 shutil.copytree(toWatch, destination,
                                 dirs_exist_ok=True, ignore=shutil.ignore_patterns('.git'))
                 print(f"Copied {toWatch} to {destination}")
@@ -111,6 +116,8 @@ def main(toWatch: Path, copy_dest: Path | None = None):
             raise NotADirectoryError(copy_dest)
         if is_subpath(copy_dest, toWatch):
             raise FileNotFoundError(f"{copy_dest} is inside or equal {toWatch}")
+        
+    event_handler("init", get_time_stamp())   
 
     handler = FolderWatcher(debounce_seconds=1, event=event_handler)
     observer = Observer()
