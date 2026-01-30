@@ -1,6 +1,7 @@
 import time
 import argparse
 import threading
+import shutil
 from pathlib import Path
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -53,32 +54,45 @@ class FolderWatcher(FileSystemEventHandler):
 
 def get_time_stamp():
     now = time.localtime()
-    timestamp = f"{now.tm_mday:02d}_{now.tm_mon:02d}_{now.tm_year:02d}__{now.tm_hour:02d}:{now.tm_min:02d}:{now.tm_sec:02d}"
+    timestamp = f"{now.tm_mday:02d}_{now.tm_mon:02d}_{now.tm_year:02d}__{now.tm_hour:02d}_{now.tm_min:02d}_{now.tm_sec:02d}"
     return timestamp
 
 
+
 def parse_time_stamp(timestamp: str):
-    return time.strptime(timestamp, "%d_%m_%Y__%H:%M:%S")
+    return time.strptime(timestamp, "%d_%m_%Y__%H_%M_%S")
 
 
-def main(path: Path, copy_dest: Path | None = None):
+def main(toWatch: Path, copy_dest: Path | None = None):
     def event_handler(event_info, timestamp):
         print(event_info)
         print(timestamp)
 
         print(parse_time_stamp(timestamp))
 
-    if not path.exists():
-        raise FileNotFoundError(path)
+        if copy_dest:
+            try:
+                destination = copy_dest / toWatch.name / timestamp
+                shutil.copytree(toWatch, destination,
+                                dirs_exist_ok=True, ignore=shutil.ignore_patterns('.git'))
+                print(f"Copied {toWatch} to {destination}")
+            except Exception as exc:
+                print(f"Failed to copy {toWatch} to {destination}: {exc}")
 
-    if copy_dest and not copy_dest.exists():
-        raise FileNotFoundError(copy_dest)
+    if not toWatch.exists():
+        raise FileNotFoundError(toWatch)
+
+    if copy_dest:
+        if not copy_dest.exists():
+            raise FileNotFoundError(copy_dest)
+        if not copy_dest.is_dir():
+            raise NotADirectoryError(copy_dest)
 
     handler = FolderWatcher(debounce_seconds=1, event=event_handler)
     observer = Observer()
-    observer.schedule(handler, str(path), recursive=True)
+    observer.schedule(handler, str(toWatch), recursive=True)
     observer.start()
-    print(f"Watching {path.resolve()} (Ctrl+C to stop)")
+    print(f"Watching {toWatch.resolve()} (Ctrl+C to stop)")
 
     try:
         while True:
