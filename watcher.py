@@ -85,7 +85,7 @@ def is_subpath(child : Path, parent: Path):
     parent = Path(parent).resolve()
     
     # Check if parent is actually a parent (or the same as) child
-    return parent in child.parents or parent == child
+    return parent.is_relative_to(child)
 
 
 def main(toWatch: Path, copy_dest: Path | None = None):
