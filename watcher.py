@@ -57,14 +57,18 @@ def get_time_stamp():
     timestamp = f"{now.tm_mday:02d}_{now.tm_mon:02d}_{now.tm_year:02d}__{now.tm_hour:02d}_{now.tm_min:02d}_{now.tm_sec:02d}"
     return timestamp
 
+
 def prune_snapshots(base_dir: Path, keep: int = 10) -> None:
-    dirsAndParsedTime =  ((entry, parse_time_stamp(entry.parts[-1])) for entry in base_dir.iterdir())
-    snapshots = [entry for entry in dirsAndParsedTime if entry[0].is_dir() and entry[1]]
+    dirsAndParsedTime = ((entry, parse_time_stamp(
+        entry.parts[-1])) for entry in base_dir.iterdir())
+    snapshots = [
+        entry for entry in dirsAndParsedTime if entry[0].is_dir() and entry[1]]
 
     if len(snapshots) <= keep:
         return
 
-    snapshots = sorted(snapshots, key=lambda pathAndParsedTime: pathAndParsedTime[1], reverse=True)[keep:]
+    snapshots = sorted(
+        snapshots, key=lambda pathAndParsedTime: pathAndParsedTime[1], reverse=True)[keep:]
     for obsolete in (snapshot[0] for snapshot in snapshots):
         try:
             shutil.rmtree(obsolete)
@@ -79,11 +83,12 @@ def parse_time_stamp(timestamp: str) -> time.struct_time | None:
     except:
         return None
 
-def is_subpath(child : Path, parent: Path):
+
+def is_subpath(child: Path, parent: Path):
     # .resolve() makes the path absolute and follows symlinks
     child = Path(child).resolve()
     parent = Path(parent).resolve()
-    
+
     # Check if parent is actually a parent (or the same as) child
     return parent.is_relative_to(child)
 
@@ -97,14 +102,14 @@ def main(toWatch: Path, copy_dest: Path | None = None):
 
         if copy_dest:
             try:
-                destination = copy_dest / timestamp /  toWatch.parts[-1]
+                destination = copy_dest / timestamp / toWatch.parts[-1]
                 shutil.copytree(toWatch, destination,
                                 dirs_exist_ok=True, ignore=shutil.ignore_patterns('.git'))
                 print(f"Copied {toWatch} to {destination}")
             except Exception as exc:
                 print(f"Failed to copy {toWatch} to {destination}: {exc}")
 
-            prune_snapshots(copy_dest)    
+            prune_snapshots(copy_dest)
 
     if not toWatch.exists():
         raise FileNotFoundError(toWatch)
@@ -115,9 +120,10 @@ def main(toWatch: Path, copy_dest: Path | None = None):
         if not copy_dest.is_dir():
             raise NotADirectoryError(copy_dest)
         if is_subpath(copy_dest, toWatch):
-            raise FileNotFoundError(f"{copy_dest} is inside or equal {toWatch}")
-        
-    event_handler("init", get_time_stamp())   
+            raise FileNotFoundError(
+                f"{copy_dest} is inside or equal {toWatch}")
+
+    event_handler("init", get_time_stamp())
 
     handler = FolderWatcher(debounce_seconds=1, event=event_handler)
     observer = Observer()
