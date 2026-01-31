@@ -10,6 +10,10 @@ def main():
     args = parser.parse_args()
     
     output_file = Path(args.file)
+
+    # Create parent directories and file if they don't exist
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    output_file.touch(exist_ok=True)
     
     print(f"Writing time to {output_file} every 10 seconds. Press Ctrl+C to stop.")
     
