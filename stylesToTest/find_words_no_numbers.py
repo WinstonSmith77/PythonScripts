@@ -6,7 +6,7 @@ import itertools
 
 
 def count_words(text : str):
-
+    
     splits = text.split()
     return [word for word in splits if not any(ch.isdigit() for ch in word)]
 
