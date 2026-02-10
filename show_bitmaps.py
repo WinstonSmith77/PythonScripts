@@ -97,6 +97,7 @@ class BitmapViewer(tk.Tk):
     def _show_image(self, image_path: Path) -> None:
         try:
             with Image.open(image_path) as image:
+                original_width, original_height = image.width, image.height
                 prepared_image = self._prepare_image(image)
         except (FileNotFoundError, OSError) as exc:
             self._clear_preview(reset_status=True)
@@ -106,7 +107,13 @@ class BitmapViewer(tk.Tk):
         self.current_image = ImageTk.PhotoImage(prepared_image)
         self.image_label.configure(image=self.current_image)
         self.status_var.set(
-            f"Viewing: {image_path.name} ({self.current_image.width()}x{self.current_image.height()})"
+            "Viewing: {} (display {}x{}, original {}x{})".format(
+                image_path.name,
+                self.current_image.width(),
+                self.current_image.height(),
+                original_width,
+                original_height,
+            )
         )
 
     def _prepare_image(self, image: Image.Image) -> Image.Image:
@@ -116,18 +123,13 @@ class BitmapViewer(tk.Tk):
         if label_width <= 1 or label_height <= 1:
             return image.copy()
 
-        width_ratio = label_width / image.width
-        height_ratio = label_height / image.height
-        scale_ratio = min(width_ratio, height_ratio, 1.0)
+        new_width = max(1, int(label_width))
+        new_height = max(1, int(label_height))
 
-        if scale_ratio >= 1.0:
+        if image.width == new_width and image.height == new_height:
             return image.copy()
 
-        new_size = (
-            max(1, int(image.width * scale_ratio)),
-            max(1, int(image.height * scale_ratio)),
-        )
-        return image.resize(new_size, Image.LANCZOS)
+        return image.resize((new_width, new_height), Image.LANCZOS)
 
     def _clear_preview(self, *, reset_status: bool = False) -> None:
         self.current_image = None
