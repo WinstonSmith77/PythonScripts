@@ -104,3 +104,8 @@ class CacheGroup:
         item = self.__getitem__(name)
         item.__exit__(None, None, None)
         del self._caches[name]
+
+    
+    def purge(self):
+        for cache in self._caches.values():
+            cache.purge()   

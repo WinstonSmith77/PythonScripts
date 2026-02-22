@@ -8,6 +8,7 @@ import PIL.Image
 import PIL.ExifTags
 import PIL.TiffImagePlugin
 import base64
+import argparse
 
 from double_finder.cache import CacheGroup
 from double_finder.find_double_files import get_all_files, dump_it
@@ -122,12 +123,24 @@ def group_by_time(files_time, max_diff_seconds=10, min_length=3):
                     yield (len_group, group, str(start))
                 group_and_start = ([file], time)
 
+def parse_args():
+
+    parser = argparse.ArgumentParser(description="Find consequtive files")
+    parser.add_argument(
+        "--purge-cache",
+        action="store_true",
+        help="Purge the cache before running the script",
+    )
+    return parser.parse_args()
+
 with CacheGroup(DIR, FILES_WITH_TIME_XMP, FILES_WITH_TIME_JPG) as caches:
+    if parse_args().purge_cache:    
+        caches.purge()
     cache_entry = str(working_dirs)
     fs_in_cache = caches[DIR].is_in_cache(cache_entry)
     if not fs_in_cache:
-        caches[FILES_WITH_TIME_XMP].purge()
-        caches[FILES_WITH_TIME_JPG].purge()
+        caches.purge()
+
 
     fs = caches[DIR].lookup(
         cache_entry,
