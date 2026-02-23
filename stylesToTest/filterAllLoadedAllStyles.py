@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from pprint import pprint
 
 LAYERS_KEY = "layers"
 LAYER_ID_KEY = "id"
@@ -11,6 +12,7 @@ LINE_WIDTH_KEY = "line-width"
 LINE_COLOR_KEY = "line-color"
 LINE_DASH_ARRAY = "line-dasharray"
 TEXT_FONT = "text-font"
+LINE_BLUR = "line-blur"
 
 
 def dash_fits(dash: dict | list):
@@ -40,7 +42,7 @@ style_folder = Path(__file__).parent
 style_files = style_folder.glob("*.json")
 
 style_files = [
-    style_file for style_file in style_files if style_file.is_file and "" in str(style_file)]
+    style_file for style_file in style_files if style_file.is_file and "_neu" in str(style_file)]
 
 print(f"Found {len(style_files)} style file(s):")
 for style_file in style_files:
@@ -65,10 +67,11 @@ for style_file in style_files:
 
         if LAYERS_KEY in content:
             for layer in content[LAYERS_KEY]:
-                if LAYOUT_KEY in layer and TEXT_FONT in layer[LAYOUT_KEY]:
-                    fonts = layer[LAYOUT_KEY][TEXT_FONT]
-                    print(f"{layer[LAYER_ID_KEY]} {fonts}", end='; ')
-                    allFonts.update(list_all_fonts(fonts))
+                if PAINT_KEY in layer and LINE_BLUR in layer[PAINT_KEY]:
+                    line_blur = layer[PAINT_KEY][LINE_BLUR]
+                    line_color = layer[PAINT_KEY][LINE_COLOR_KEY]
+                    pprint(f"{layer[LAYER_ID_KEY]}: {line_blur} {line_color}")
+                   # allFonts.update(list_all_fonts(fonts))
 
     except json.JSONDecodeError as e:
         print(f"\n\nError parsing {style_file.parent}: {e}")
