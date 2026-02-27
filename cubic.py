@@ -10,4 +10,4 @@ sol = sympy.solve([eq1, eq2, eq3, eq4], [a, b, c, d])
 
 
 for k,v in sol.items():
-    print('var ', k,'=',sympy.ccode(v), ";")
+    print('var ', k,'=',sympy.ccode(sympy.simplify(v)), ";")

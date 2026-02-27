@@ -23,6 +23,5 @@ print("Solving system...")
 sol = sympy.solve([eq1, eq2, eq3, eq4, eq5, eq6], [a, b, c, d, e, f])
 
 print("Solutions found:")
-for k, v in sol.items():
-    print(f"\n{k} =")
-    print(sympy.simplify(v))
+for k,v in sol.items():
+    print('var ', k,'=',sympy.ccode(sympy.simplify(v)), ";")
