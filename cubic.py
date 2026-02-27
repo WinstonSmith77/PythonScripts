@@ -13,3 +13,5 @@ for k,v in sol.items():
     print('var ', k,'=',sympy.ccode(sympy.simplify(v)), ";")
 
 
+for k,v in sol.items():
+    print(k, sympy.simplify(v))

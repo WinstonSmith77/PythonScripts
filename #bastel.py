@@ -1,5 +1,7 @@
-if __name__ == "__main__":
-    counter = 0
-    while (True):
-        counter = counter + 1
-        print(f"Paul nervt wie die Sau! {counter}")
+import sympy
+import pprint
+
+x = sympy.symbols('x')
+
+print("Series for sin(x):")
+pprint.pprint((sympy.sin(x)**5).series(x, 0, 10))
