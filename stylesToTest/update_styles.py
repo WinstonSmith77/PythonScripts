@@ -90,7 +90,7 @@ for name, files in names_to_styles:
     print(f"Name: {name}")
 
     for file_name, file_url in files:
-        output_path = (Path(__file__).parent / name /
+        output_path = (Path(__file__).parent /"read_from_geoserver"/ name /
                        (file_name+".json")).resolve()
         output_path.parent.mkdir(parents=True, exist_ok=True)
         save_pretty_json(file_url, output_path)
