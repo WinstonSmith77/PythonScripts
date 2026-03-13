@@ -9,12 +9,10 @@ def delete_easymap_cache():
     if not temp_env:
         print("Error: %TEMP% environment variable not found.")
         return
-
-    temp_path = Path(temp_env)
     
     # Construct the full path using Pathlib's / operator
     # Path: %TEMP%\easymap_12.3.0.0\cache
-    cache_path = temp_path / "easymap_12.3.0.0" / "cache"
+    cache_path =  Path(temp_env) / "easymap_12.3.0.0" / "cache"
     
     print(f"Looking for: {cache_path}")
 

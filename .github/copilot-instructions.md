@@ -23,6 +23,14 @@
 ## String Formatting
 - Use **f-strings** (`f"{var}"`) for string interpolation instead of `%` formatting or `.format()`.
 
+
+## Command-Line Arguments
+- Use the built-in `argparse` module for command-line argument parsing.
+- Provide clear help messages for each argument.
+- Group related arguments logically.
+- Validate argument values and handle errors gracefully.
+- Document expected arguments in the module docstring.
+
 ## Documentation
 - Include docstrings for all modules, classes, and public functions.
 - Use clear, descriptive variable names that imply their purpose.
