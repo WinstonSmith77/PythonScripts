@@ -15,9 +15,8 @@ ID = "id"
 
 
 def read_base_url():
-    default_url = "https://staging.maps.infas-lt.de/default"
-    desktop_file = Path(os.environ.get("USERPROFILE", "")) / "Desktop" / "url_geoserver.txt"
-   
+    default_url = "https://maps.infas-lt.de/default"
+    desktop_file = Path(os.environ.get("USERPROFILE", "")) / "OneDrive - Ipsos" /"Desktop" / "url_geoserver.txt"
 
     if desktop_file.is_file():
         value = desktop_file.read_text(encoding="utf-8").strip()
