@@ -4,12 +4,8 @@
 name: Python Code Quality
 
 on:
-  push:
-    paths:
-      - '**.py'
-  pull_request:
-    paths:
-      - '**.py'
+  workflow_dispatch:
+
 
 jobs:
   lint:

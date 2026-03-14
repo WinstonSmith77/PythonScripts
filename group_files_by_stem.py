@@ -25,10 +25,10 @@ def group_files_by_stem(directory: Path) -> Dict[str, List[Path]]:
 
     for item in directory.rglob("*"):
         if item.is_file():
-            # item.stem returns the filename without the last suffix
-            # If you have files like data.tar.gz, stem is data.tar
-            # If strict "name before first dot" is needed, split on '.'
-            grouped_files[item.stem].append(item)
+            # Get the filename without any suffixes (e.g., image.tar.gz -> image)
+            # strictly taking the name before the first dot
+            stem = item.name.split('.')[0]
+            grouped_files[stem].append(item)
 
     return grouped_files
 
@@ -54,19 +54,19 @@ def main() -> None:
     try:
         grouped = group_files_by_stem(directory)
 
-        # Filter to keep only stems with more than one file
-        grouped = {k: v for k, v in grouped.items() if len(v) > 1}
-
-        #print(grouped)
-
-        # Filter out groups that only contain .xmp and .rw2 files (case-insensitive)
-        ignored_extensions = {".xmp", ".rw2"}
-        grouped = {
-            stem: files
-            for stem, files in grouped.items()
-            # Keep if NOT (all files have ignored extensions)
-            if not all(f.suffix.lower() in ignored_extensions for f in files)
-        }
+        # Filter to keep only stems that contain BOTH .jpg and .rw2 files (case-insensitive)
+        required_extensions = {".jpg", ".rw2"}
+        
+        filtered_grouped = {}
+        for stem, files in grouped.items():
+            # Get unique extensions in this group
+            extensions = {f.suffix.lower() for f in files}
+            
+            # Check if BOTH .jpg and .rw2 are present
+            if required_extensions.issubset(extensions):
+                filtered_grouped[stem] = files
+                
+        grouped = filtered_grouped
 
         if not grouped:
             print(f"No groups with multiple files found in '{directory}'.")
