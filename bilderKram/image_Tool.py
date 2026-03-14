@@ -78,13 +78,15 @@ def do_it(working_dir, caches: CacheGroup):
         except PIL.UnidentifiedImageError:
             exif = caches[JPG].add_result(*key, value={ERROR: ERROR})
 
-        key_time = 'DateTime'
+        key_times = ['DateTime', 'DateTimeOriginal']
 
-        if key_time in exif:
-            time_str :str = exif[key_time]
-            parsed_time = parse_exif_date(time_str)
-            if parsed_time is not None:
-                file_meta[DATETIME] = parsed_time
+        for key_time in key_times:
+            if key_time in exif:
+                time_str :str = exif[key_time]
+                parsed_time = parse_exif_date(time_str)
+                if parsed_time is not None:
+                    file_meta[DATETIME] = parsed_time
+                    break
 
         file_meta[EXIF]  = exif
         return file_meta
