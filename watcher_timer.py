@@ -1,5 +1,8 @@
 
 """
+
+M4 MIN 4832 30:24 JPG Full 
+
 Script to watch a folder and log the time since the first event for each consecutive event.
 
 Usage:
