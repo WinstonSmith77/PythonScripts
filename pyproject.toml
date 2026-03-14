@@ -19,6 +19,7 @@ mutagen = "^1.47.0"
 nltk = "^3.9.1"
 pandas = "^2.3.2"
 matplotlib = "^3.10.7"
+watchdog = "^6.0.0"
 
 
 [build-system]
