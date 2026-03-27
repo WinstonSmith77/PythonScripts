@@ -96,4 +96,4 @@ for name, files in names_to_styles:
                        (file_name+".json")).resolve()
         output_path.parent.mkdir(parents=True, exist_ok=True)
         save_pretty_json(file_url, output_path)
-        print(f"Downloaded {file_name} to {output_path}")
+        print(f"Downloaded {file_name} from {file_url} to {output_path}")
