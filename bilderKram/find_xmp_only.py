@@ -128,7 +128,7 @@ def main() -> None:
         print(f"Error: Path '{directory}' is not a directory.")
         return
 
-    find_and_move_xmp_folders(directory, destination, args.dry_run)
+    find_and_move_xmp_folders(directory, destination)
 
 
 if __name__ == "__main__":
