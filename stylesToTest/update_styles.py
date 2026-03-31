@@ -83,8 +83,11 @@ names_to_styles = [(name, [(styles[ID], [links for links in styles[LINKS] if lin
 names_to_styles = [(name,   [(file[0], file[1][HREF])
                     for file in files]) for name, files in names_to_styles]
 
-names_to_styles.append(("ch.swisstopo.basemap_world.vt", [(
-    "ch.swisstopo.basemap_world.vt.style", "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap_world.vt/style.json?key=xmETqTBaiAH9bbZXXiFm")]))
+iles.geo.admin.ch/styles/ch.swisstopo.basemap_world.vt/style.json?key=xmETqTBaiAH9bbZXXiFm")]))
+
+names_to_styles.append(("ch.swisstopo.basemap.vt", [(
+    "ch.swisstopo.basemap.vt.style", "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json")]))
+
 
 print(names_to_styles)
 
