@@ -83,8 +83,11 @@ names_to_styles = [(name, [(styles[ID], [links for links in styles[LINKS] if lin
 names_to_styles = [(name,   [(file[0], file[1][HREF])
                     for file in files]) for name, files in names_to_styles]
 
-names_to_styles.append(("ch.swisstopo.basemap_world.vt", [(
-    "ch.swisstopo.basemap_world.vt.style", "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap_world.vt/style.json?key=xmETqTBaiAH9bbZXXiFm")]))
+iles.geo.admin.ch/styles/ch.swisstopo.basemap_world.vt/style.json?key=xmETqTBaiAH9bbZXXiFm")]))
+
+names_to_styles.append(("ch.swisstopo.basemap.vt", [(
+    "ch.swisstopo.basemap.vt.style", "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json")]))
+
 
 print(names_to_styles)
 
@@ -96,4 +99,4 @@ for name, files in names_to_styles:
                        (file_name+".json")).resolve()
         output_path.parent.mkdir(parents=True, exist_ok=True)
         save_pretty_json(file_url, output_path)
-        print(f"Downloaded {file_name} to {output_path}")
+        print(f"Downloaded {file_name} from {file_url} to {output_path}")
