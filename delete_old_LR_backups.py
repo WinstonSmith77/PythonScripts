@@ -5,7 +5,7 @@ from pathlib import Path
 
 mac_base_path = Path('/Volumes/Matze/matze/Library/CloudStorage/OneDrive-Personal')
 
-backupFolders = [mac_base_path  /"lightroom_backup_mac", mac_base_path / 'lightroom backup']
+backupFolders = [mac_base_path  /"#lightroom_backup_mac", mac_base_path / 'lightroom backup']
 keepNumberOfBackups = 2
 def delete_old_backups(path):
     if not os.path.exists(path):
