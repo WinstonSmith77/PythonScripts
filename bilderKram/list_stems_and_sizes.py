@@ -13,9 +13,9 @@ from PIL.ExifTags import TAGS
 
 
 
-def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime], Path]:
+def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | None], Path]:
     """Collect file stem and file size in bytes for all files in a folder tree."""
-    results:dict[tuple[str, int, datetime], Path] = {}
+    results:dict[tuple[str, int, datetime | None], Path] = {}
 
     for path in folder.rglob("*"):
         if not path.is_file():
