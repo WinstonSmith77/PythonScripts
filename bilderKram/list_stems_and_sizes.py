@@ -3,11 +3,10 @@
 Usage:
     python list_stems_and_sizes.py /path/to/folder_a /path/to/folder_b
 """
-
-from __future__ import annotations
-
 import argparse
 from pathlib import Path
+from collections import Counter
+
 
 
 def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int], Path]:
@@ -27,6 +26,14 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int], Path]:
 
     return results
 
+def MakeStats(items: dict[tuple[str, int], Path]) -> Counter:
+    return Counter(HandleSuffix(item.suffix) for item in items.values())
+
+def HandleSuffix(suffix: str) -> str:
+    result = suffix.lower()
+    if result in (".jpg", ".jpeg"):
+        return "jpg"
+    return result
 
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
@@ -55,11 +62,13 @@ def print_folder_items(folder_name: str, folder: Path) -> None:
         raise NotADirectoryError(f"Folder '{folder_name}' is not a directory: {folder}")
 
     items = collect_stems_and_sizes(folder)
+    stats = MakeStats(items)
 
     print(f"{folder_name}: {folder}")
     print("stem\tsize_bytes")
     for (stem, size), path in items.items():
         print(f" {stem} {size} -> {path}")
+    print(stats)    
     print()
 
 
