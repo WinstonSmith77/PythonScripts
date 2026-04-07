@@ -12,7 +12,7 @@ from pathlib import Path
 
 def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int], Path]:
     """Collect file stem and file size in bytes for all files in a folder tree."""
-    results: dict[Unknown, Unknown] = {}
+    results= {}
 
     for path in folder.rglob("*"):
         if not path.is_file():
@@ -20,7 +20,7 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int], Path]:
 
         try:
             size = path.stat().st_size
-            results[(f"{path.stem}{path.suffix}", size)] = path
+            results[(path.parts[-1], size)] = path
         except OSError:
             # Skip files that cannot be accessed.
             continue
@@ -59,7 +59,7 @@ def print_folder_items(folder_name: str, folder: Path) -> None:
     print(f"{folder_name}: {folder}")
     print("stem\tsize_bytes")
     for (stem, size), path in items.items():
-        print(f" {stem}{size} -> {path}")
+        print(f" {stem} {size} -> {path}")
     print()
 
 
