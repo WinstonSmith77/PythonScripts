@@ -8,8 +8,11 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
+import pillow_heif
 from PIL import Image
 from PIL.ExifTags import TAGS
+
+pillow_heif.register_heif_opener()
 
 
 
@@ -23,7 +26,7 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
 
         try:
             size = path.stat().st_size
-            creating_date = read_jpg_creation_date(path)
+            creating_date = read_creation_date(path)
             results[(path.parts[-1], size, creating_date)] = path
         except OSError:
             # Skip files that cannot be accessed.
@@ -32,14 +35,12 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
     return results
 
 def MakeStats(items: dict[tuple[str, int, datetime], Path]) -> Counter:
+    def HandleSuffix(suffix: str) -> str:
+        result = suffix.lower()
+        if result == ".jpeg":
+            return "jpg"
+        return result
     return Counter(HandleSuffix(item.suffix) for item in items.values())
-
-def HandleSuffix(suffix: str) -> str:
-    result = suffix.lower()
-    if result == ".jpeg":
-        return "jpg"
-    return result
-
 
 _EXIF_DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 _EXIF_DATE_TAGS = ("DateTimeOriginal", "DateTime")
@@ -70,6 +71,49 @@ def read_jpg_creation_date(path: Path) -> datetime | None:
             except ValueError:
                 continue
 
+    return None
+
+
+def read_heic_creation_date(path: Path) -> datetime | None:
+    """Return the creation date from EXIF data of a HEIC file.
+
+    Uses pillow-heif (registered as a Pillow opener) to access EXIF tags.
+    Tries DateTimeOriginal first, then falls back to DateTime.
+    Returns None if no readable date tag is found or the file cannot be opened.
+    """
+    try:
+        with Image.open(path) as img:
+            exif_data = img.getexif()
+    except Exception:
+        return None
+
+    if not exif_data:
+        return None
+
+    tag_map = {TAGS.get(tag_id, tag_id): value for tag_id, value in exif_data.items()}
+
+    for tag_name in _EXIF_DATE_TAGS:
+        raw = tag_map.get(tag_name)
+        if raw:
+            try:
+                return datetime.strptime(raw, _EXIF_DATE_FORMAT)
+            except ValueError:
+                continue
+
+    return None
+
+
+_HEIC_SUFFIXES = {".heic", ".heif"}
+_JPG_SUFFIXES = {".jpg", ".jpeg"}
+
+
+def read_creation_date(path: Path) -> datetime | None:
+    """Return the creation date from EXIF data, dispatching by file suffix."""
+    suffix = path.suffix.lower()
+    if suffix in _JPG_SUFFIXES:
+        return read_jpg_creation_date(path)
+    if suffix in _HEIC_SUFFIXES:
+        return read_heic_creation_date(path)
     return None
 
 
