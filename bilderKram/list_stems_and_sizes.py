@@ -12,7 +12,7 @@ from pathlib import Path
 
 def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int], Path]:
     """Collect file stem and file size in bytes for all files in a folder tree."""
-    results= {}
+    results: dict[tuple[str, int], Path]= {}
 
     for path in folder.rglob("*"):
         if not path.is_file():
