@@ -3,6 +3,7 @@
 Usage:
     python list_stems_and_sizes.py /path/to/folder_a /path/to/folder_b
 """
+
 import argparse
 from collections import Counter
 from datetime import datetime
@@ -27,14 +28,14 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
         try:
             size = path.stat().st_size
             creating_date = read_creation_date(path)
-            results[(path.parts[-1], size, creating_date)] = path
+            results[(path.suffix, size, creating_date)] = path
         except OSError:
             # Skip files that cannot be accessed.
             continue
 
     return results
 
-def MakeStats(items: dict[tuple[str, int, datetime], Path]) -> Counter:
+def MakeStats(items: dict[tuple[str, int, datetime | None], Path]) -> Counter:
     def HandleSuffix(suffix: str) -> str:
         result = suffix.lower()
         if result == ".jpeg":
@@ -134,20 +135,22 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-
-def print_folder_items(folder_name: str, folder: Path) -> None:
-    """Print stem and size rows for all files in a folder."""
+def extract(folder :Path) -> tuple[dict[tuple[str, int, datetime | None], Path], Counter]:
     if not folder.exists():
-        raise FileNotFoundError(f"Folder '{folder_name}' does not exist: {folder}")
+        raise FileNotFoundError(f"Folder '{folder}' does not exist: {folder}")
 
     if not folder.is_dir():
-        raise NotADirectoryError(f"Folder '{folder_name}' is not a directory: {folder}")
+        raise NotADirectoryError(f"Folder '{folder}' is not a directory: {folder}")
 
     items = collect_stems_and_sizes(folder)
     stats = MakeStats(items)
 
-    print(f"{folder_name}: {folder}")
-    print("stem\tsize_bytes\tcreation_date")
+    return items, stats
+
+def print_folder_items(folder :str, items: dict[tuple[str, int, datetime | None], Path], stats: Counter) -> None:
+    """Print stem and size rows for all files in a folder."""
+    
+    print(f"{folder}:fstem\tsize_bytes\tcreation_date")
     for (stem, size, creation_date), path in items.items():
         print(f" {stem} {size} {creation_date} -> {path}")
     print(stats)    
@@ -159,10 +162,15 @@ def main() -> None:
     args = parse_args()
     folder_a: Path = args.a
     folder_b: Path = args.b
+    items_a, stats_a = extract(folder_a)
+    items_b, stats_b = extract(folder_b)
+    print_folder_items("a", items_a, stats_a)
+    print_folder_items("b", items_b, stats_b)
 
-    print_folder_items("a", folder_a)
-    print_folder_items("b", folder_b)
+    set_a    = set(items_a.keys()) 
+    set_b: set[tuple[str, int, datetime | None]] = set(items_b.keys())
 
-
+    only_in_b =  set_b - set_a
+    print(only_in_b)
 if __name__ == "__main__":
     main()
