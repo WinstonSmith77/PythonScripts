@@ -15,6 +15,11 @@ from PIL.ExifTags import TAGS
 
 pillow_heif.register_heif_opener()
 
+def handle_suffix(suffix: str) -> str:
+        result = suffix.lower()
+        if result == ".jpeg":
+            return "jpg"
+        return result
 
 
 def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | None], Path]:
@@ -28,7 +33,7 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
         try:
             size = path.stat().st_size
             creating_date = read_creation_date(path)
-            results[(path.suffix, size, creating_date)] = path
+            results[(handle_suffix(path.suffix), size, creating_date)] = path
         except OSError:
             # Skip files that cannot be accessed.
             continue
@@ -36,12 +41,8 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
     return results
 
 def MakeStats(items: dict[tuple[str, int, datetime | None], Path]) -> Counter:
-    def HandleSuffix(suffix: str) -> str:
-        result = suffix.lower()
-        if result == ".jpeg":
-            return "jpg"
-        return result
-    return Counter(HandleSuffix(item.suffix) for item in items.values())
+    
+    return Counter(handle_suffix(item.suffix) for item in items.values())
 
 _EXIF_DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 _EXIF_DATE_TAGS = ("DateTimeOriginal", "DateTime")
@@ -164,13 +165,19 @@ def main() -> None:
     folder_b: Path = args.b
     items_a, stats_a = extract(folder_a)
     items_b, stats_b = extract(folder_b)
-    print_folder_items("a", items_a, stats_a)
-    print_folder_items("b", items_b, stats_b)
+   # print_folder_items("a", items_a, stats_a)
+    #print_folder_items("b", items_b, stats_b)
 
     set_a    = set(items_a.keys()) 
     set_b: set[tuple[str, int, datetime | None]] = set(items_b.keys())
 
     only_in_b =  set_b - set_a
-    print(only_in_b)
+
+    for item in (items_b[key] for key in only_in_b):
+        print(f"Only in b: {item}")
+
+    print(len(set_a), len(set_b), len(only_in_b))   
+
+    #print(only_in_b)
 if __name__ == "__main__":
     main()
