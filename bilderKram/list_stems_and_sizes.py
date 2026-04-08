@@ -8,6 +8,7 @@ import argparse
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
+from pprint import pprint
 
 import pillow_heif
 from PIL import Image
@@ -28,6 +29,8 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
 
     for path in folder.rglob("*"):
         if not path.is_file():
+            continue
+        if path.suffix == '' or path.suffix == '.lock':
             continue
 
         try:
@@ -164,17 +167,17 @@ def main() -> None:
     folder_a: Path = args.a
     folder_b: Path = args.b
     items_a, stats_a = extract(folder_a)
-    items_b, stats_b = extract(folder_b)
+    items_b , stats_b = extract(folder_b)
    # print_folder_items("a", items_a, stats_a)
     #print_folder_items("b", items_b, stats_b)
 
-    set_a    = set(items_a.keys()) 
+    set_a: set[tuple[str, int, datetime | None]] = set(items_a.keys()) 
     set_b: set[tuple[str, int, datetime | None]] = set(items_b.keys())
 
-    only_in_b =  set_b - set_a
+    only_in_b: set[tuple[str, int, datetime | None]] =  set_b - set_a
 
-    for item in (items_b[key] for key in only_in_b):
-        print(f"Only in b: {item}")
+    for item in ((key, items_b[key]) for key in only_in_b):
+        pprint(f"Only in b: {item}")
 
     print(len(set_a), len(set_b), len(only_in_b))   
 
