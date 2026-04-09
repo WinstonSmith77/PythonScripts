@@ -30,12 +30,14 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
     for path in folder.rglob("*"):
         if not path.is_file():
             continue
-        if path.suffix == '' or path.suffix == '.lock':
-            continue
+       
 
         try:
-            size = path.stat().st_size
-            creating_date = read_creation_date(path)
+            suffix: str = handle_suffix(path.suffix)
+            size: int = path.stat().st_size
+            creating_date = read_creation_date(suffix, path)
+            if creating_date is None:
+                continue
             results[(handle_suffix(path.suffix), size, creating_date)] = path
         except OSError:
             # Skip files that cannot be accessed.
@@ -112,9 +114,8 @@ _HEIC_SUFFIXES = {".heic", ".heif"}
 _JPG_SUFFIXES = {".jpg", ".jpeg"}
 
 
-def read_creation_date(path: Path) -> datetime | None:
+def read_creation_date(suffix: str,  path: Path) -> datetime | None:
     """Return the creation date from EXIF data, dispatching by file suffix."""
-    suffix = path.suffix.lower()
     if suffix in _JPG_SUFFIXES:
         return read_jpg_creation_date(path)
     if suffix in _HEIC_SUFFIXES:
@@ -139,15 +140,15 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-def extract(folder :Path) -> tuple[dict[tuple[str, int, datetime | None], Path], Counter]:
+def extract_data(folder :Path) -> tuple[dict[tuple[str, int, datetime | None], Path], Counter]:
     if not folder.exists():
         raise FileNotFoundError(f"Folder '{folder}' does not exist: {folder}")
 
     if not folder.is_dir():
         raise NotADirectoryError(f"Folder '{folder}' is not a directory: {folder}")
 
-    items = collect_stems_and_sizes(folder)
-    stats = MakeStats(items)
+    items: dict[tuple[str, int, datetime | None], Path] = collect_stems_and_sizes(folder)
+    stats: Counter = MakeStats(items)
 
     return items, stats
 
@@ -166,18 +167,29 @@ def main() -> None:
     args = parse_args()
     folder_a: Path = args.a
     folder_b: Path = args.b
-    items_a, stats_a = extract(folder_a)
-    items_b , stats_b = extract(folder_b)
+    items_a, stats_a = extract_data(folder_a)
+    items_b , stats_b = extract_data(folder_b)
    # print_folder_items("a", items_a, stats_a)
     #print_folder_items("b", items_b, stats_b)
 
     set_a: set[tuple[str, int, datetime | None]] = set(items_a.keys()) 
     set_b: set[tuple[str, int, datetime | None]] = set(items_b.keys())
 
-    only_in_b: set[tuple[str, int, datetime | None]] =  set_b - set_a
+    only_in_b: set[tuple[str, int, datetime | None]] = set_b - set_a
 
     for item in ((key, items_b[key]) for key in only_in_b):
         pprint(f"Only in b: {item}")
+
+    # dest = Path("~/Desktop/###sehr_unklar").expanduser()
+    # dest.mkdir(exist_ok=True)
+    # for key in only_in_b:
+    #     source = items_b[key]
+    #     target = dest / source.name
+    #     if not target.exists():
+    #         print(f"Copying {source} to {target}")
+    #         target.write_bytes(source.read_bytes())
+    #     else:
+    #         print(f"Target already exists, skipping: {target}")    
 
     print(len(set_a), len(set_b), len(only_in_b))   
 
