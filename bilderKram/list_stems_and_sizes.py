@@ -4,6 +4,7 @@ Usage:
     python list_stems_and_sizes.py /path/to/folder_a /path/to/folder_b
 """
 
+
 import argparse
 from collections import Counter
 from datetime import datetime
@@ -16,32 +17,36 @@ from PIL.ExifTags import TAGS
 
 pillow_heif.register_heif_opener()
 
+
 def handle_suffix(suffix: str) -> str:
-        result = suffix.lower()
-        if result == ".jpeg":
-            return "jpg"
-        return result
+    result = suffix.lower()
+    if result == ".jpeg":
+        return "jpg"
+    return result
 
 
-def collect_stems_and_sizes(folder: Path, year: int | None = None, month: int | None = None) -> dict[tuple[str, int, datetime | None], Path]:
+def collect_stems_and_sizes(
+    folder: Path, year: int | None, month: int | None, day: int | None 
+) -> dict[tuple[str, int, datetime | None], Path]:
     """Collect file stem and file size in bytes for all files in a folder tree."""
-    results:dict[tuple[str, int, datetime | None], Path] = {}
+    results: dict[tuple[str, int, datetime | None], Path] = {}
 
     for path in folder.rglob("*"):
         if not path.is_file():
             continue
-       
+
         suffix: str = handle_suffix(path.suffix)
         size: int = path.stat().st_size
 
         try:
-            
             creating_date = read_creation_date(suffix, path)
             if creating_date is None:
                 continue
             if year is not None and creating_date.year != year:
                 continue
             if month is not None and creating_date.month != month:
+                continue
+            if day is not None and creating_date.day != day:
                 continue
 
             results[(handle_suffix(path.suffix), size, creating_date)] = path
@@ -51,9 +56,11 @@ def collect_stems_and_sizes(folder: Path, year: int | None = None, month: int | 
 
     return results
 
+
 def MakeStats(items: dict[tuple[str, int, datetime | None], Path]) -> Counter:
-    
+
     return Counter(handle_suffix(item.suffix) for item in items.values())
+
 
 _EXIF_DATE_FORMAT = "%Y:%m:%d %H:%M:%S"
 _EXIF_DATE_TAGS = ("DateTimeOriginal", "DateTime")
@@ -120,7 +127,7 @@ _HEIC_SUFFIXES = {".heic", ".heif"}
 _JPG_SUFFIXES = {".jpg", ".jpeg"}
 
 
-def read_creation_date(suffix: str,  path: Path) -> datetime | None:
+def read_creation_date(suffix: str, path: Path) -> datetime | None:
     """Return the creation date from EXIF data, dispatching by file suffix."""
     if suffix in _JPG_SUFFIXES:
         return read_jpg_creation_date(path)
@@ -146,39 +153,56 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-def extract_data(folder :Path, year : int | None = None, month : int | None = None) -> tuple[dict[tuple[str, int, datetime | None], Path], Counter]:
+def extract_data(
+    folder: Path, year: int | None = None, month: int | None = None, day: int | None = None) -> tuple[dict[tuple[str, int, datetime | None], Path], Counter]:
     if not folder.exists():
         raise FileNotFoundError(f"Folder '{folder}' does not exist: {folder}")
 
     if not folder.is_dir():
         raise NotADirectoryError(f"Folder '{folder}' is not a directory: {folder}")
 
-    items: dict[tuple[str, int, datetime | None], Path] = collect_stems_and_sizes(folder)
+    items: dict[tuple[str, int, datetime | None], Path] = collect_stems_and_sizes(
+        folder, year, month, day
+    )
     stats: Counter = MakeStats(items)
 
     return items, stats
 
-def print_folder_items(folder :str, items: dict[tuple[str, int, datetime | None], Path], stats: Counter) -> None:
+
+def print_folder_items(
+    folder: str, items: dict[tuple[str, int, datetime | None], Path], stats: Counter
+) -> None:
     """Print stem and size rows for all files in a folder."""
-    
+
     print(f"{folder}:fstem\tsize_bytes\tcreation_date")
     for (stem, size, creation_date), path in items.items():
         print(f" {stem} {size} {creation_date} -> {path}")
-    print(stats)    
+    print(stats)
     print()
 
 
 def main() -> None:
     """Run the CLI."""
-    args = parse_args()
-    folder_a: Path = args.a
-    folder_b: Path = args.b
-    items_a, stats_a = extract_data(folder_a, year= 2021, month = 3)
-    items_b , stats_b = extract_data(folder_b, year= 2021, month = 3)
-   # print_folder_items("a", items_a, stats_a)
-    #print_folder_items("b", items_b, stats_b)
 
-    set_a: set[tuple[str, int, datetime | None]] = set(items_a.keys()) 
+    debug = True
+
+    if debug:
+        folder_a: Path = Path("/Volumes/Matze/matze/Desktop/iphoto_export")
+        folder_b: Path = Path("/Volumes/Matze/matze/Desktop/#ios_unklar")
+    else:
+        args = parse_args()
+        folder_a: Path = args.a
+        folder_b: Path = args.b
+
+    year = 2017
+    month = 12
+    day = None
+    items_a, stats_a = extract_data(folder_a, year=year, month=month, day=day)
+    items_b, stats_b = extract_data(folder_b, year=year, month=month, day=day)
+    print_folder_items("a", items_a, stats_a)
+    print_folder_items("b", items_b, stats_b)
+
+    set_a: set[tuple[str, int, datetime | None]] = set(items_a.keys())
     set_b: set[tuple[str, int, datetime | None]] = set(items_b.keys())
 
     only_in_b: set[tuple[str, int, datetime | None]] = set_b - set_a
@@ -186,7 +210,6 @@ def main() -> None:
     for item in ((key, items_b[key]) for key in only_in_b):
         pprint(item[0][2])
         pprint(item[1])
-
 
     # dest = Path("~/Desktop/###sehr_unklar").expanduser()
     # dest.mkdir(exist_ok=True)
@@ -197,10 +220,12 @@ def main() -> None:
     #         print(f"Copying {source} to {target}")
     #         target.write_bytes(source.read_bytes())
     #     else:
-    #         print(f"Target already exists, skipping: {target}")    
+    #         print(f"Target already exists, skipping: {target}")
 
-    print(len(set_a), len(set_b), len(only_in_b))   
+    print(len(set_a), len(set_b), len(only_in_b))
 
-    #print(only_in_b)
+    # print(only_in_b)
+
+
 if __name__ == "__main__":
     main()
