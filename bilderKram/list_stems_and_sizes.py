@@ -23,7 +23,7 @@ def handle_suffix(suffix: str) -> str:
         return result
 
 
-def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | None], Path]:
+def collect_stems_and_sizes(folder: Path, year: int | None = None, month: int | None = None) -> dict[tuple[str, int, datetime | None], Path]:
     """Collect file stem and file size in bytes for all files in a folder tree."""
     results:dict[tuple[str, int, datetime | None], Path] = {}
 
@@ -31,13 +31,19 @@ def collect_stems_and_sizes(folder: Path) -> dict[tuple[str, int, datetime | Non
         if not path.is_file():
             continue
        
+        suffix: str = handle_suffix(path.suffix)
+        size: int = path.stat().st_size
 
         try:
-            suffix: str = handle_suffix(path.suffix)
-            size: int = path.stat().st_size
+            
             creating_date = read_creation_date(suffix, path)
             if creating_date is None:
                 continue
+            if year is not None and creating_date.year != year:
+                continue
+            if month is not None and creating_date.month != month:
+                continue
+
             results[(handle_suffix(path.suffix), size, creating_date)] = path
         except OSError:
             # Skip files that cannot be accessed.
@@ -140,7 +146,7 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-def extract_data(folder :Path) -> tuple[dict[tuple[str, int, datetime | None], Path], Counter]:
+def extract_data(folder :Path, year : int | None = None, month : int | None = None) -> tuple[dict[tuple[str, int, datetime | None], Path], Counter]:
     if not folder.exists():
         raise FileNotFoundError(f"Folder '{folder}' does not exist: {folder}")
 
@@ -167,8 +173,8 @@ def main() -> None:
     args = parse_args()
     folder_a: Path = args.a
     folder_b: Path = args.b
-    items_a, stats_a = extract_data(folder_a)
-    items_b , stats_b = extract_data(folder_b)
+    items_a, stats_a = extract_data(folder_a, year= 2021, month = 3)
+    items_b , stats_b = extract_data(folder_b, year= 2021, month = 3)
    # print_folder_items("a", items_a, stats_a)
     #print_folder_items("b", items_b, stats_b)
 
@@ -178,7 +184,9 @@ def main() -> None:
     only_in_b: set[tuple[str, int, datetime | None]] = set_b - set_a
 
     for item in ((key, items_b[key]) for key in only_in_b):
-        pprint(f"Only in b: {item}")
+        pprint(item[0][2])
+        pprint(item[1])
+
 
     # dest = Path("~/Desktop/###sehr_unklar").expanduser()
     # dest.mkdir(exist_ok=True)
