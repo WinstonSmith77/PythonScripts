@@ -3,7 +3,7 @@
   "version": 8,
   "name": "bm_web_col",
   "metadata": {
-    "basemapde:style-version": "4.1.2",
+    "basemapde:style-version": "5.0.0",
     "mapbox:autocomposite": false,
     "mapbox:type": "template",
     "maputnik:renderer": "mbgljs"
@@ -22,7 +22,7 @@
   "sources": {
     "smarttiles_de": {
       "type": "vector",
-      "attribution": "&copy; 2025 basemap.de / BKG | Datenquellen: &copy; GeoBasis-DE",
+      "attribution": "&copy; 2026 basemap.de / BKG | Datenquellen: &copy; GeoBasis-DE",
       "url": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/tiles/v2/bm_web_de_3857/bm_web_de_3857.json"
     }
   },
@@ -5844,6 +5844,7 @@
       "filter": [
         "!in",
         "klasse",
+        "Tiefgarage",
         "Kino",
         "Verwaltungsgebäude",
         "Parlament",
@@ -5972,6 +5973,92 @@
       "paint": {
         "fill-color": "rgb(232,179,158)",
         "fill-opacity": 1
+      }
+    },
+    {
+      "id": "Gebaeude_Tiefgarage",
+      "type": "fill",
+      "source": "smarttiles_de",
+      "minzoom": 12,
+      "maxzoom": 22,
+      "source-layer": "Gebaeudeflaeche",
+      "filter": [
+        "==",
+        "klasse",
+        "Tiefgarage"
+      ],
+      "layout": {
+        "visibility": "none"
+      },
+      "paint": {
+        "fill-color": "rgb(153,153,153)",
+        "fill-opacity": {
+          "stops": [
+            [
+              12,
+              0.3
+            ],
+            [
+              14,
+              0.3
+            ],
+            [
+              20,
+              0.3
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "Gebaeude_Tiefgarage_Kontur",
+      "type": "line",
+      "source": "smarttiles_de",
+      "minzoom": 12,
+      "maxzoom": 22,
+      "source-layer": "Gebaeudeflaeche",
+      "filter": [
+        "==",
+        "klasse",
+        "Tiefgarage"
+      ],
+      "layout": {
+        "visibility": "none"
+      },
+      "paint": {
+        "line-color": "rgb(153,153,153)",
+        "line-opacity": {
+          "stops": [
+            [
+              12,
+              0.3
+            ],
+            [
+              14,
+              0.3
+            ],
+            [
+              20,
+              0.3
+            ]
+          ]
+        },
+        "line-width": {
+          "stops": [
+            [
+              11,
+              0.8
+            ],
+            [
+              14,
+              1.1
+            ],
+            [
+              20,
+              1.7
+            ]
+          ]
+        }
       }
     },
     {
@@ -17428,7 +17515,7 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
+          "klasse_einwohnerzahl",
           25000
         ]
       ],
@@ -17470,7 +17557,7 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
+          "klasse_einwohnerzahl",
           100000
         ]
       ],
@@ -17512,7 +17599,7 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
+          "klasse_einwohnerzahl",
           500000
         ]
       ],
@@ -17554,7 +17641,7 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
+          "klasse_einwohnerzahl",
           1000000
         ]
       ],
@@ -25641,11 +25728,11 @@
         "visibility": "visible",
         "text-field": "{name}",
         "text-allow-overlap": false,
-        "text-anchor": "center",
+        "text-anchor": "bottom",
         "text-font": [
           "Roboto Medium Italic"
         ],
-        "text-ignore-placement": true,
+        "text-ignore-placement": false,
         "text-justify": "center",
         "text-letter-spacing": 0.1,
         "text-max-width": {
@@ -25705,6 +25792,377 @@
         "text-halo-blur": 0.5,
         "text-halo-color": "rgb(255,253,238)",
         "text-halo-width": 2,
+        "text-translate-anchor": "map"
+      }
+    },
+    {
+      "id": "Nummer_Verkehrspunkt_Autobahnknoten_Kreis",
+      "type": "symbol",
+      "source": "smarttiles_de",
+      "minzoom": 12,
+      "maxzoom": 22,
+      "source-layer": "Verkehrspunkt",
+      "filter": [
+        "all",
+        [
+          "in",
+          "klasse",
+          "Anschlussstelle, Anschluss",
+          "Dreieck",
+          "Kreuz"
+        ],
+        [
+          ">",
+          "laenge_knotennummer",
+          0
+        ],
+        [
+          "<=",
+          "laenge_knotennummer",
+          2
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "symbol-placement": "point",
+        "symbol-spacing": 250,
+        "icon-image": "Verkehrsknoten_Kreis",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": false,
+        "icon-padding": 0,
+        "icon-size": {
+          "stops": [
+            [
+              12,
+              0.7
+            ],
+            [
+              14,
+              1
+            ],
+            [
+              15,
+              1.2
+            ]
+          ]
+        },
+        "icon-text-fit": "none",
+        "icon-text-fit-padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "text-field": [
+          "get",
+          "knotennummer"
+        ],
+        "text-allow-overlap": false,
+        "text-anchor": "center",
+        "text-font": [
+          "Noto Sans Bold"
+        ],
+        "text-ignore-placement": false,
+        "text-justify": "center",
+        "text-size": {
+          "stops": [
+            [
+              12,
+              9
+            ],
+            [
+              14,
+              11
+            ],
+            [
+              15,
+              12
+            ]
+          ]
+        },
+        "text-variable-anchor": [
+          "center"
+        ]
+      },
+      "paint": {
+        "text-color": "rgb(255,255,255)",
+        "text-translate-anchor": "map"
+      }
+    },
+    {
+      "id": "Nummer_Verkehrspunkt_Autobahnknoten_Oval",
+      "type": "symbol",
+      "source": "smarttiles_de",
+      "minzoom": 12,
+      "maxzoom": 22,
+      "source-layer": "Verkehrspunkt",
+      "filter": [
+        "all",
+        [
+          "in",
+          "klasse",
+          "Anschlussstelle, Anschluss",
+          "Dreieck",
+          "Kreuz"
+        ],
+        [
+          ">",
+          "laenge_knotennummer",
+          2
+        ],
+        [
+          "<=",
+          "laenge_knotennummer",
+          8
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "symbol-placement": "point",
+        "symbol-spacing": 250,
+        "icon-image": "Verkehrsknoten_Oval",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": false,
+        "icon-padding": 0,
+        "icon-size": {
+          "stops": [
+            [
+              12,
+              0.7
+            ],
+            [
+              14,
+              1
+            ],
+            [
+              15,
+              1.2
+            ]
+          ]
+        },
+        "icon-text-fit": "none",
+        "icon-text-fit-padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "text-field": [
+          "get",
+          "knotennummer"
+        ],
+        "text-allow-overlap": false,
+        "text-anchor": "center",
+        "text-font": [
+          "Noto Sans Bold"
+        ],
+        "text-ignore-placement": false,
+        "text-justify": "center",
+        "text-size": {
+          "stops": [
+            [
+              12,
+              9
+            ],
+            [
+              14,
+              11
+            ],
+            [
+              15,
+              12
+            ]
+          ]
+        },
+        "text-variable-anchor": [
+          "center"
+        ]
+      },
+      "paint": {
+        "text-color": "rgb(255,255,255)",
+        "text-translate-anchor": "map"
+      }
+    },
+    {
+      "id": "Nummer_Verkehrspunkt_Autobahnknoten_Lang",
+      "type": "symbol",
+      "source": "smarttiles_de",
+      "minzoom": 12,
+      "maxzoom": 22,
+      "source-layer": "Verkehrspunkt",
+      "filter": [
+        "all",
+        [
+          "in",
+          "klasse",
+          "Anschlussstelle, Anschluss",
+          "Dreieck",
+          "Kreuz"
+        ],
+        [
+          ">",
+          "laenge_knotennummer",
+          8
+        ],
+        [
+          "<=",
+          "laenge_knotennummer",
+          10
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "symbol-placement": "point",
+        "symbol-spacing": 250,
+        "icon-image": "Verkehrsknoten_Lang",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": false,
+        "icon-padding": 0,
+        "icon-size": {
+          "stops": [
+            [
+              12,
+              0.7
+            ],
+            [
+              14,
+              1
+            ],
+            [
+              15,
+              1.2
+            ]
+          ]
+        },
+        "icon-text-fit": "none",
+        "icon-text-fit-padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "text-field": [
+          "get",
+          "knotennummer"
+        ],
+        "text-allow-overlap": false,
+        "text-anchor": "center",
+        "text-font": [
+          "Noto Sans Bold"
+        ],
+        "text-ignore-placement": false,
+        "text-justify": "center",
+        "text-size": {
+          "stops": [
+            [
+              12,
+              9
+            ],
+            [
+              14,
+              11
+            ],
+            [
+              15,
+              12
+            ]
+          ]
+        },
+        "text-variable-anchor": [
+          "center"
+        ]
+      },
+      "paint": {
+        "text-color": "rgb(255,255,255)",
+        "text-translate-anchor": "map"
+      }
+    },
+    {
+      "id": "Nummer_Verkehrspunkt_Autobahnknoten_Lang2",
+      "type": "symbol",
+      "source": "smarttiles_de",
+      "minzoom": 12,
+      "maxzoom": 22,
+      "source-layer": "Verkehrspunkt",
+      "filter": [
+        "all",
+        [
+          "in",
+          "klasse",
+          "Anschlussstelle, Anschluss",
+          "Dreieck",
+          "Kreuz"
+        ],
+        [
+          ">",
+          "laenge_knotennummer",
+          10
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "symbol-placement": "point",
+        "symbol-spacing": 250,
+        "icon-image": "Verkehrsknoten_Lang2",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": false,
+        "icon-padding": 0,
+        "icon-size": {
+          "stops": [
+            [
+              12,
+              0.7
+            ],
+            [
+              14,
+              1
+            ],
+            [
+              15,
+              1.2
+            ]
+          ]
+        },
+        "icon-text-fit": "none",
+        "icon-text-fit-padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "text-field": [
+          "get",
+          "knotennummer"
+        ],
+        "text-allow-overlap": false,
+        "text-anchor": "center",
+        "text-font": [
+          "Noto Sans Bold"
+        ],
+        "text-ignore-placement": false,
+        "text-justify": "center",
+        "text-size": {
+          "stops": [
+            [
+              12,
+              9
+            ],
+            [
+              14,
+              11
+            ],
+            [
+              15,
+              12
+            ]
+          ]
+        },
+        "text-variable-anchor": [
+          "center"
+        ]
+      },
+      "paint": {
+        "text-color": "rgb(255,255,255)",
         "text-translate-anchor": "map"
       }
     },
@@ -29764,7 +30222,7 @@
       }
     },
     {
-      "id": "Name_Wohnplatz_unter10",
+      "id": "Name_Wohnplatz_bis_20",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 12.5,
@@ -29783,9 +30241,9 @@
           "Wohnplatz"
         ],
         [
-          "<=",
-          "einwohnerzahl",
-          10
+          "==",
+          "klasse_einwohnerzahl",
+          20
         ]
       ],
       "layout": {
@@ -29863,7 +30321,7 @@
       }
     },
     {
-      "id": "Name_Wohnplatz_ueber10",
+      "id": "Name_Wohnplatz_groesser_20",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11.5,
@@ -29882,9 +30340,14 @@
           "Wohnplatz"
         ],
         [
-          ">",
-          "einwohnerzahl",
-          10
+          ">=",
+          "klasse_einwohnerzahl",
+          100
+        ],
+        [
+          "<=",
+          "klasse_einwohnerzahl",
+          5000
         ]
       ],
       "layout": {
@@ -29962,7 +30425,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_kleiner_10_Gemeindeteil",
+      "id": "Name_Ortsteil_Gemeindeteil_bis_20",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 12,
@@ -29981,9 +30444,9 @@
           "Gemeindeteil"
         ],
         [
-          "<",
-          "einwohnerzahl",
-          10
+          "==",
+          "klasse_einwohnerzahl",
+          20
         ]
       ],
       "layout": {
@@ -30061,7 +30524,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_10_100_Gemeindeteil",
+      "id": "Name_Ortsteil_Gemeindeteil_bis_100",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11.5,
@@ -30080,13 +30543,8 @@
           "Gemeindeteil"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          10
-        ],
-        [
-          "<",
-          "einwohnerzahl",
+          "==",
+          "klasse_einwohnerzahl",
           100
         ]
       ],
@@ -30164,7 +30622,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_100_1000_Gemeindeteil",
+      "id": "Name_Ortsteil_Gemeindeteil_bis_1000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11,
@@ -30184,12 +30642,12 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          100
+          "klasse_einwohnerzahl",
+          200
         ],
         [
-          "<",
-          "einwohnerzahl",
+          "<=",
+          "klasse_einwohnerzahl",
           1000
         ]
       ],
@@ -30267,7 +30725,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_1000_10000_Gemeindeteil",
+      "id": "Name_Ortsteil_Gemeindeteil_bis_10000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11,
@@ -30287,12 +30745,12 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          1000
+          "klasse_einwohnerzahl",
+          2000
         ],
         [
-          "<",
-          "einwohnerzahl",
+          "<=",
+          "klasse_einwohnerzahl",
           10000
         ]
       ],
@@ -30370,7 +30828,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_10000_25000_Gemeindeteil",
+      "id": "Name_Ortsteil_Gemeindeteil_bis_20000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 10,
@@ -30389,14 +30847,9 @@
           "Gemeindeteil"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          10000
-        ],
-        [
-          "<",
-          "einwohnerzahl",
-          25000
+          "==",
+          "klasse_einwohnerzahl",
+          20000
         ]
       ],
       "layout": {
@@ -30477,7 +30930,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_groesser_25000_Gemeindeteil",
+      "id": "Name_Ortsteil_Gemeindeteil_groesser_20000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 10,
@@ -30497,8 +30950,8 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          25000
+          "klasse_einwohnerzahl",
+          50000
         ]
       ],
       "layout": {
@@ -30579,7 +31032,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_kleiner_10_Stadtteil",
+      "id": "Name_Ortsteil_Stadtteil_bis_20",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 12,
@@ -30598,9 +31051,9 @@
           "Stadtteil"
         ],
         [
-          "<",
-          "einwohnerzahl",
-          10
+          "==",
+          "klasse_einwohnerzahl",
+          20
         ]
       ],
       "layout": {
@@ -30678,7 +31131,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_10_100_Stadtteil",
+      "id": "Name_Ortsteil_Stadtteil_bis_100",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11,
@@ -30697,13 +31150,8 @@
           "Stadtteil"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          10
-        ],
-        [
-          "<",
-          "einwohnerzahl",
+          "==",
+          "klasse_einwohnerzahl",
           100
         ]
       ],
@@ -30781,7 +31229,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_100_1000_Stadtteil",
+      "id": "Name_Ortsteil_Stadtteil_bis_1000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11.5,
@@ -30801,12 +31249,12 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          100
+          "klasse_einwohnerzahl",
+          200
         ],
         [
-          "<",
-          "einwohnerzahl",
+          "<=",
+          "klasse_einwohnerzahl",
           1000
         ]
       ],
@@ -30884,7 +31332,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_1000_10000_Stadtteil",
+      "id": "Name_Ortsteil_Stadtteil_bis_10000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11,
@@ -30904,12 +31352,12 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          1000
+          "klasse_einwohnerzahl",
+          2000
         ],
         [
-          "<",
-          "einwohnerzahl",
+          "<=",
+          "klasse_einwohnerzahl",
           10000
         ]
       ],
@@ -30987,7 +31435,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_10000_25000_Stadtteil",
+      "id": "Name_Ortsteil_Stadtteil_bis_20000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 10,
@@ -31006,14 +31454,9 @@
           "Stadtteil"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          10000
-        ],
-        [
-          "<",
-          "einwohnerzahl",
-          25000
+          "==",
+          "klasse_einwohnerzahl",
+          20000
         ]
       ],
       "layout": {
@@ -31094,7 +31537,7 @@
       }
     },
     {
-      "id": "Name_Ortsteil_groesser_25000_Stadtteil",
+      "id": "Name_Ortsteil_Stadtteil_groesser_20000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 10,
@@ -31114,8 +31557,8 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          25000
+          "klasse_einwohnerzahl",
+          50000
         ]
       ],
       "layout": {
@@ -31310,7 +31753,7 @@
       }
     },
     {
-      "id": "Name_Landgemeinde_kleiner_1000",
+      "id": "Name_Landgemeinde_bis_1000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 11,
@@ -31330,8 +31773,8 @@
           "Gemeindefreies Gebiet"
         ],
         [
-          "<",
-          "einwohnerzahl",
+          "<=",
+          "klasse_einwohnerzahl",
           1000
         ]
       ],
@@ -31397,7 +31840,7 @@
       }
     },
     {
-      "id": "Name_Landgemeinde_1000_10000",
+      "id": "Name_Landgemeinde_bis_10000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 10,
@@ -31417,14 +31860,14 @@
           "Gemeindefreies Gebiet"
         ],
         [
-          "<",
-          "einwohnerzahl",
-          10000
+          ">=",
+          "klasse_einwohnerzahl",
+          2000
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          1000
+          "<=",
+          "klasse_einwohnerzahl",
+          10000
         ]
       ],
       "layout": {
@@ -31510,8 +31953,8 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          10000
+          "klasse_einwohnerzahl",
+          20000
         ]
       ],
       "layout": {
@@ -31575,7 +32018,7 @@
       }
     },
     {
-      "id": "Name_Stadtgemeinde_kleiner_25000",
+      "id": "Name_Stadtgemeinde_bis_20000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 9,
@@ -31594,9 +32037,9 @@
           "Stadt"
         ],
         [
-          "<",
-          "einwohnerzahl",
-          25000
+          "<=",
+          "klasse_einwohnerzahl",
+          20000
         ]
       ],
       "layout": {
@@ -31638,27 +32081,27 @@
           "stops": [
             [
               5,
-              11
+              9
             ],
             [
               6,
-              12
+              10
             ],
             [
               7,
-              13
+              11
             ],
             [
               10,
-              14
+              12
             ],
             [
               12,
-              16
+              14
             ],
             [
               20,
-              26
+              24
             ]
           ]
         },
@@ -31692,7 +32135,7 @@
       }
     },
     {
-      "id": "Name_Stadtgemeinde_25000_50000",
+      "id": "Name_Stadtgemeinde_bis_50000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 8,
@@ -31711,14 +32154,9 @@
           "Stadt"
         ],
         [
-          "<",
-          "einwohnerzahl",
+          "==",
+          "klasse_einwohnerzahl",
           50000
-        ],
-        [
-          ">=",
-          "einwohnerzahl",
-          25000
         ]
       ],
       "layout": {
@@ -31814,7 +32252,7 @@
       }
     },
     {
-      "id": "Name_Stadtgemeinde_50000_100000",
+      "id": "Name_Stadtgemeinde_bis_100000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 6,
@@ -31835,13 +32273,8 @@
           "Landeshauptstadt"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          50000
-        ],
-        [
-          "<",
-          "einwohnerzahl",
+          "==",
+          "klasse_einwohnerzahl",
           100000
         ]
       ],
@@ -31939,7 +32372,7 @@
       }
     },
     {
-      "id": "Name_Stadtgemeinde_100000_250000",
+      "id": "Name_Stadtgemeinde_bis_200000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 6,
@@ -31960,14 +32393,9 @@
           "Landeshauptstadt"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          100000
-        ],
-        [
-          "<",
-          "einwohnerzahl",
-          250000
+          "==",
+          "klasse_einwohnerzahl",
+          200000
         ]
       ],
       "layout": {
@@ -32064,7 +32492,7 @@
       }
     },
     {
-      "id": "Name_Stadtgemeinde_250000_500000",
+      "id": "Name_Stadtgemeinde_bis_500000",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 6,
@@ -32080,13 +32508,8 @@
           "Landeshauptstadt"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          250000
-        ],
-        [
-          "<",
-          "einwohnerzahl",
+          "==",
+          "klasse_einwohnerzahl",
           500000
         ]
       ],
@@ -32287,7 +32710,7 @@
       }
     },
     {
-      "id": "Name_Stadtgemeinde_500000_1Mio",
+      "id": "Name_Stadtgemeinde_bis_1Mio",
       "type": "symbol",
       "source": "smarttiles_de",
       "minzoom": 4,
@@ -32303,13 +32726,8 @@
           "Landeshauptstadt"
         ],
         [
-          ">=",
-          "einwohnerzahl",
-          500000
-        ],
-        [
-          "<",
-          "einwohnerzahl",
+          "==",
+          "klasse_einwohnerzahl",
           1000000
         ]
       ],
@@ -32442,8 +32860,8 @@
         ],
         [
           ">=",
-          "einwohnerzahl",
-          1000000
+          "klasse_einwohnerzahl",
+          2000000
         ]
       ],
       "layout": {

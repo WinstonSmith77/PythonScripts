@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printable Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            /* Space between cards so they are easy to cut */
+            gap: 15px; 
+            justify-content: center;
+        }
+        
+        .card {
+            width: auto;
+            height: auto;
+            /* Dashed border acts as a cut line */
+            border: 1px dashed #333; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 15px;
+            background-color: #fff;
+        }
+
+        /* Print-specific styles to ensure they fit properly on paper */
+        @media print {
+            body {
+                padding: 0;
+                gap: 5px; /* Minimal gap for printing */
+            }
+            .card {
+                /* Prevents a card from being split across two pages */
+                page-break-inside: avoid;
+                /* Ensure borders print properly */
+                border: 1px dashed #000; 
+            }
+            @page {
+                margin: 1cm; /* Adjust page margins as needed */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">Apple</div>
+    <div class="card">Banana</div>
+    <div class="card">Cherry</div>
+    <div class="card">Date</div>
+    <div class="card">Elderberry</div>
+    <div class="card">Fig</div>
+    <div class="card">Grape</div>
+    <div class="card">Honeydew</div>
+    
+    <!-- Add more cards below by copying the div -->
+    <div class="card">Your Word Here</div>
+</body>
+</html>
